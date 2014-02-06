@@ -1,0 +1,2 @@
+import binbootstrapper
+binbootstrapper.update_binaries(__file__, binbootstrapper.DLL_BLUE)
