@@ -1,0 +1,160 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// Creator:		Snorri Sturluson
+// Created:		December 2012
+// Copyright:	CCP 2012
+//
+
+#if BLUE_WITH_PYTHON
+
+#include "TypeInfo.h"
+#include "BluePyWrap.h"
+
+PyObject* PyGetTypeInfo(const Be::ClassInfo* info, long flags)
+{
+	// no error checking done - should never fail, and is only used in development
+
+	// Return 4 dicts in a tuple
+	// First dict a key-value of the class' type info
+	// Second dict a key-value of iids, value is version
+	// Third dict a key-tuple of members, tuple is type, iid (name.ver), desc and editflags
+	// Fourth dict a key-value of methods, value is doc string
+	// create class type info dict
+	PyObject* tmp;
+	PyObject* dict1 = PyDict_New();
+
+	tmp = PyString_FromString(info->mClassId->GetModule() );
+	PyDict_SetItemString(dict1, "module", tmp);
+	Py_DECREF(tmp);
+
+	tmp = PyString_FromString(info->mClassId->GetName() );
+	PyDict_SetItemString(dict1, "classname", tmp);
+	Py_DECREF(tmp);
+
+	tmp = PyString_FromString(info->mDescription ? info->mDescription : "");
+	PyDict_SetItemString(dict1, "description", tmp);
+	Py_DECREF(tmp);
+
+	tmp = PyInt_FromLong((flags & BLUERT_AUTOVAR) ? 1 : 0);
+	PyDict_SetItemString(dict1, "autovar", tmp);
+	Py_DECREF(tmp);
+
+	// create dicts
+	PyObject* dict2 = PyDict_New();
+	PyObject* dict3 = PyDict_New();
+	PyObject* dict4 = PyDict_New();
+
+	for (const Be::ClassInfo* i = info; i; i = i->mParentClassInfo)
+	{
+		// iterate over iids
+		for (const Be::InterfaceEntry* itf = i->mInterfaceTable; itf->mIID; itf++)
+		{
+			tmp = PyInt_FromLong(0);
+			PyDict_SetItemString(dict2, (char*)itf->mIID->GetName(), tmp);
+			Py_DECREF(tmp);
+		}
+
+		// iterate over members
+		for (const Be::VarEntry* var = i->mMemberTable; var->mName; var++)
+		{
+			PyObject* d = PyDict_New();
+
+			// Type
+			tmp = PyInt_FromLong(var->mType);
+			PyDict_SetItemString(d, "type", tmp);
+			Py_DECREF(tmp);
+
+			// Interface name, if any
+			tmp = PyString_FromString(var->mIID ? var->mIID->GetName() : "");
+			PyDict_SetItemString(d, "iid_name", tmp);
+			Py_DECREF(tmp);
+
+			// Interface version, if any
+			tmp = PyInt_FromLong(0);
+			PyDict_SetItemString(d, "iid_ver", tmp);
+			Py_DECREF(tmp);
+
+			// Description
+			tmp = PyString_FromString(var->mDescription ? var->mDescription : "");
+			PyDict_SetItemString(d, "description", tmp);
+			Py_DECREF(tmp);
+
+			// Edit flags
+			tmp = PyInt_FromLong(var->mEditFlags);
+			PyDict_SetItemString(d, "editflags", tmp);
+			Py_DECREF(tmp);
+
+			// Min/Max values - deprecated
+			PyDict_SetItemString(d, "min", Py_None);
+			PyDict_SetItemString(d, "max", Py_None);
+
+			// Choosers
+			// app.browser.Browse(app.browser.GetSelected().TypeInfo())
+			if (!var->mChooserTable)
+			{
+				PyDict_SetItemString(d, "choosers", Py_None);
+			}
+			else
+			{
+				int count = 0;
+				const Be::VarChooser* i = var->mChooserTable;
+
+				while (i->mKey)
+					i++, count++;
+
+				PyObject* choosers = PyList_New(count);
+
+				for (i = var->mChooserTable, count = 0; i->mKey; i++, count++)
+				{
+					PyObject* rec = PyList_New(3);
+
+					tmp = PyString_FromString(i->mKey);
+					PyList_SET_ITEM(rec, 0, tmp);
+
+					if( var->mType == Be::STDSTRING )
+					{
+						// BlueConvertValueToPython doesn't work properly on choosers for std::string
+						tmp = PyString_FromString("");
+					}
+					else
+					{
+						tmp = BlueConvertValueToPython(var, &i->mValue);
+					}
+
+					PyList_SET_ITEM(rec, 1, tmp);
+
+					tmp = PyString_FromString(i->mDescription);
+					PyList_SET_ITEM(rec, 2, tmp);
+
+					PyList_SET_ITEM(choosers, count, rec);
+				}
+
+				PyDict_SetItemString(d, "choosers", choosers);
+				Py_DECREF(choosers);
+			}
+
+
+			PyDict_SetItemString(dict3, (char*)var->mName, d);
+			Py_DECREF(d);
+		}
+
+		// iterate over methods
+		for (const PyMethodDef* meth = i->mPyMethodTable; meth->ml_name; meth++)
+		{
+			tmp = PyString_FromString(meth->ml_doc);
+			PyDict_SetItemString(dict4, meth->ml_name, tmp);
+			Py_DECREF(tmp);
+		}
+	}
+
+	PyObject* ret = Py_BuildValue("(OOOO)", dict1, dict2, dict3, dict4);
+	Py_DECREF(dict1);
+	Py_DECREF(dict2);
+	Py_DECREF(dict3);
+	Py_DECREF(dict4);
+
+	return ret;
+}
+
+
+#endif

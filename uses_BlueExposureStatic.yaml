@@ -1,0 +1,105 @@
+# This file defines settings for all modules that link against CcpCore
+Imports:
+- ../CcpCore/uses_CcpCoreStatic.yaml
+
+BaseConfigurations:
+  Static:
+    ClCompile:
+      PreprocessorDefinitions:
+      - BLUEBUILD_STATIC
+
+  ExeFile:
+    Link:
+      AdditionalLibraryDirectories:
+      - ../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)
+
+  Python_26:
+    Link:
+      AdditionalLibraryDirectories:
+      - ../../autobuild/BlueExposure/python_26/$(Platform)/$(PlatformToolset)
+
+  Python_27:
+    Link:
+      AdditionalLibraryDirectories:
+      - ../../autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset)
+
+  Lua:
+    Link:
+      AdditionalLibraryDirectories:
+      - ../../autobuild/BlueExposure/lua/$(Platform)/$(PlatformToolset)
+
+  Debug:
+    Link:
+      AdditionalDependencies:
+      - BlueExposureStatic_d.lib
+
+  Release:
+    Link:
+      AdditionalDependencies:
+      - BlueExposureStatic.lib
+
+Configurations:
+  Debug|Win32,x64:
+    BaseConfigurations:
+    - Static
+    - ExeFile
+    - Debug
+
+  DebugLua|Win32,x64:
+    BaseConfigurations:
+    - Static
+    - Lua
+    - Debug
+
+  DebugLua|ORBIS:
+    BaseConfigurations:
+    - Static
+    - Lua
+    Link:
+      AdditionalDependencies:
+      - BlueExposureStatic_d
+
+  DebugLua|Tegra-Android:
+    BaseConfigurations:
+    - Static
+    - Lua
+    Link:
+      AdditionalDependencies:
+      - BlueExposureStatic_d
+
+  ReleaseLua|Tegra-Android:
+    BaseConfigurations:
+    - Static
+    - Lua
+    Link:
+      AdditionalDependencies:
+      - BlueExposureStatic
+
+  Release|Win32,x64:
+    BaseConfigurations:
+    - Static
+    - ExeFile
+    - Release
+
+  Release_26|Win32,x64:
+    BaseConfigurations:
+    - Static
+    - Python_26
+    - Release
+
+  Release_27|Win32,x64:
+    BaseConfigurations:
+    - Static
+    - Python_27
+    - Release
+
+  Release_27|Linux32,Linux64,Mac32,Mac64:
+    BaseConfigurations:
+    - Static
+    - Python_27
+    - Release
+    Link:
+      # These additional settings are needed to prevent undefined symbols coming from Python
+      AdditionalDependencies:
+      - dl
+      - util

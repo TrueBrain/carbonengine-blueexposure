@@ -1,0 +1,443 @@
+////////////////////////////////////////////////////////////
+//
+//    Creator:   Filipp Pavlov
+//    Created:   August 2013
+//    Copyright: CCP 2013
+//
+
+#pragma once
+#ifndef BlueScriptCallback_H
+#define BlueScriptCallback_H
+
+#include "BlueTypes.h"
+#include "BlueExtractArgument.h"
+#include "BlueWrapReturnValue.h"
+
+// Status of call
+// Note that clang doesn't allow BLUEIMPORT on an embedded class - have to
+// have this toplevel rather than inside the scope of BlueScriptCallback.
+class BLUEIMPORT BlueScriptCallbackStatus
+{
+public:
+	BlueScriptCallbackStatus( const BlueScriptCallbackStatus& );
+	BlueScriptCallbackStatus& operator=( const BlueScriptCallbackStatus& );
+	~BlueScriptCallbackStatus();
+	operator bool() const;
+	void MuteException();
+	void ReportException();
+private:
+	enum Status
+	{
+		OK,
+		CALL_ERROR,
+		EXCEPTION
+	};
+	BlueScriptCallbackStatus( Status hasException );
+
+	Status m_hasException;
+	bool m_muteException;
+	bool m_exceptionReported;
+
+#if BLUE_WITH_PYTHON
+	PyObject* m_type;
+	PyObject* m_value;
+	PyObject* m_traceback;
+#endif
+	friend class BLUEIMPORT BlueScriptCallback;
+};
+
+// --------------------------------------------------------------------------------------
+// Description:
+//   BlueScriptCallback encapsulates script callback functions. One can store a script 
+//   function in BlueScriptCallback and subsequently call it from C++.
+// --------------------------------------------------------------------------------------
+class 
+#ifndef __ORBIS__
+	BLUEIMPORT
+#endif
+	BlueScriptCallback
+{
+public:
+	BlueScriptCallback();
+	BlueScriptCallback( const BlueScriptCallback& other );
+	~BlueScriptCallback();
+
+	BlueScriptCallback& operator=( const BlueScriptCallback& other );
+
+	bool IsValid() const;
+	operator bool() const { return IsValid(); }
+
+	void Destroy();
+
+	BlueScriptCallbackStatus CallVoid();
+	
+	template <typename Ret>
+	BlueScriptCallbackStatus Call( Ret& returnValue );
+
+	template <typename A0>
+	BlueScriptCallbackStatus CallVoid( A0 a0 );
+
+	template <typename Ret, typename A0>
+	BlueScriptCallbackStatus Call( Ret& returnValue, A0 a0 );
+
+	template <typename A0, typename A1>
+	BlueScriptCallbackStatus CallVoid( A0 a0, A1 a1 );
+
+	template <typename Ret, typename A0, typename A1>
+	BlueScriptCallbackStatus Call( Ret& returnValue, A0 a0, A1 a1 );
+
+	template <typename A0, typename A1, typename A2>
+	BlueScriptCallbackStatus CallVoid( A0 a0, A1 a1, A2 a2 );
+
+	template <typename Ret, typename A0, typename A1, typename A2>
+	BlueScriptCallbackStatus Call( Ret& returnValue, A0 a0, A1 a1, A2 a2 );
+
+private:
+	BlueScriptValue m_callback;
+#if BLUE_WITH_LUA
+	// For Lua we need to keep reference count for callback index in metatable
+	// since BlueScriptCallback is copyable
+	uint32_t* m_refCount;
+#endif
+
+	friend BLUEIMPORT BlueScriptValue BlueWrapReturnValueImpl( 
+		BlueScriptArguments args, 
+		const BlueScriptCallback& val );
+	friend BLUEIMPORT bool BlueExtractArgumentImpl( 
+		BlueScriptValue argument, 
+		BlueScriptCallback& result, 
+		unsigned int argID, 
+		std::false_type isBlueType );
+};
+
+inline void BlueGetNullValue( BlueScriptCallback& resultRef )
+{
+	resultRef = BlueScriptCallback();
+}
+
+
+template <typename Ret>
+BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue )
+{
+	if( !IsValid() )
+	{
+		return BlueScriptCallbackStatus::CALL_ERROR;
+	}
+
+#if BLUE_WITH_LUA
+	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
+	if( lua_pcall( m_callback.ls, 0, 1, 0 ) )
+	{
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+	BlueScriptValue ret( m_callback.ls, -1 );
+	if( !BlueExtractArgument( ret, returnValue, 0 ) )
+	{
+        lua_pop( m_callback.ls, 1 );
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+    lua_pop( m_callback.ls, 1 );
+	return BlueScriptCallbackStatus::OK;
+#elif BLUE_WITH_PYTHON
+	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, nullptr );
+	if( ret )
+	{
+		if( !BlueExtractArgument( ret, returnValue, 0 ) )
+		{
+			PyErr_Clear();
+			return BlueScriptCallbackStatus::EXCEPTION;
+		}
+		Py_DECREF( ret );
+		return BlueScriptCallbackStatus::OK;
+	}
+	else
+	{
+		PyErr_Clear();
+	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#endif
+}
+
+
+template <typename A0>
+BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0 )
+{
+	if( !IsValid() )
+	{
+		return BlueScriptCallbackStatus::CALL_ERROR;
+	}
+
+#if BLUE_WITH_LUA
+	BlueScriptArguments args = m_callback.ls;
+
+	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
+	BlueWrapReturnValue( args, a0 );
+	if( lua_pcall( m_callback.ls, 1, 0, 0 ) )
+	{
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+	return BlueScriptCallbackStatus::OK;
+#elif BLUE_WITH_PYTHON
+	BlueScriptArguments args = 0;
+
+	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
+	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, arg0, nullptr );
+	Py_DECREF( arg0 );
+	if( ret )
+	{
+		Py_DECREF( ret );
+		return BlueScriptCallbackStatus::OK;
+	}
+	else
+	{
+		PyErr_Clear();
+	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#endif
+}
+
+
+template <typename Ret, typename A0>
+BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0 )
+{
+	if( !IsValid() )
+	{
+		return BlueScriptCallbackStatus::CALL_ERROR;
+	}
+
+#if BLUE_WITH_LUA
+	BlueScriptArguments args = m_callback.ls;
+
+	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
+	BlueWrapReturnValue( args, a0 );
+	if( lua_pcall( m_callback.ls, 1, 1, 0 ) )
+	{
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+	BlueScriptValue ret( m_callback.ls, -1 );
+	if( !BlueExtractArgument( ret, returnValue, 0 ) )
+	{
+        lua_pop( m_callback.ls, 1 );
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+    lua_pop( m_callback.ls, 1 );
+	return BlueScriptCallbackStatus::OK;
+#elif BLUE_WITH_PYTHON
+	BlueScriptArguments args = 0;
+
+	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
+	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, arg0, nullptr );
+	Py_DECREF( arg0 );
+	if( ret )
+	{
+		if( !BlueExtractArgument( ret, returnValue, 0 ) )
+		{
+			PyErr_Clear();
+			return BlueScriptCallbackStatus::EXCEPTION;
+		}
+		Py_DECREF( ret );
+		return BlueScriptCallbackStatus::OK;
+	}
+	else
+	{
+		PyErr_Clear();
+	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#endif
+}
+
+
+template <typename A0, typename A1>
+BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1 )
+{
+	if( !IsValid() )
+	{
+		return BlueScriptCallbackStatus::CALL_ERROR;
+	}
+
+#if BLUE_WITH_LUA
+	BlueScriptArguments args = m_callback.ls;
+
+	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
+	BlueWrapReturnValue( args, a0 );
+	BlueWrapReturnValue( args, a1 );
+	if( lua_pcall( m_callback.ls, 2, 0, 0 ) )
+	{
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+	return BlueScriptCallbackStatus::OK;
+#elif BLUE_WITH_PYTHON
+	BlueScriptArguments args = 0;
+
+	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
+	BlueScriptValue arg1 = BlueWrapReturnValue( args, a1 );
+	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, arg0, arg1, nullptr );
+	Py_DECREF( arg0 );
+	Py_DECREF( arg1 );
+	if( ret )
+	{
+		Py_DECREF( ret );
+		return BlueScriptCallbackStatus::OK;
+	}
+	else
+	{
+		PyErr_Clear();
+	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#endif
+}
+
+
+template <typename Ret, typename A0, typename A1>
+BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a1 )
+{
+	if( !IsValid() )
+	{
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+
+#if BLUE_WITH_LUA
+	BlueScriptArguments args = m_callback.ls;
+
+	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
+	BlueWrapReturnValue( args, a0 );
+	BlueWrapReturnValue( args, a1 );
+	if( lua_pcall( m_callback.ls, 2, 1, 0 ) )
+	{
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+	BlueScriptValue ret( m_callback.ls, -1 );
+	if( !BlueExtractArgument( ret, returnValue, 0 ) )
+	{
+        lua_pop( m_callback.ls, 1 );
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+    lua_pop( m_callback.ls, 1 );
+	return BlueScriptCallbackStatus::OK;
+#elif BLUE_WITH_PYTHON
+	BlueScriptArguments args = 0;
+
+	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
+	BlueScriptValue arg1 = BlueWrapReturnValue( args, a1 );
+	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, arg0, arg1, nullptr );
+	Py_DECREF( arg0 );
+	Py_DECREF( arg1 );
+	if( ret )
+	{
+		if( !BlueExtractArgument( ret, returnValue, 0 ) )
+		{
+			PyErr_Clear();
+			return BlueScriptCallbackStatus::EXCEPTION;
+		}
+		Py_DECREF( ret );
+		return BlueScriptCallbackStatus::OK;
+	}
+	else
+	{
+		PyErr_Clear();
+	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#endif
+}
+
+
+template <typename A0, typename A1, typename A2>
+BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2 )
+{
+	if( !IsValid() )
+	{
+		return BlueScriptCallbackStatus::CALL_ERROR;
+	}
+
+#if BLUE_WITH_LUA
+	BlueScriptArguments args = m_callback.ls;
+
+	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
+	BlueWrapReturnValue( args, a0 );
+	BlueWrapReturnValue( args, a1 );
+	BlueWrapReturnValue( args, a2 );
+	if( lua_pcall( m_callback.ls, 3, 0, 0 ) )
+	{
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+	return BlueScriptCallbackStatus::OK;
+#elif BLUE_WITH_PYTHON
+	BlueScriptArguments args = 0;
+
+	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
+	BlueScriptValue arg1 = BlueWrapReturnValue( args, a1 );
+	BlueScriptValue arg2 = BlueWrapReturnValue( args, a2 );
+	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, arg0, arg1, arg2, nullptr );
+	Py_DECREF( arg0 );
+	Py_DECREF( arg1 );
+	Py_DECREF( arg2 );
+	if( ret )
+	{
+		Py_DECREF( ret );
+		return BlueScriptCallbackStatus::OK;
+	}
+	else
+	{
+		PyErr_Clear();
+	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#endif
+}
+
+
+template <typename Ret, typename A0, typename A1, typename A2>
+BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a1, A2 a2 )
+{
+	if( !IsValid() )
+	{
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+
+#if BLUE_WITH_LUA
+	BlueScriptArguments args = m_callback.ls;
+
+	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
+	BlueWrapReturnValue( args, a0 );
+	BlueWrapReturnValue( args, a1 );
+	BlueWrapReturnValue( args, a2 );
+	if( lua_pcall( m_callback.ls, 3, 1, 0 ) )
+	{
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+	BlueScriptValue ret( m_callback.ls, -1 );
+	if( !BlueExtractArgument( ret, returnValue, 0 ) )
+	{
+        lua_pop( m_callback.ls, 1 );
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+    lua_pop( m_callback.ls, 1 );
+	return BlueScriptCallbackStatus::OK;
+#elif BLUE_WITH_PYTHON
+	BlueScriptArguments args = 0;
+
+	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
+	BlueScriptValue arg1 = BlueWrapReturnValue( args, a1 );
+	BlueScriptValue arg2 = BlueWrapReturnValue( args, a2 );
+	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, arg0, arg1, arg2, nullptr );
+	Py_DECREF( arg0 );
+	Py_DECREF( arg1 );
+	Py_DECREF( arg2 );
+	if( ret )
+	{
+		if( !BlueExtractArgument( ret, returnValue, 0 ) )
+		{
+			PyErr_Clear();
+			return BlueScriptCallbackStatus::EXCEPTION;
+		}
+		Py_DECREF( ret );
+		return BlueScriptCallbackStatus::OK;
+	}
+	else
+	{
+		PyErr_Clear();
+	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#endif
+}
+
+#endif

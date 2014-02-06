@@ -1,0 +1,153 @@
+////////////////////////////////////////////////////////////
+//
+//    Creator:   Filipp Pavlov
+//    Created:   November 2013
+//    Copyright: CCP 2013
+//
+
+#include "include/BlueSharedString.h"
+#include "include/BlueExtractArgument.h"
+#include "include/BlueWrapReturnValue.h"
+#include "include/BlueStringTable.h"
+
+using namespace std;
+
+namespace
+{
+
+BlueStringTable<char>& GetCharPool()
+{
+	static BlueStringTable<char> s_pool;
+	return s_pool;
+}
+
+BlueStringTable<wchar_t>& GetWCharPool()
+{
+	static BlueStringTable<wchar_t> s_pool;
+	return s_pool;
+}
+
+CcpMutex& GetPoolMutex()
+{
+	static CcpMutex s_mutex( "SharedString", "SharedStringMutex", 300 );
+	return s_mutex;
+}
+
+}
+
+// --------------------------------------------------------------------------------------
+// Description:
+//   Allocates a string in a shared pool.
+// Arguments:
+//   string - zero terminated string
+// Return value:
+//   string in the memory pool which contents is equal to the passed string
+// --------------------------------------------------------------------------------------
+BLUEIMPORT const char* BlueAllocateSharedStringFromPool( const char* string )
+{
+	if( !string )
+	{
+		string = "";
+	}
+	CcpAutoMutex lock( GetPoolMutex() );
+	return GetCharPool().GetString( string );
+}
+
+// --------------------------------------------------------------------------------------
+// Description:
+//   Allocates a wide string in a shared pool.
+// Arguments:
+//   string - zero terminated wide string
+// Return value:
+//   string in the memory pool which contents is equal to the passed string
+// --------------------------------------------------------------------------------------
+BLUEIMPORT const wchar_t* BlueAllocateSharedStringFromPool( const wchar_t* string )
+{
+	if( !string )
+	{
+		string = L"";
+	}
+	CcpAutoMutex lock( GetPoolMutex() );
+	return GetWCharPool().GetString( string );
+}
+
+// --------------------------------------------------------------------------------------
+// Description:
+//   Returns basic statistics on shared string pools.
+// Arguments:
+//   charPoolCount - (out) Number of strings in the char string pool
+//   charPoolSize - (out) Total memory size ofstrings in the char string pool
+//   wcharPoolCount - (out) Number of strings in the wchar string pool
+//   wcharPoolSize - (out) Total memory size ofstrings in the wchar string pool
+// --------------------------------------------------------------------------------------
+BLUEIMPORT void BlueGetSharedStringStatistics(
+	size_t& charPoolCount, 
+	size_t& charPoolSize, 
+	size_t& wcharPoolCount, 
+	size_t& wcharPoolSize )
+{
+	CcpAutoMutex lock( GetPoolMutex() );
+	auto& charPool = GetCharPool();
+	charPoolCount = charPool.GetStringCount();
+	charPoolSize = charPool.GetTableSize();
+	auto& wcharPool = GetWCharPool();
+	wcharPoolCount = wcharPool.GetStringCount();
+	wcharPoolSize = wcharPool.GetTableSize();
+}
+
+// --------------------------------------------------------------------------------------
+// Description:
+//   Wraps a shared string in a BlueScriptValue object to pass to scripting engine.
+// Arguments:
+//   args - Script call arguments
+//   val - shared string
+// Return value:
+//   string wrapped in a BlueScriptValue object
+// --------------------------------------------------------------------------------------
+BlueScriptValue BlueWrapReturnValueImpl( 
+		BlueScriptArguments args, 
+		const BlueSharedString& val )
+{
+#if BLUE_WITH_LUA
+	BlueScriptValue returnValue( args, 1 );
+	lua_pushstring( returnValue.ls, val.c_str() );
+	return returnValue;
+#elif BLUE_WITH_PYTHON
+	return PyString_FromString( val.c_str() );
+#endif
+}
+
+// --------------------------------------------------------------------------------------
+// Description:
+//   Extracts a shared string from a scripting value. The function raises script error
+//   if it fails.
+// Arguments:
+//   argument - Scripting value
+//   result - (out) resulting shared string
+//   argID - argument index (used for error reporting)
+//   isBlueType - unused
+// Return value:
+//   true if the string was successully extracted
+//   false otherwise
+// --------------------------------------------------------------------------------------
+bool BlueExtractArgumentImpl( 
+		BlueScriptValue argument, 
+		BlueSharedString& result, 
+		unsigned int argID, 
+		std::false_type isBlueType )
+{
+	std::string str;
+	bool success = BlueExtractString( argument, str );
+	if( !success )
+	{
+#if BLUE_WITH_LUA
+		luaL_error( argument.ls, argumentTypeMismatchString, argID, "string" );
+#else
+		PyErr_Format( PyExc_TypeError, argumentTypeMismatchString, argID, "string" );
+#endif
+		return false;
+	}
+	result = BlueSharedString( str );
+
+	return true;
+}
