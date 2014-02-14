@@ -69,7 +69,7 @@ Configurations:
   Release_27|Win32,x64,Linux32,Linux64,Mac32,Mac64:
     Link:
       AdditionalLibraryDirectories:
-      - ../../autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset)
+      - ../../../carbon/autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset)
       AdditionalDependencies:
       - BlueExposure.lib
 
