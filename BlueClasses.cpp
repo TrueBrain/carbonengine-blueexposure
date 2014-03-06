@@ -599,20 +599,9 @@ static bool CompareClsidNames( const Be::ClassInfo* cls1, const Be::ClassInfo* c
 }
 
 
-bool BlueClasses::WritePersistedClassesTableToFile( const wchar_t* filename )
+std::string BlueClasses::GetPersistedClassesReport()
 {
-#if 0
-	IResFilePtr file;
-
-	if( !file.CreateInstance( ResFileClass ) )
-	{
-		return false;
-	}
-
-	if( !file->CreateW( filename ) )
-	{
-		return false;
-	}
+	std::string result;
 
 	char buffer[512];
 	std::list<const Be::ClassInfo*> classes;
@@ -638,33 +627,30 @@ bool BlueClasses::WritePersistedClassesTableToFile( const wchar_t* filename )
 		if( !memberIt.Eof() )
 		{
 			sprintf_s( buffer, "%s:\n", clsInfo->mClassId->GetName() );
-			file->Write( buffer, strlen( buffer ) );
+			result += buffer;
 
 			for(; !memberIt.Eof(); memberIt.Next() )
 			{
 				const Be::VarEntry * const entry = memberIt.Entry();
 
 				sprintf_s( buffer, "-   %s:\n", entry->mName );
-				file->Write( buffer, strlen( buffer ) );
+				result += buffer;
 
 				sprintf_s( buffer, "    -   %d\n", entry->mType );
-				file->Write( buffer, strlen( buffer ) );
+				result += buffer;
 
 				if( entry->mType == Be::FLOATARRAY )
 				{
 					size_t memberCount = entry->GetFloatArraySize();
 					sprintf_s( buffer, "    -   %d\n", memberCount );
-					file->Write( buffer, strlen( buffer ) );
+					result += buffer;
 				}
 
 			}
 		}
 	}
 
-	file->Close();
-
-#endif
-	return true;
+	return result;
 }
 
 void* BlueInternalCreate( size_t size, const char* name )

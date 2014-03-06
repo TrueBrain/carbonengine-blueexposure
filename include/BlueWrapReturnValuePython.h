@@ -114,7 +114,7 @@ inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const 
 
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const std::string& val )
 {
-	return PyString_FromString( val.c_str() );
+	return PyString_FromStringAndSize( val.c_str(), val.size() );
 }
 
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const char* val )

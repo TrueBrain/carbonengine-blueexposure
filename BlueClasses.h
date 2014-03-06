@@ -153,10 +153,9 @@ private:
 	static PyObject* PyCreateInstance( PyObject* self, PyObject* args );
 	static PyObject* PyGetClassTypes( PyObject* self, PyObject* args );
 	static PyObject* PyLiveCount( PyObject* self, PyObject* args );
-	static PyObject* PyWritePersistedClassesTableToFile( PyObject* self, PyObject* args );
 #endif
 
-	bool WritePersistedClassesTableToFile( const wchar_t* filename );
+	std::string GetPersistedClassesReport();
 
 #if BLUE_LIVELIST_ENABLED
 	// We want to keep a list of all the objects alive:

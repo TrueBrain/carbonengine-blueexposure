@@ -269,25 +269,6 @@ PyObject* PyTypeInfo( PyObject* self, PyObject* args )
 	return PyGetTypeInfo( src->ClassType(), src->GetFlags() );
 }
 
-
-PyObject* BlueClasses::PyWritePersistedClassesTableToFile( PyObject* self, PyObject* args )
-{
-	BlueClasses* pThis = BluePythonCast<BlueClasses*>( self );
-
-	const wchar_t* filename;
-	if( !PyArg_ParseTuple( args, "u", &filename ) )
-	{
-		return nullptr;
-	}
-
-	if( !pThis->WritePersistedClassesTableToFile( filename ) )
-	{
-		PyErr_SetString( PyExc_RuntimeError, "Couldn't write class table" );
-		return nullptr;
-	}
-
-	Py_RETURN_NONE;
-}
 #endif
 
 const Be::ClassInfo* BlueClasses::ExposeToBlue()
@@ -386,11 +367,11 @@ const Be::ClassInfo* BlueClasses::ExposeToBlue()
 			"Returns various type info for the given object"
 		)
 
-		MAP_METHOD
+		MAP_METHOD_AND_WRAP
 		(
-			"WritePersistedClassesTableToFile",
-			PyWritePersistedClassesTableToFile,
-			"Write the table of classes known to a file, listing all persisted members\n"
+			"GetPersistedClassesReport",
+			GetPersistedClassesReport,
+			"Write the table of classes known to a string, listing all persisted members\n"
 			"and their type for each class."
 		)
 	EXPOSURE_END()
