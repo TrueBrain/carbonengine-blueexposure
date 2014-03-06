@@ -1,4 +1,5 @@
 import unittest
+import blue
 import BlueExposureTest
 import sys
 
