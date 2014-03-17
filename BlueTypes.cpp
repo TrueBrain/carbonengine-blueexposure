@@ -16,6 +16,12 @@ namespace
 {
 	typedef BlueStringTable<char> StringTable;
 
+	CcpMutex& GetStringTableMutex()
+	{
+		static CcpMutex s_mutex( "BlueTypes", "GetStringTableMutex" );
+		return s_mutex;
+	}
+
 	StringTable& GetStringTable()
 	{
 		static StringTable s_stringTable;
@@ -36,6 +42,8 @@ Be::Clsid::Clsid()
 Be::Clsid::Clsid( const char* modulename, const char* classname )
 	:m_hash( 0 )
 {
+	CcpAutoMutex lock( GetStringTableMutex() );
+
 	m_module = GetStringTable().GetString( modulename );
 	m_name = GetStringTable().GetString( classname, m_hash );
 }
@@ -63,6 +71,8 @@ bool Be::Clsid::InitFromString( const char* string )
 	memcpy( buffer.get(), string, firstdot - string);
 	char* module = buffer.get();
 	module[firstdot - string] = '\0';
+
+	CcpAutoMutex lock( GetStringTableMutex() );
 
 	m_module = GetStringTable().GetString( module );
 	m_name = GetStringTable().GetString( firstdot + 1, m_hash );
@@ -110,12 +120,16 @@ unsigned int Be::Clsid::GetHash() const
 
 Be::IID::IID( const char* name ) : m_hash( 0 )
 {
+	CcpAutoMutex lock( GetStringTableMutex() );
+
 	m_name = GetStringTable().GetString( name, m_hash );
 }
 
 
 bool Be::IID::InitFromString(const char* string)
 {
+	CcpAutoMutex lock( GetStringTableMutex() );
+
 	m_name = GetStringTable().GetString( string, m_hash );
 
 	return true;
