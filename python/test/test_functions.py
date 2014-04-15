@@ -66,9 +66,34 @@ class TestFunctions(unittest.TestCase):
         val = BlueExposureTest.FunctionReturningVector2(orgVal)
         self.assertEqual(val, orgVal)
 
+    def testFunctionReturningVector2d(self):
+        orgVal = (1.4142135623730951, 2.71828182845904523536)
+        val = BlueExposureTest.FunctionReturningVector2d(orgVal)
+        self.assertEqual(val, orgVal)
+
     def testFunctionReturningVector3(self):
         orgVal = (1, 2, 3)
         val = BlueExposureTest.FunctionReturningVector3(orgVal)
+        self.assertEqual(val, orgVal)
+
+    def testFunctionReturningVector3d(self):
+        orgVal = (1.4142135623730951, 2.71828182845904523536, 3.141592653589793)
+        val = BlueExposureTest.FunctionReturningVector3d(orgVal)
+        self.assertEqual(val, orgVal)
+
+    def testFunctionReturningVector3i(self):
+        orgVal = (1, 2, 3)
+        val = BlueExposureTest.FunctionReturningVector3i(orgVal)
+        self.assertEqual(val, orgVal)
+
+    def testFunctionReturningVector4(self):
+        orgVal = (1, 2, 3, 4)
+        val = BlueExposureTest.FunctionReturningVector4(orgVal)
+        self.assertEqual(val, orgVal)
+
+    def testFunctionReturningVector4d(self):
+        orgVal = (1.1, 2.2, 3.3, 4.4)
+        val = BlueExposureTest.FunctionReturningVector4d(orgVal)
         self.assertEqual(val, orgVal)
 
     def testFunctionReturningPyObject(self):
