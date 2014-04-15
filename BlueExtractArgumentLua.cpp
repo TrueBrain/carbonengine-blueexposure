@@ -426,6 +426,13 @@ bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector2& resu
 	return false;
 }
 
+// Overload for Vector2d argument extraction
+bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector2d& result, unsigned int argID, std::false_type isBlueType )
+{
+	luaL_error( argument.ls, "Not implemented" );
+	return false;
+}
+
 // Overload for Vector3 argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector3& result, unsigned int argID, std::false_type isBlueType )
 {
@@ -452,6 +459,59 @@ bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector3& resu
 	}
 }
 
+// Overload for Vector3d argument extraction
+bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector3d& result, unsigned int argID, std::false_type isBlueType )
+{
+	lua_State* ls = argument.ls;
+
+	if( lua_istable( ls, argument.ix ) )
+	{
+		lua_getfield( ls, argument.ix, "x" );
+		lua_getfield( ls, argument.ix, "y" );
+		lua_getfield( ls, argument.ix, "z" );
+
+		result.x = (double)lua_tonumber( ls, -3 );
+		result.y = (double)lua_tonumber( ls, -2 );
+		result.z = (double)lua_tonumber( ls, -1 );
+
+		lua_pop( ls, 3 );
+
+		return true;
+	}
+	else
+	{
+		luaL_error( argument.ls, argumentTypeMismatchString, argID, "Vector3d" );
+		return false;
+	}
+}
+
+// Overload for Vector3i argument extraction
+bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector3i& result, unsigned int argID, std::false_type isBlueType )
+{
+	lua_State* ls = argument.ls;
+
+	if( lua_istable( ls, argument.ix ) )
+	{
+		lua_getfield( ls, argument.ix, "x" );
+		lua_getfield( ls, argument.ix, "y" );
+		lua_getfield( ls, argument.ix, "z" );
+
+		result.x = (int)lua_tonumber( ls, -3 );
+		result.y = (int)lua_tonumber( ls, -2 );
+		result.z = (int)lua_tonumber( ls, -1 );
+
+		lua_pop( ls, 3 );
+
+		return true;
+	}
+	else
+	{
+		luaL_error( argument.ls, argumentTypeMismatchString, argID, "Vector3i" );
+		return false;
+	}
+}
+
+
 // Overload for Vector4 argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector4& result, unsigned int argID, std::false_type isBlueType )
 {
@@ -476,6 +536,34 @@ bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector4& resu
 	else
 	{
 		luaL_error( argument.ls, argumentTypeMismatchString, argID, "Vector4" );
+		return false;
+	}
+}
+
+// Overload for Vector4d argument extraction
+bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector4d& result, unsigned int argID, std::false_type isBlueType )
+{
+	lua_State* ls = argument.ls;
+
+	if( lua_istable( ls, argument.ix ) )
+	{
+		lua_getfield( ls, argument.ix, "x" );
+		lua_getfield( ls, argument.ix, "y" );
+		lua_getfield( ls, argument.ix, "z" );
+		lua_getfield( ls, argument.ix, "w" );
+
+		result.x = (double)lua_tonumber( ls, -4 );
+		result.y = (double)lua_tonumber( ls, -3 );
+		result.z = (double)lua_tonumber( ls, -2 );
+		result.w = (double)lua_tonumber( ls, -1 );
+
+		lua_pop( ls, 4 );
+
+		return true;
+	}
+	else
+	{
+		luaL_error( argument.ls, argumentTypeMismatchString, argID, "Vector4d" );
 		return false;
 	}
 }

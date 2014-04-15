@@ -127,7 +127,22 @@ bool BlueExtractFloat( PyObject* obj, float& value )
 	return true;
 }
 
-bool BlueExtractVector( PyObject* sequence, float* elements, size_t elementsCount )
+bool BlueExtractItem( PyObject* obj, float& value )
+{
+	return BlueExtractFloat( obj, value );
+}
+
+bool BlueExtractItem( PyObject* obj, double& value )
+{
+	return BlueExtractDouble( obj, value );
+}
+
+bool BlueExtractItem( PyObject* obj, int& value )
+{
+	return BlueExtractInt( obj, value );
+}
+
+template<class T> bool BlueExtractVector( PyObject* sequence, T* elements, size_t elementsCount )
 {
 	if( !PySequence_Check( sequence ) )
 	{
@@ -143,7 +158,7 @@ bool BlueExtractVector( PyObject* sequence, float* elements, size_t elementsCoun
 	for( Py_ssize_t i = 0; i < tupleCount; ++i )
 	{
 		PyObject* item = PySequence_ITEM( sequence, i );
-		bool success = BlueExtractFloat( item, elements[ i ] );
+		bool success = BlueExtractItem( item, elements[ i ] );
 		Py_DECREF( item );
 
 		if( !success )
@@ -154,6 +169,13 @@ bool BlueExtractVector( PyObject* sequence, float* elements, size_t elementsCoun
 
 	return true;
 }
+
+
+bool BlueExtractVector( PyObject* sequence, float* elements, size_t elementsCount )
+{
+	return BlueExtractVector<float>( sequence, elements, elementsCount );
+}
+
 
 bool BlueExtractMatrix( PyObject* sequence, float* elements, size_t elementsCount )
 {
@@ -474,9 +496,9 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, Matrix& result, uns
 	return true;
 }
 
-bool ConvertSequenceToFloatArray( PyObject* argument, float* targetElements, size_t targetElementsCount, unsigned int argID )
+template<class T> bool ConvertSequenceToArray( PyObject* argument, T* targetElements, size_t targetElementsCount, unsigned int argID )
 {
-	bool success = BlueExtractVector( argument, targetElements, targetElementsCount );
+	bool success = BlueExtractVector<T>( argument, targetElements, targetElementsCount );
 	if( !success )
 	{
 		PyErr_Format( PyExc_TypeError, 
@@ -490,31 +512,55 @@ bool ConvertSequenceToFloatArray( PyObject* argument, float* targetElements, siz
 // Overload for Vector2 argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, Vector2& result, unsigned int argID, std::false_type isBlueType )
 {
-	return ConvertSequenceToFloatArray( argument, (float*)&result, sizeof(result)/sizeof(float), argID );
+	return ConvertSequenceToArray<float>( argument, (float*)&result, sizeof(result)/sizeof(float), argID );
+}
+
+// Overload for Vector2d argument extraction
+bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, Vector2d& result, unsigned int argID, std::false_type isBlueType )
+{
+	return ConvertSequenceToArray<double>( argument, (double*)&result, sizeof(result)/sizeof(double), argID );
 }
 
 // Overload for Vector3 argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, Vector3& result, unsigned int argID, std::false_type isBlueType )
 {
-	return ConvertSequenceToFloatArray( argument, (float*)&result, sizeof(result)/sizeof(float), argID );
+	return ConvertSequenceToArray<float>( argument, (float*)&result, sizeof(result)/sizeof(float), argID );
+}
+
+// Overload for Vector3d argument extraction
+bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, Vector3d& result, unsigned int argID, std::false_type isBlueType )
+{
+	return ConvertSequenceToArray<double>( argument, (double*)&result, sizeof(result)/sizeof(double), argID );
+}
+
+// Overload for Vector3i argument extraction
+bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, Vector3i& result, unsigned int argID, std::false_type isBlueType )
+{
+	return ConvertSequenceToArray<int>( argument, (int*)&result, sizeof(result)/sizeof(int), argID );
 }
 
 // Overload for Vector4 argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, Vector4& result, unsigned int argID, std::false_type isBlueType )
 {
-	return ConvertSequenceToFloatArray( argument, (float*)&result, sizeof(result)/sizeof(float), argID );
+	return ConvertSequenceToArray<float>( argument, (float*)&result, sizeof(result)/sizeof(float), argID );
+}
+
+// Overload for Vector4d argument extraction
+bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, Vector4d& result, unsigned int argID, std::false_type isBlueType )
+{
+	return ConvertSequenceToArray<double>( argument, (double*)&result, sizeof(result)/sizeof(double), argID );
 }
 
 // Overload for Color argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, Color& result, unsigned int argID, std::false_type isBlueType )
 {
-	return ConvertSequenceToFloatArray( argument, (float*)&result, sizeof(result)/sizeof(float), argID );
+	return ConvertSequenceToArray<float>( argument, (float*)&result, sizeof(result)/sizeof(float), argID );
 }
 
 // Overload for Quaternion argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, Quaternion& result, unsigned int argID, std::false_type isBlueType )
 {
-	return ConvertSequenceToFloatArray( argument, (float*)&result, sizeof(result)/sizeof(float), argID );
+	return ConvertSequenceToArray<float>( argument, (float*)&result, sizeof(result)/sizeof(float), argID );
 }
 
 PyObject* ConvertMatrixToSequence( const Matrix* m )

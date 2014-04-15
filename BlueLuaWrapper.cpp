@@ -238,6 +238,72 @@ int BlueConvertValueFromLua( lua_State* ls, int idx, const Be::VarEntry* entry, 
 		value->mDouble = lua_tonumber( ls, idx );
 		return 1;
 
+	case Be::DOUBLEARRAY:
+		switch( entry->GetDoubleArraySize() )
+		{
+			case 2:
+				{
+					Vector2d& vec = *(Vector2d*)&value->mDouble;
+					if( BlueExtractArgumentImpl( BlueScriptValue( ls, idx ), vec, 0, std::false_type() ) )
+					{
+						return 1;
+					}
+					else
+					{
+						luaL_error( ls, "Expected a Vector2d value" );
+						return 0;
+					}
+				}
+				break;
+			case 3:
+				{
+					Vector3d& vec = *(Vector3d*)&value->mDouble;
+					if( BlueExtractArgumentImpl( BlueScriptValue( ls, idx ), vec, 0, std::false_type() ) )
+					{
+						return 1;
+					}
+					else
+					{
+						luaL_error( ls, "Expected a Vector3d value" );
+						return 0;
+					}
+				}
+						
+			case 4:
+				{
+					Vector4d& vec = *(Vector4d*)&value->mDouble;
+					if( BlueExtractArgumentImpl( BlueScriptValue( ls, idx ), vec, 0, std::false_type() ) )
+					{
+						return 1;
+					}
+					else
+					{
+						luaL_error( ls, "Expected a Vector4d value" );
+						return 0;
+					}
+				}
+		}
+		luaL_error( ls, "Unsupported double array type" );
+		return 0;
+	
+	case Be::INTARRAY:
+		if( entry->GetIntArraySize() == 3 )
+		{
+			Vector3i& vec = *(Vector3i*)&value->mLong;
+			if( BlueExtractArgumentImpl( BlueScriptValue( ls, idx ), vec, 0, std::false_type() ) )
+			{
+				return 1;
+			}
+			else
+			{
+				luaL_error( ls, "Expected a Vector3i value" );
+				return 0;
+			}	
+		}
+		luaL_error( ls, "Unsupported int array type" );
+		return 0;
+
+
 	case Be::CSTRING:
 		value->mCharPtr = CCP_STRDUP( __FUNCTION__, lua_tostring( ls, idx ) );
 		return 1;

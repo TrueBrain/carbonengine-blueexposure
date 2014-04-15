@@ -1226,6 +1226,24 @@ BLUEIMPORT bool BlueConvertValueFromPython(
 		}
 		break;
 
+	case Be::DOUBLEARRAY:
+		ok = BlueExtractVector<double>( v, &value->mDouble, var->GetDoubleArraySize() );
+		if( !ok )
+		{
+			PyErr_Format( PyExc_TypeError, "%s can only be assigned to with a sequence of maximum %zu numbers", 
+							var->mName, var->GetDoubleArraySize() );
+		}
+		break;
+
+	case Be::INTARRAY:
+		ok = BlueExtractVector<int>( v, &value->mLong, var->GetIntArraySize() );
+		if( !ok )
+		{
+			PyErr_Format( PyExc_TypeError, "%s can only be assigned to with a sequence of maximum %zu numbers", 
+							var->mName, var->GetIntArraySize() );
+		}
+		break;
+
 	case Be::DOUBLE:
 		ok = BlueExtractDouble( v, value->mDouble );
 		break;

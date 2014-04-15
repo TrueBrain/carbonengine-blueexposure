@@ -89,8 +89,12 @@ bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, const wchar_t
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, int64_t& result, unsigned int argID, std::false_type isBlueType );
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, uint64_t& result, unsigned int argID, std::false_type isBlueType );
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector2& result, unsigned int argID, std::false_type isBlueType );
+bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector2d& result, unsigned int argID, std::false_type isBlueType );
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector3& result, unsigned int argID, std::false_type isBlueType );
+bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector3d& result, unsigned int argID, std::false_type isBlueType );
+bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector3i& result, unsigned int argID, std::false_type isBlueType );
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector4& result, unsigned int argID, std::false_type isBlueType );
+bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Vector4d& result, unsigned int argID, std::false_type isBlueType );
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Color& result, unsigned int argID, std::false_type isBlueType );
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Quaternion& result, unsigned int argID, std::false_type isBlueType );
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Matrix& result, unsigned int argID, std::false_type isBlueType );
@@ -155,6 +159,8 @@ BLUEIMPORT bool BlueExtractDouble( BlueScriptValue obj, double& value );
 BLUEIMPORT bool BlueExtractVector( BlueScriptValue obj, float* elements, size_t elementsCount );
 BLUEIMPORT bool BlueExtractMatrix( BlueScriptValue obj, float* elements, size_t elementsCount );
 
+template<class T> bool BlueExtractVector( BlueScriptValue obj, T* elements, size_t elementsCount );
+
 #if BLUE_WITH_PYTHON
 // Conversion functions for passing objects to python
 BLUEIMPORT PyObject* ConvertMatrixToSequence( const Matrix* m );
@@ -201,14 +207,40 @@ inline void BlueGetNullValue( Vector2& resultRef )
 	memset( &resultRef, 0, sizeof( float ) * 2 );
 }
 
+inline void BlueGetNullValue( Vector2d& resultRef )
+{
+	// Don't use sizeof( Vector2d )
+	memset( &resultRef, 0, sizeof( double ) * 2 );
+}
+
 inline void BlueGetNullValue( Vector3& resultRef )
 {
-	// Don't use sizeof( Vector3 ) - modules may override the vector types if
-	// BLUE_OVERRIDE_VECTOR_TYPES is defined, but may not provide definitions
-	// for all vector types. That would then cause this code not to compile.
-	// The vector types have to conform to a certain byte layout anyway so
-	// using sizeof( float ) is safe.
+	// Don't use sizeof( Vector3 )
 	memset( &resultRef, 0, sizeof( float ) * 3 );
+}
+
+inline void BlueGetNullValue( Vector3d& resultRef )
+{
+	// Don't use sizeof( Vector3d )
+	memset( &resultRef, 0, sizeof( double ) * 3 );
+}
+
+inline void BlueGetNullValue( Vector3i& resultRef )
+{
+	// Don't use sizeof( Vector3i )
+	memset( &resultRef, 0, sizeof( int ) * 3 );
+}
+
+inline void BlueGetNullValue( Vector4& resultRef )
+{
+	// Don't use sizeof( Vector4 )
+	memset( &resultRef, 0, sizeof( float ) * 4 );
+}
+
+inline void BlueGetNullValue( Vector4d& resultRef )
+{
+	// Don't use sizeof( Vector4d )
+	memset( &resultRef, 0, sizeof( double ) * 4 );
 }
 
 #if BLUE_WITH_PYTHON

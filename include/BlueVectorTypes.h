@@ -35,6 +35,7 @@
 #if !BLUE_OVERRIDE_VECTOR_TYPES 
 
 struct Vector2    { float x, y; };
+struct Vector2d   { double x, y; };
 struct Vector3    { float x, y, z; };
 struct Vector3d   { double x, y, z; };
 struct Vector3i   { int x, y, z; };

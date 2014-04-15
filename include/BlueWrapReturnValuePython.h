@@ -83,16 +83,40 @@ inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const 
 	return Py_BuildValue( "(ff)", array[0], array[1] );
 }
 
+inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector2d& val )
+{
+	double* array = (double*)&val;
+	return Py_BuildValue( "(dd)", array[0], array[1] );
+}
+
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector3& val )
 {
 	float* array = (float*)&val;
 	return Py_BuildValue( "(fff)", array[0], array[1], array[2] );
 }
 
+inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector3d& val )
+{
+	double* array = (double*)&val;
+	return Py_BuildValue( "(ddd)", array[0], array[1], array[2] );
+}
+
+inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector3i& val )
+{
+	int* array = (int*)&val;
+	return Py_BuildValue( "(iii)", array[0], array[1], array[2] );
+}
+
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector4& val )
 {
 	float* array = (float*)&val;
 	return Py_BuildValue( "(ffff)", array[0], array[1], array[2], array[3] );
+}
+
+inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector4d& val )
+{
+	double* array = (double*)&val;
+	return Py_BuildValue( "(dddd)", array[0], array[1], array[2], array[3] );
 }
 
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Color& val )

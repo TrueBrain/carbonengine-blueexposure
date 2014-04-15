@@ -16,8 +16,12 @@
 
 struct IRoot;
 struct Vector2;
+struct Vector2d;
 struct Vector3;
+struct Vector3d;
+struct Vector3i;
 struct Vector4;
+struct Vector4d;
 struct Matrix;
 struct Quaternion;
 struct Color;
@@ -58,8 +62,12 @@ BLUE_DEFINE_TYPE_TRAIT( bool, Be::BOOL );
 BLUE_DEFINE_TYPE_TRAIT( char, Be::BYTE );
 BLUE_DEFINE_TYPE_TRAIT( unsigned char, Be::BYTE );
 BLUE_DEFINE_TYPE_TRAIT( Vector2, Be::FLOATARRAY );
+BLUE_DEFINE_TYPE_TRAIT( Vector2d, Be::DOUBLEARRAY );
 BLUE_DEFINE_TYPE_TRAIT( Vector3, Be::FLOATARRAY );
+BLUE_DEFINE_TYPE_TRAIT( Vector3d, Be::DOUBLEARRAY );
+BLUE_DEFINE_TYPE_TRAIT( Vector3i, Be::INTARRAY );
 BLUE_DEFINE_TYPE_TRAIT( Vector4, Be::FLOATARRAY );
+BLUE_DEFINE_TYPE_TRAIT( Vector4d, Be::DOUBLEARRAY );
 BLUE_DEFINE_TYPE_TRAIT( Matrix, Be::FLOATARRAY );
 BLUE_DEFINE_TYPE_TRAIT( Color, Be::FLOATARRAY );
 BLUE_DEFINE_TYPE_TRAIT( Quaternion, Be::FLOATARRAY );

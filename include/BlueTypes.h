@@ -192,6 +192,8 @@ namespace Be
 		WCSTRING        = 13,		// Wide malloced string
 		WREFERENCE      = 14,		// exactly as WCSTRING, but with implied semantics
 		FLOATARRAY		= 15,		// float[] array
+		DOUBLEARRAY		= 16,		// double[] array
+		INTARRAY		= 17,		// int[] array
 		ROTREFERENCE	= 20,		// Special marker for streaming
 		IROOTWEAKREF	= 21,		// BlueWeakRef to an IRoot descendant
 		_PYPROPERTY		= 22,		// Python property function
@@ -291,6 +293,30 @@ namespace Be
 			if( mType == Be::FLOATARRAY )
 			{
 				return mSize / sizeof(float);
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+		size_t GetDoubleArraySize() const
+		{
+			if( mType == Be::DOUBLEARRAY )
+			{
+				return mSize / sizeof(double);
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+		size_t GetIntArraySize() const
+		{
+			if( mType == Be::INTARRAY )
+			{
+				return mSize / sizeof(int);
 			}
 			else
 			{

@@ -155,9 +155,19 @@ bool Copier::CopyToInternal(IRoot* source, IRoot* dest)
 			case Be::FLOAT:
 				dst->mFloat = src->mFloat;
 				break;
+
 			case Be::FLOATARRAY:
 				memcpy( (void*)&dst->mFloat, (void*)&src->mFloat, memTable->mSize);
 				break;
+
+			case Be::DOUBLEARRAY:
+				memcpy( (void*)&dst->mDouble, (void*)&src->mDouble, memTable->mSize);
+				break;
+
+			case Be::INTARRAY:
+				memcpy( (void*)&dst->mLong, (void*)&src->mLong, memTable->mSize);
+				break;
+
 			case Be::DOUBLE:
 				dst->mDouble = src->mDouble;
 				break;

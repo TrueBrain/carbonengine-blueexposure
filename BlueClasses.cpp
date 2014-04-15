@@ -639,13 +639,30 @@ std::string BlueClasses::GetPersistedClassesReport()
 				sprintf_s( buffer, "    -   %d\n", entry->mType );
 				result += buffer;
 
-				if( entry->mType == Be::FLOATARRAY )
+				switch( entry->mType )
 				{
-					size_t memberCount = entry->GetFloatArraySize();
-					sprintf_s( buffer, "    -   %d\n", memberCount );
-					result += buffer;
+					case Be::FLOATARRAY:
+					{
+						size_t memberCount = entry->GetFloatArraySize();
+						sprintf_s( buffer, "    -   %d\n", memberCount );
+						result += buffer;
+					}
+					break;
+					case Be::DOUBLEARRAY:
+					{
+						size_t memberCount = entry->GetDoubleArraySize();
+						sprintf_s( buffer, "    -   %d\n", memberCount );
+						result += buffer;
+					}
+					break;
+					case Be::INTARRAY:
+					{
+						size_t memberCount = entry->GetIntArraySize();
+						sprintf_s( buffer, "    -   %d\n", memberCount );
+						result += buffer;
+					}
+					break;
 				}
-
 			}
 		}
 	}

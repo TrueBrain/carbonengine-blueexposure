@@ -104,13 +104,37 @@ inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const 
 	return BLUE_SCRIPT_ERROR;
 }
 
+inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector2d& val )
+{
+	luaL_error( args, "Not implemented" );
+	return BLUE_SCRIPT_ERROR;
+}
+
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector3& val )
 {
 	luaL_error( args, "Not implemented" );
 	return BLUE_SCRIPT_ERROR;
 }
 
+inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector3d& val )
+{
+	luaL_error( args, "Not implemented" );
+	return BLUE_SCRIPT_ERROR;
+}
+
+inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector3i& val )
+{
+	luaL_error( args, "Not implemented" );
+	return BLUE_SCRIPT_ERROR;
+}
+
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector4& val )
+{
+	luaL_error( args, "Not implemented" );
+	return BLUE_SCRIPT_ERROR;
+}
+
+inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const Vector4d& val )
 {
 	luaL_error( args, "Not implemented" );
 	return BLUE_SCRIPT_ERROR;
