@@ -36,19 +36,19 @@ public:
 	{
 		size_t size = GetStringSize( string );
 		hash = CcpHashFNV1( string, size );
-		CharType* value = nullptr;
-		auto found = m_strings.insert( std::make_pair( hash, value ) );
-		if( !found.second )
+		auto found = m_strings.find( hash );
+		if( found != m_strings.end() )
 		{
-			return found.first->second;
+			return found->second;
 		}
-		found.first->second = CCP_NEW( "Shared string" ) CharType[size];
-		if( found.first->second )
+		CharType* str = CCP_NEW( "Shared string" ) CharType[size];
+		if( str )
 		{
-			memcpy( found.first->second, string, size );
+			memcpy( str, string, size );
 			m_tableSize += size;
+			m_strings.insert( std::make_pair( hash, str ) );
 		}
-		return found.first->second;
+		return str;
 	}
 
 	// ----------------------------------------------------------------------------------

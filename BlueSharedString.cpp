@@ -45,9 +45,10 @@ CcpMutex& GetPoolMutex()
 // --------------------------------------------------------------------------------------
 BLUEIMPORT const char* BlueAllocateSharedStringFromPool( const char* string )
 {
-	if( !string )
+	if( !string || !string[0] )
 	{
-		string = "";
+		static const char* const EMPTY_STRING = "";
+		return EMPTY_STRING;
 	}
 	CcpAutoMutex lock( GetPoolMutex() );
 	return GetCharPool().GetString( string );
@@ -63,9 +64,10 @@ BLUEIMPORT const char* BlueAllocateSharedStringFromPool( const char* string )
 // --------------------------------------------------------------------------------------
 BLUEIMPORT const wchar_t* BlueAllocateSharedStringFromPool( const wchar_t* string )
 {
-	if( !string )
+	if( !string || !string[0] )
 	{
-		string = L"";
+		static const wchar_t* const EMPTY_STRING = L"";
+		return EMPTY_STRING;
 	}
 	CcpAutoMutex lock( GetPoolMutex() );
 	return GetWCharPool().GetString( string );
