@@ -160,7 +160,7 @@ PyObject* BlueClasses::PyLiveList( PyObject* self, PyObject* args )
 		BluePyTuple line( 5 );
 		const Be::Clsid *id = it2->first->ClassType()->mClassId;
 		line.Set( 0, BluePyStr::Format( "%s.%s", id->GetModule(), id->GetName() ) );
-		line.Set( 1, BluePy( PyOS->WrapBlueObject( it2->first ) ) );
+		line.Set( 1, BluePy( BlueWrapObjectForPython( it2->first ) ) );
 		line.Set( 2, BluePy( Py_None, true ) );
 		line.Set( 3, BluePyInt( it2->second.mLock ) );
 		line.Set( 4, BluePyInt( 0 /*it2->second.mPyref*/ ) );

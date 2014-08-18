@@ -51,6 +51,14 @@ typedef std::map<std::string, std::pair<uint32_t,GetEnumValuesFunctionTypePtr> >
 //////////////////
 
 #if BLUE_WITH_PYTHON
+typedef PyObject* ( *ScriptExceptionGetter )();
+#elif BLUE_WITH_LUA
+typedef const char* ( *ScriptExceptionGetter )();
+#endif
+
+typedef std::map<std::string, ScriptExceptionGetter> ExceptionRegsMap;
+
+#if BLUE_WITH_PYTHON
 
 extern BLUEIMPORT void BlueRegisterToModule( PyObject* module, 
 											 const ClassRegsVector& classRegs, 
@@ -60,6 +68,7 @@ extern BLUEIMPORT void BlueRegisterToModule( PyObject* module,
 											 const ThunkerRegsVector& thunkerRegs = ThunkerRegsVector() );
 
 extern BLUEIMPORT void BlueRegisterObjectsToModule( PyObject* module, ObjectRegsVector& objectRegs );
+extern BLUEIMPORT void BlueRegisterExceptionsToModule( PyObject* module, ExceptionRegsMap& exceptionRegs );
 
 // For registration of standard module functions
 void BlueRegisterModuleThunkers( PyObject* module, const ClassRegsVector& classRegs );
@@ -116,6 +125,12 @@ public:
 	{
 		static ObjectRegsVector s_objectRegs;
 		return s_objectRegs;
+	}
+
+	static ExceptionRegsMap& GetExceptionRegs()
+	{
+		static ExceptionRegsMap s_exceptionRegs;
+		return s_exceptionRegs;
 	}
 
 
@@ -292,5 +307,19 @@ public:
 #define BLUE_REGISTER_GLOBAL_AS_MODULE_OBJECT( name, obj ) \
 	static ModuleObjectRegistrar CCP_CONCATENATE( s_object_, __COUNTER__ )( name, (IRoot**)&obj )
 
+
+/////////////////
+// Exception registration
+//
+class ExceptionRegistrar
+{
+public:
+	ExceptionRegistrar( const char* name, ScriptExceptionGetter getExceptionFunction )
+	{
+		BlueRegistration::GetExceptionRegs()[name] = getExceptionFunction;
+	}
+};
+
+#define BLUE_REGISTER_EXCEPTION( name, exceptionGetter ) static ExceptionRegistrar s_##name##Registar( #name, exceptionGetter );
 
 #endif // BLUE_REGISTRATION_H

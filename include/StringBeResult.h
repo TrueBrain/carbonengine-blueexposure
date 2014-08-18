@@ -9,6 +9,8 @@
 #ifndef StringBeResult_h
 #define StringBeResult_h
 
+#include "BlueStdResult.h"
+
 namespace Be
 {
 	template<>
@@ -32,13 +34,9 @@ namespace Be
 		return result.value.c_str();
 	}
 
-#if BLUE_WITH_PYTHON
-	template <>
-	inline PyObject* GetException<std::string>( const Result<std::string>& result )
-	{
-		return PyExc_RuntimeError;
-	}
-#endif
+	BLUE_BEGIN_GET_EXCEPTION_INLINE( Result<std::string> )
+		return BLUE_GET_EXCEPTION( BlueStdRuntimeError );
+	BLUE_END_GET_EXCEPTION()
 
 }
 

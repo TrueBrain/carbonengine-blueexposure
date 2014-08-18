@@ -477,10 +477,6 @@ void BlueClasses::UpdateObjectCount( IRoot* obj, int instinc, int lockinc )
 
 		CCP_ASSERT( (res2.second && instinc == 1) || (!res2.second && instinc == 0) );
 
-#if defined _DEBUG && defined REALLY
-		if (res.second)
-			res.first->mStack = BluePyStr(BluePy(PyOS->GetStackTrace()));
-#endif
 		res2.first->second.mLock += lockinc;
 	}
 	else

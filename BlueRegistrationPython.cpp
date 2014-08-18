@@ -357,4 +357,14 @@ BLUEIMPORT void BlueRegisterObjectsToModule( PyObject* module, ObjectRegsVector&
 	}
 }
 
+BLUEIMPORT void BlueRegisterExceptionsToModule( PyObject* module, ExceptionRegsMap& exceptionRegs )
+{
+	for( auto it = exceptionRegs.begin(); it != exceptionRegs.end(); ++it )
+	{
+		auto exc = ( *it->second )();
+		Py_INCREF( exc );
+		PyModule_AddObject( module, it->first.c_str(), exc );
+	}
+}
+
 #endif

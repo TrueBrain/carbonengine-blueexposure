@@ -162,7 +162,6 @@ private:
 	struct AliveInstEntry {
 		AliveInstEntry() : mLock(0) {}
 		int mLock;
-		BluePyStr mStack;
 	};
 	typedef TrackableStdMap<IRoot *, AliveInstEntry> AliveByInst_t;
 	typedef AliveByInst_t::iterator AliveByInst_i;

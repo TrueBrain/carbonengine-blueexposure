@@ -133,3 +133,15 @@ BLUEIMPORT int BlueCreateInstanceFromLua( lua_State* ls, const Be::Clsid& clsid 
 		BlueRegisterFunctions( ls, g_moduleName, BlueRegistration::GetFuncRegs() ); \
 		return 1; \
 	}
+
+#define BLUE_DECLARE_EXCEPTION_EX( name, ... ) __VA_ARGS__ const char* CCP_CONCATENATE( BlueGetException, name )();
+#define BLUE_DECLARE_EXCEPTION( name ) BLUE_DECLARE_EXCEPTION_EX( name )
+
+#define BLUE_GET_EXCEPTION( name ) ( CCP_CONCATENATE( BlueGetException, name )() )
+
+#define BLUE_DEFINE_EXCEPTION( name, parent ) \
+	const char* CCP_CONCATENATE( BlueGetException, name )() \
+	{ \
+	return #name; \
+	} \
+	BLUE_REGISTER_EXCEPTION( name, CCP_CONCATENATE( BlueGetException, name ) )

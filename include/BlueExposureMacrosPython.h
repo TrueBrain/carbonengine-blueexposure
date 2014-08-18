@@ -221,6 +221,19 @@ BLUEIMPORT PyObject* BlueCreateInstanceFromPython( const Be::Clsid& clsid, PyObj
 			BlueRegistration::GetTestRegs(), \
 			BlueRegistration::GetThunkerRegs()); \
 		BlueRegisterObjectsToModule( module, BlueRegistration::GetObjectRegs() ); \
+		BlueRegisterExceptionsToModule( module, BlueRegistration::GetExceptionRegs() ); \
 		PyModule_AddObject( module, "BlueWrapper", (PyObject*)BePyTypePtr ); \
 	}
 
+#define BLUE_DECLARE_EXCEPTION_EX( name, ... ) __VA_ARGS__ PyObject* CCP_CONCATENATE( BlueGetException, name )();
+#define BLUE_DECLARE_EXCEPTION( name ) BLUE_DECLARE_EXCEPTION_EX( name )
+
+#define BLUE_GET_EXCEPTION( name ) ( CCP_CONCATENATE( BlueGetException, name )() )
+
+#define BLUE_DEFINE_EXCEPTION( name, parent ) \
+	PyObject* CCP_CONCATENATE( BlueGetException, name )() \
+	{ \
+		static auto s_exception = PyErr_NewException( const_cast<char*>( ( std::string( g_moduleName ) + "." #name ).c_str() ), BLUE_GET_EXCEPTION( parent ), nullptr ); \
+		return s_exception; \
+	} \
+	BLUE_REGISTER_EXCEPTION( name, CCP_CONCATENATE( BlueGetException, name ) )

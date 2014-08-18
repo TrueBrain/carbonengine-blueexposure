@@ -40,7 +40,23 @@ namespace Be
 	}
 
 #if BLUE_WITH_PYTHON
+#define BLUE_DECLARE_GET_EXCEPTION( type ) template<> PyObject* GetException( const type& result );
+#define BLUE_BEGIN_GET_EXCEPTION( type ) template<> PyObject* GetException( const type& result ) {
+#define BLUE_BEGIN_GET_EXCEPTION_INLINE( type ) template<> inline PyObject* GetException( const type& result ) {
+#define BLUE_END_GET_EXCEPTION() }
+
 	template<typename T> PyObject* GetException( const Result<T>& result )
+	{
+		CCP_ASSERT_M( false, "Missing specialization for Be::GetException" );
+		return nullptr;
+	}
+#elif BLUE_WITH_LUA
+#define BLUE_DECLARE_GET_EXCEPTION( type ) template<> const char* GetException( const type& result );
+#define BLUE_BEGIN_GET_EXCEPTION( type ) template<> const char* GetException( const type& result ) {
+#define BLUE_BEGIN_GET_EXCEPTION_INLINE( type ) template<> inline const char* GetException( const type& result ) {
+#define BLUE_END_GET_EXCEPTION() }
+
+	template<typename T> const char* GetException( const Result<T>& result )
 	{
 		CCP_ASSERT_M( false, "Missing specialization for Be::GetException" );
 		return nullptr;

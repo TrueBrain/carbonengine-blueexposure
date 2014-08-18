@@ -845,7 +845,6 @@
     <ResourceCompile/>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="autoversion.h"/>
     <ClInclude Include="BlueClasses.h"/>
     <ClInclude Include="BlueLuaThunkers.h"/>
     <ClInclude Include="BlueLuaWrapper.h"/>
@@ -882,6 +881,7 @@
     <ClInclude Include="include\BlueSharedString.h"/>
     <ClInclude Include="include\BlueSmartPtr.h"/>
     <ClInclude Include="include\BlueSmartPy.h"/>
+    <ClInclude Include="include\BlueStdResult.h"/>
     <ClInclude Include="include\BlueStringTable.h"/>
     <ClInclude Include="include\BlueStructureList.h"/>
     <ClInclude Include="include\BlueTypes.h"/>
@@ -934,6 +934,7 @@
     <ClCompile Include="PythonKlass.cpp"/>
     <ClCompile Include="StringConversions.cpp"/>
     <ClCompile Include="TypeInfo.cpp"/>
+    <ClCompile Include="include\BlueStdResult.cpp"/>
   </ItemGroup>
   <ItemGroup/>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
