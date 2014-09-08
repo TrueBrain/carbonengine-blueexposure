@@ -65,7 +65,8 @@ public:
 	BlueStructureList( IRoot* lockobj = nullptr ) :
 		m_structureDefinition( nullptr ),
 		m_memberCount( 0 ),
-		m_items("BlueStructureList")
+		m_items("BlueStructureList"),
+		m_defaultValue( nullptr )
 	{
 	}
 
@@ -83,6 +84,11 @@ public:
 			++m_memberCount;
 			++memberDef;
 		}
+	}
+
+	void SetDefaultValue( const T* defaultValue )
+	{
+		m_defaultValue = defaultValue;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -106,6 +112,11 @@ public:
 	virtual size_t GetSize() 
 	{
 		return m_items.size();
+	}
+
+	virtual const void* GetDefaultValue()
+	{
+		return m_defaultValue;
 	}
 
 	virtual void* GetAt( size_t ix ) 
@@ -280,6 +291,23 @@ public:
 
 		return BlueStructureList_PyGetStructureDefinition( pThis );
 	}
+
+	static PyObject* PyGetDefaultValue( PyObject* self, PyObject* args )
+	{
+		ClassDef* pThis = BluePythonCast<ClassDef*>( self );
+
+		if( !PyArg_ParseTuple( args, "" ) )
+		{
+			return nullptr;
+		}
+
+		auto defaultValue = pThis->GetDefaultValue();
+		if( !defaultValue )
+		{
+			Py_RETURN_NONE;
+		}
+		return BlueStructureList_StructurePyObject( pThis, (uint8_t*)defaultValue );
+	}
 #endif
 
 	EXPOSE_TO_BLUE()
@@ -315,6 +343,14 @@ public:
 				PyGetStructureDefinition,
 				"Gets the structure definition"
 			)
+
+			MAP_METHOD
+			(
+				"GetDefaultValue",
+				PyGetDefaultValue,
+				"Returns a tuple that is considered a default item value for the list or None if the\n"
+				"list does not have a specific default value"
+			)
 		EXPOSURE_END()
 	}
 
@@ -323,6 +359,7 @@ private:
 	BlueStructureDefinition* m_structureDefinition;
 	size_t m_memberCount;
 	vector_t m_items;
+	const T* m_defaultValue;
 };
 
 #endif // BlueStructureList_h

@@ -6,6 +6,8 @@
 //
 
 #include "include/BlueStructureList.h"
+#include "include/BlueTypeTraits.h"
+#include "TypeInfo.h"
 
 namespace
 {
@@ -303,6 +305,48 @@ void ExtractItem( PyObject* memberObject, uint8_t* member, int size, PyConvertio
 	}
 }
 
+void ConvertStructureDefinitionToBeVar( const BlueStructureDefinition& record, Be::VarEntry& var )
+{
+	var.mName = record.m_name;
+	var.mOffset = record.m_offset;
+	var.mDescription = "";
+	var.mEditFlags = 0;
+	var.mChooserTable = record.m_chooser;
+	var.mGetProperty = nullptr;
+	var.mSetProperty = nullptr;
+	var.mIID = nullptr;
+	switch( record.m_dataType & Be::DT_TYPE_MASK )
+	{
+	case Be::DT_INT8:
+		var.mType = Be::BYTE;
+		var.mSize = 1;
+		break;
+	case Be::DT_INT16:
+		var.mType = Be::SHORT;
+		var.mSize = 2;
+		break;
+	case Be::DT_INT32:
+		var.mType = ( record.m_dataType & Be::DT_SIZE_MASK ) ? Be::INTARRAY : Be::LONG;
+		var.mSize = ( ( ( record.m_dataType & Be::DT_SIZE_MASK ) >> Be::DT_SIZE_OFFSET ) + 1 ) * 4;
+		break;
+	case Be::DT_FLOAT32:
+		var.mType = Be::FLOAT;
+		var.mSize = ( ( ( record.m_dataType & Be::DT_SIZE_MASK ) >> Be::DT_SIZE_OFFSET ) + 1 ) * 4;
+		break;
+	case Be::DT_SHAREDSTRING:
+		var.mType = Be::SHAREDSTRING;
+		break;
+	case Be::DT_FLOAT32x4:
+		var.mType = Be::FLOATARRAY;
+		var.mSize = 16 * sizeof( float );
+		var.mIID = &BlueMatrixIID;
+		break;
+	case Be::BOOL8_1:
+		var.mType = Be::BOOL;
+		break;
+	}
+}
+
 }
 
 BLUEIMPORT PyObject* BlueStructureList_StructurePyObject( IBlueStructureList* structureList, uint8_t* item )
@@ -456,16 +500,26 @@ BLUEIMPORT void BlueStructureList_PyObjectToStructure( IBlueStructureList* struc
 
 BLUEIMPORT PyObject* BlueStructureList_PyGetStructureDefinition( IBlueStructureList* structureList )
 {
-
 	size_t memberCount = structureList->GetMemberCount();
 	PyObject* ret = PyTuple_New( memberCount );
 	BlueStructureDefinition* memberDef = structureList->GetStructureDefinition();
 	for( size_t i = 0; i < memberCount; i++ )
 	{
-		PyObject* item = PyTuple_New( 3 );
+		PyObject* item = PyTuple_New( 4 );
 		PyTuple_SET_ITEM( item, 0, PyString_FromString( memberDef[i].m_name ) );
 		PyTuple_SET_ITEM( item, 1, PyLong_FromLong( memberDef[i].m_dataType ) );
 		PyTuple_SET_ITEM( item, 2, PyLong_FromLong( memberDef[i].m_offset ) );
+		if( memberDef[i].m_chooser )
+		{
+			Be::VarEntry var;
+			ConvertStructureDefinitionToBeVar( memberDef[i], var );
+			PyTuple_SET_ITEM( item, 3, PyGetChooserInfo( var ) );
+		}
+		else
+		{
+			PyTuple_SET_ITEM( item, 3, Py_None );
+			Py_INCREF( Py_None );
+		}
 		PyTuple_SET_ITEM( ret, i, item );	
 	}
 	return ret;

@@ -13,6 +13,7 @@
 
 #if BLUE_WITH_PYTHON
 PyObject* PyGetTypeInfo( const Be::ClassInfo* info, long flags = 0 );
+PyObject* PyGetChooserInfo( const Be::VarEntry& entry );
 #endif
 
 #endif // TypeInfo_h

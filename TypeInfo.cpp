@@ -10,6 +10,64 @@
 #include "TypeInfo.h"
 #include "BluePyWrap.h"
 
+namespace
+{
+
+size_t GetChooserLength( const Be::VarChooser* chooser )
+{
+	size_t count = 0;
+	for( const Be::VarChooser* i = chooser; i->mKey; ++i )
+	{
+		++count;
+	}
+	return count;
+}
+
+}
+
+PyObject* PyGetChooserInfo( const Be::VarEntry& entry )
+{
+	const Be::VarChooser* chooser = entry.mChooserTable;
+
+	if( !chooser )
+	{
+		Py_INCREF( Py_None );
+		return Py_None;
+	}
+
+	size_t count = GetChooserLength( chooser );
+
+	PyObject* choosers = PyList_New( count );
+	count = 0;
+
+	for( const Be::VarChooser* i = chooser; i->mKey; i++, count++ )
+	{
+		auto rec = PyList_New( 3 );
+
+		auto tmp = PyString_FromString( i->mKey );
+		PyList_SET_ITEM( rec, 0, tmp );
+
+		if( entry.mType == Be::STDSTRING )
+		{
+			// BlueConvertValueToPython doesn't work properly on choosers for std::string
+			tmp = PyString_FromString( "" );
+		}
+		else
+		{
+			tmp = BlueConvertValueToPython( &entry, &i->mValue );
+		}
+
+		PyList_SET_ITEM( rec, 1, tmp );
+
+		tmp = PyString_FromString( i->mDescription );
+		PyList_SET_ITEM( rec, 2, tmp );
+
+		PyList_SET_ITEM( choosers, count, rec );
+	}
+	return choosers;
+}
+
+
 PyObject* PyGetTypeInfo(const Be::ClassInfo* info, long flags)
 {
 	// no error checking done - should never fail, and is only used in development
@@ -90,49 +148,9 @@ PyObject* PyGetTypeInfo(const Be::ClassInfo* info, long flags)
 
 			// Choosers
 			// app.browser.Browse(app.browser.GetSelected().TypeInfo())
-			if (!var->mChooserTable)
-			{
-				PyDict_SetItemString(d, "choosers", Py_None);
-			}
-			else
-			{
-				int count = 0;
-				const Be::VarChooser* i = var->mChooserTable;
-
-				while (i->mKey)
-					i++, count++;
-
-				PyObject* choosers = PyList_New(count);
-
-				for (i = var->mChooserTable, count = 0; i->mKey; i++, count++)
-				{
-					PyObject* rec = PyList_New(3);
-
-					tmp = PyString_FromString(i->mKey);
-					PyList_SET_ITEM(rec, 0, tmp);
-
-					if( var->mType == Be::STDSTRING )
-					{
-						// BlueConvertValueToPython doesn't work properly on choosers for std::string
-						tmp = PyString_FromString("");
-					}
-					else
-					{
-						tmp = BlueConvertValueToPython(var, &i->mValue);
-					}
-
-					PyList_SET_ITEM(rec, 1, tmp);
-
-					tmp = PyString_FromString(i->mDescription);
-					PyList_SET_ITEM(rec, 2, tmp);
-
-					PyList_SET_ITEM(choosers, count, rec);
-				}
-
-				PyDict_SetItemString(d, "choosers", choosers);
-				Py_DECREF(choosers);
-			}
-
+			auto choosers = PyGetChooserInfo( *var );
+			PyDict_SetItemString( d, "choosers", choosers );
+			Py_DECREF( choosers );
 
 			PyDict_SetItemString(dict3, (char*)var->mName, d);
 			Py_DECREF(d);

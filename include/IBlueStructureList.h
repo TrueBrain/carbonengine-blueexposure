@@ -117,7 +117,8 @@ struct BlueStructureDefinition
 {
 	const char* m_name;
 	Be::BlueStructureDataType m_dataType;
-	unsigned int m_offset;
+	uint32_t m_offset;
+	Be::VarChooser* m_chooser;
 };
 
 BLUE_INTERFACE( IBlueStructureList ) : public IRoot
@@ -126,6 +127,7 @@ BLUE_INTERFACE( IBlueStructureList ) : public IRoot
 	virtual size_t GetMemberCount() = 0;
 	virtual size_t GetStructureSize() = 0;
 	virtual size_t GetSize() = 0;
+	virtual const void* GetDefaultValue() = 0;
 	virtual void* GetAt( size_t ix ) = 0;
 	virtual bool Append( const void* val ) = 0;
 	virtual bool Insert( size_t ix, const void* val ) = 0;
