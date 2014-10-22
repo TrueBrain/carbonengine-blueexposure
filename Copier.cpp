@@ -6,6 +6,7 @@
 #if BLUE_WITH_PYTHON
 #include "include/PythonKlass.h"
 #endif
+#include "BlueVariable.h"
 #include "CcpCore/include/CCPLog.h"
 
 //finally obsoleted.  Same as copy (copyto used to do a blind deep copy)
@@ -137,130 +138,14 @@ bool Copier::CopyToInternal(IRoot* source, IRoot* dest)
 				if (!strncmp((const char *)src, (const char *)dst, memTable->mSize))
 					continue;
 			}
-				
-			switch(memTable->mType)
-			{
-			case Be::LONG:
-				dst->mLong = src->mLong;
-				break;
-
-			case Be::BYTE:
-				dst->mByte = src->mByte;
-				break;
-
-			case Be::SHORT:
-				dst->mShort = src->mShort;
-				break;
-
-			case Be::FLOAT:
-				dst->mFloat = src->mFloat;
-				break;
-
-			case Be::FLOATARRAY:
-				memcpy( (void*)&dst->mFloat, (void*)&src->mFloat, memTable->mSize);
-				break;
-
-			case Be::DOUBLEARRAY:
-				memcpy( (void*)&dst->mDouble, (void*)&src->mDouble, memTable->mSize);
-				break;
-
-			case Be::INTARRAY:
-				memcpy( (void*)&dst->mLong, (void*)&src->mLong, memTable->mSize);
-				break;
-
-			case Be::DOUBLE:
-				dst->mDouble = src->mDouble;
-				break;
-
-			case Be::BOOL:
-				dst->mBool = src->mBool;
-				break;
-			case Be::INT64:
-				dst->mInt64 = src->mInt64;
-				break;
-			case Be::CHARARRAY:
-				memcpy(dst, src, memTable->mSize);
-				break;
-			case Be::CSTRING:
-			case Be::REFERENCE:
-				CCP_FREE(dst->mCharPtr);
-				dst->mCharPtr = CCP_STRDUP( __FUNCTION__, src->mCharPtr);
-				break;
-			case Be::STDSTRING:
-				{
-					const std::string &srcString = *reinterpret_cast<const std::string*>(src);
-					std::string &dstString = *reinterpret_cast<std::string*>(dst);
-					dstString = srcString;
-				}
-				break; 
-			case Be::WCSTRING:
-			case Be::WREFERENCE:
-				CCP_FREE(dst->mWCharPtr);
-				dst->mWCharPtr = CCP_WSTRDUP( __FUNCTION__, src->mWCharPtr);
-				break;
-			case Be::STDWSTRING:
-				{
-					const std::wstring &srcString = *reinterpret_cast<const std::wstring*>(src);
-					std::wstring &dstString = *reinterpret_cast<std::wstring*>(dst);
-					dstString = srcString;
-				}
-				break; 
-			case Be::IROOT:
-				//Internal copyto
-				if ( !CopyToInternal( reinterpret_cast<IRoot*>( src ), reinterpret_cast<IRoot*>( dst ) ) )
-					return false;
-				break;
-			case Be::IROOTPTR: 
-				{
-					// Release any destination object after we finish
-					IRootPtr dstOld;
-					dstOld.Attach( dst->mIRootPtr ); // Don't INCREF what was there
-					// unlock the old destination object when we go out of scope
-					// NB: This should prevent things from blowing up when you reference the same IRootPtr multiple times in the same class
-					// which can be useful behavior for dealing with legacy code
-					dst->mIRootPtr = NULL;
-
-					if (!src->mIRootPtr)
-						break;
-					IRootPtr tmp;
-					if (!CopyTo(src->mIRootPtr, &tmp))
-						return false;
-					//Query the correct interface
-					static Be::IID irootType( "IRoot" );
-					const Be::IID &iid = memTable->mIID ? *memTable->mIID : irootType;
-					if (!tmp->QueryInterface(iid, (void**)&dst->mIRootPtr))
-						return false;
-					break; 
-				}
 			
-			case Be::IROOTWEAKREF:
-				{
-					BlueWeakRefBase* srcWeakRef = reinterpret_cast<BlueWeakRefBase*>( src );
-					BlueWeakRefBase* dstWeakRef = reinterpret_cast<BlueWeakRefBase*>( dst );
-
-					*dstWeakRef = *srcWeakRef;
-				}
-				break;
-
-#if BLUE_WITH_PYTHON
-			case Be::PYOBJECTPTR:
-				dst->mPyObject = src->mPyObject;
-				Py_XINCREF(dst->mPyObject);
-				break;
-#endif
-
-			case Be::SHAREDSTRING:
-				{
-					const BlueSharedString &srcString = *reinterpret_cast<const BlueSharedString*>(src);
-					BlueSharedString &dstString = *reinterpret_cast<BlueSharedString*>(dst);
-					dstString = srcString;
-				}
-				break; 
-
-			default:
-				CCP_LOGERR( "Unknown blue type in member %s", memTable->mName );
+			BlueVariable* bv = GetBlueVariableFromVarType(memTable->mType);
+			bool ok = bv->Copy(memTable, dst, src, this);
+			if (!ok)
+			{
 				return false;
 			}
+			
 			if (notify && !notify->OnModified(dst))
 				return false;
 		}

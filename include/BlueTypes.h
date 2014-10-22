@@ -553,7 +553,10 @@ class _classname; \
 
 #define BLUE_DECLARE_STRUCTURE_LIST( U ) \
 	typedef BlueStructureList<U> U##StructureList; \
-	TYPEDEF_BLUECLASS( U##StructureList )
+	TYPEDEF_BLUECLASS( U##StructureList ); \
+	const Be::Clsid& Get##U##StructureList##Clsid();\
+	BLUE_DECLARE_INTERFACE_NO_PTR( U##StructureList ); \
+	typedef BluePtr<U##StructureList> U##StructureList##Ptr
 
 #include "BlueSmartPtr.h"
 

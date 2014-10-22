@@ -11,6 +11,7 @@
 #include "include/IBlueDict.h"
 #include "include/IBlueStructureList.h"
 #include "include/BlueSharedString.h"
+#include "BlueVariable.h"
 #include <string>
 #include <cmath>
 
@@ -138,173 +139,12 @@ int BlueMemberIterator::SkipEquals(IRoot* def)
 	return skipcount;
 }
 
-#define FLOAT_PRECISION_ERROR 1e-6f
-
-static bool IsArrayEqual( const float* a, const float* b, size_t numElements )
-{
-	for( size_t i = 0; i < numElements; ++i )
-	{
-		float d = a[i] - b[i];
-		if( fabs( d ) >= FLOAT_PRECISION_ERROR )
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-static bool CompareStrings(const char* a, const char* b)
-{
-	if( a == b )
-	{
-		return true;
-	}
-	else if( !a || !b )
-	{
-		return false;
-	}
-	else
-	{
-		return strcmp( a, b ) == 0;
-	}
-}
-
-
-static bool CompareWStrings(const wchar_t* a, const wchar_t* b)
-{
-	if( a == b )
-	{
-		return true;
-	}
-	else if( !a || !b )
-	{
-		return false;
-	}
-	else
-	{
-		return wcscmp(a, b) == 0;
-	}
-}
 
 bool BlueMemberIterator::IsEqual(const Be::Var *b)
 {
 	Be::Var const *a = Var();
-	switch(mEntry->mType)
-	{
-	case Be::LONG:
-		return a->mLong == b->mLong;
-
-	case Be::BYTE:
-		return a->mByte == b->mByte;
-
-	case Be::SHORT:
-		return a->mShort == b->mShort;
-
-	case Be::FLOAT:
-		{
-			float d = a->mFloat - b->mFloat;
-			return fabs( d ) < FLOAT_PRECISION_ERROR;
-		}
-
-	case Be::FLOATARRAY:
-		return IsArrayEqual( &a->mFloat, &b->mFloat, mEntry->GetFloatArraySize() );
-
-	case Be::DOUBLE:
-		{
-			double d = a->mFloat - b->mFloat;
-			return fabs( d ) < 1e-12;
-		}
-		// return a->mDouble == b->mDouble;
-
-	case Be::BOOL:
-		return a->mBool ? b->mBool : !b->mBool;
-
-	case Be::IROOT:
-		{
-			// We're not really handling the generic case of embedded objects
-			// but we are checking the common case of empty lists.
-			{
-				IListPtr listA( BlueCastPtr( reinterpret_cast<IRoot*>( const_cast<Be::Var*>( a ) ) ) );
-				IListPtr listB( BlueCastPtr( reinterpret_cast<IRoot*>( const_cast<Be::Var*>( b ) ) ) );
-				if( listA && listB )
-				{
-					if( (listA->GetSize() == 0) && (listB->GetSize() == 0) )
-					{
-						return true;
-					}
-				}
-			}
-
-			{
-				IBlueDictPtr dictA( BlueCastPtr( reinterpret_cast<IRoot*>( const_cast<Be::Var*>( a ) ) ) );
-				IBlueDictPtr dictB( BlueCastPtr( reinterpret_cast<IRoot*>( const_cast<Be::Var*>( b ) ) ) );
-				if( dictA && dictB )
-				{
-					if( (dictA->GetLength() == 0) && (dictB->GetLength() == 0) )
-					{
-						return true;
-					}
-				}
-			}
-
-			{
-				IBlueStructureListPtr listA( BlueCastPtr( reinterpret_cast<IRoot*>( const_cast<Be::Var*>( a ) ) ) );
-				IBlueStructureListPtr listB( BlueCastPtr( reinterpret_cast<IRoot*>( const_cast<Be::Var*>( b ) ) ) );
-				if( listA && listB )
-				{
-					if( (listA->GetSize() == 0) && (listB->GetSize() == 0) )
-					{
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-
-	case Be::IROOTPTR:
-		return a->mIRootPtr == b->mIRootPtr;
-
-	case Be::CHARARRAY:
-		return CompareStrings((const char*)a, (const char*)b);
-
-	case Be::CSTRING:
-	case Be::REFERENCE:
-		return CompareStrings(a->mCharPtr, b->mCharPtr);
-
-	case Be::STDSTRING:
-		{			
-			const std::string &aStr = *reinterpret_cast<const std::string*>(a);
-			const std::string &bStr = *reinterpret_cast<const std::string*>(b);
-			return aStr == bStr;
-		}
-	case Be::WCSTRING:
-	case Be::WREFERENCE:
-		return CompareWStrings(a->mWCharPtr, b->mWCharPtr);
-	
-	case Be::STDWSTRING:
-		{			
-			const std::wstring &aStr = *reinterpret_cast<const std::wstring*>(a);
-			const std::wstring &bStr = *reinterpret_cast<const std::wstring*>(b);
-			return aStr == bStr;
-		}
-
-	case Be::INT64:
-		return a->mInt64 == b->mInt64;
-
-#if BLUE_WITH_PYTHON
-	case Be::PYOBJECTPTR:
-		return a->mPyObject == b->mPyObject;
-#endif
-	case Be::SHAREDSTRING:
-		{			
-			const BlueSharedString &aStr = *reinterpret_cast<const BlueSharedString*>(a);
-			const BlueSharedString &bStr = *reinterpret_cast<const BlueSharedString*>(b);
-			return aStr == bStr;
-		}
-
-	default:
-		return false;
-	}
+	BlueVariable* bv = GetBlueVariableFromVarType(mEntry->mType);
+	return bv->AreEqual(mEntry, a, b);
 }
 
 

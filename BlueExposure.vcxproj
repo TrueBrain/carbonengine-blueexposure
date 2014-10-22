@@ -851,6 +851,7 @@
     <ClInclude Include="BlueLuaWrapper.h"/>
     <ClInclude Include="BluePythonThunkers.h"/>
     <ClInclude Include="BluePyWrap.h"/>
+    <ClInclude Include="BlueVariable.h"/>
     <ClInclude Include="Copier.h"/>
     <ClInclude Include="Find.h"/>
     <ClInclude Include="TypeInfo.h"/>
@@ -928,6 +929,7 @@
     <ClCompile Include="BlueStructureList.cpp"/>
     <ClCompile Include="BlueTypes.cpp"/>
     <ClCompile Include="BlueUtil.cpp"/>
+    <ClCompile Include="BlueVariable.cpp"/>
     <ClCompile Include="Copier.cpp"/>
     <ClCompile Include="Copier_Blue.cpp"/>
     <ClCompile Include="Find.cpp"/>

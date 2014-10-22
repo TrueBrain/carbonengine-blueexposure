@@ -23,6 +23,9 @@
     <ClInclude Include="BluePyWrap.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="BlueVariable.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="Copier.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -246,6 +249,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BlueUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlueVariable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Copier.cpp">

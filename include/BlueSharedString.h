@@ -34,6 +34,10 @@ public:
 	bool empty() const;
 
 	bool operator==( const BlueSharedStringT& other ) const;
+
+	// Note that this operator is only to allow BlueSharedString in maps.
+	// It doesn't do a proper string comparison, only compares pointer values.
+	bool operator<( const BlueSharedStringT& other ) const;
 private:
 	union
 	{
@@ -106,4 +110,9 @@ bool BlueSharedStringT<CharType>::operator==( const BlueSharedStringT& other ) c
 	return m_string == other.m_string;
 }
 
+template <typename CharType>
+bool BlueSharedStringT<CharType>::operator<( const BlueSharedStringT& other ) const
+{
+	return m_string < other.m_string;
+}
 #endif

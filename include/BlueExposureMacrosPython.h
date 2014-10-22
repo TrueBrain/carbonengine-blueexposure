@@ -58,6 +58,8 @@
 	_classinfo.mOffsetToParent = _parentoffs; \
 	_classinfo.mRtti = nullptr; \
 	_classinfo.mTypeObject = &s_pyType; \
+	_classinfo.mLiveCount = 0; \
+	_classinfo.mLockCount = 0; \
 	\
 	s_classInfo = &_classinfo; \
 	return &_classinfo;
