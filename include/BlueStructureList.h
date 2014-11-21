@@ -189,6 +189,16 @@ public:
 		return m_items.end();
 	}
 
+	iterator begin()
+	{
+		return m_items.begin();
+	}
+
+	iterator end()
+	{
+		return m_items.end();
+	}
+
 	size_t size() const
 	{
 		return m_items.size();
