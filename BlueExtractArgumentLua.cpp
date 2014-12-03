@@ -2,7 +2,7 @@
 
 #include "include/BlueExtractArgument.h"
 #include "include/BlueScriptValue.h"
-#include "include/StringConversions.h"
+#include "CcpCore/include/StringConversions.h"
 
 bool BlueExtractString( BlueScriptValue sv, std::string& val )
 {

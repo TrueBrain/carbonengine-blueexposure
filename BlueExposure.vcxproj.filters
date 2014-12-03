@@ -191,9 +191,6 @@
     <ClInclude Include="include\StringBeResult.h">
       <Filter>Source Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\StringConversions.h">
-      <Filter>Source Files\include</Filter>
-    </ClInclude>
     <ClCompile Include="BlueClasses.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -267,9 +264,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PythonKlass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StringConversions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TypeInfo.cpp">

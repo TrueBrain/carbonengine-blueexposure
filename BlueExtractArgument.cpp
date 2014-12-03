@@ -9,7 +9,7 @@
 
 #include "include/BlueExposureMacros.h"
 #include "include/BlueVectorTypes.h"
-#include "include/StringConversions.h"
+#include "CcpCore/include/StringConversions.h"
 #include <limits>
 
 #if BLUE_WITH_PYTHON

@@ -9,7 +9,7 @@
 #ifndef BlueWrapReturnValue_h
 #define BlueWrapReturnValue_h
 
-#include "StringConversions.h"
+#include "CcpCore/include/StringConversions.h"
 
 #if BLUE_WITH_PYTHON
 #include "BlueWrapReturnValuePython.h"

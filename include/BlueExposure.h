@@ -41,7 +41,6 @@
 #include "IInitialize.h"
 #include "INotify.h"
 #include "ICustomPersist.h"
-#include "StringConversions.h"
 #include "StringBeResult.h"
 #include "BlueScriptCallback.h"
 #include "BlueSharedString.h"
