@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="ReleaseStatic|x64">
+      <Configuration>ReleaseStatic</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="DebugStatic_Lua|x64">
       <Configuration>DebugStatic_Lua</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseStatic_26|Win32">
-      <Configuration>ReleaseStatic_26</Configuration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="ReleaseStatic_27|Win32">
@@ -21,12 +25,8 @@
       <Configuration>ReleaseStatic</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugStatic|Win32">
-      <Configuration>DebugStatic</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release_27|x64">
@@ -37,12 +37,12 @@
       <Configuration>ReleaseStatic_27</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="DebugStatic|Win32">
+      <Configuration>DebugStatic</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseStatic|x64">
-      <Configuration>ReleaseStatic</Configuration>
+    <ProjectConfiguration Include="DebugStatic|x64">
+      <Configuration>DebugStatic</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="DebugLua|Win32">
@@ -53,9 +53,9 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugStatic|x64">
-      <Configuration>DebugStatic</Configuration>
-      <Platform>x64</Platform>
+    <ProjectConfiguration Include="ReleaseStatic_26|Win32">
+      <Configuration>ReleaseStatic_26</Configuration>
+      <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="ReleaseStatic_26|x64">
       <Configuration>ReleaseStatic_26</Configuration>
@@ -69,8 +69,8 @@
       <Configuration>DebugStatic_Lua</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release_26|x64">
@@ -83,10 +83,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals"/>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'" Label="Configuration">
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|x64'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|Win32'" Label="Configuration">
@@ -98,10 +101,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|Win32'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'" Label="Configuration">
-    <PlatformToolset>v100</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'" Label="Configuration">
@@ -110,10 +110,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|x64'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugLua|Win32'" Label="Configuration">
@@ -122,7 +122,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|x64'" Label="Configuration">
@@ -134,7 +134,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|Win32'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_26|x64'" Label="Configuration">
@@ -144,13 +144,19 @@
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)/Microsoft.Cpp.Default.props"/>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">
+    <TargetExt>.lib</TargetExt>
+    <UseOfMfc>False</UseOfMfc>
+    <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|x64'">
     <TargetExt>.lib</TargetExt>
     <UseOfMfc>False</UseOfMfc>
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.lib</TargetExt>
     <UseOfMfc>False</UseOfMfc>
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
@@ -174,13 +180,7 @@
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">
-    <TargetExt>.lib</TargetExt>
-    <UseOfMfc>False</UseOfMfc>
-    <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.lib</TargetExt>
     <UseOfMfc>False</UseOfMfc>
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
@@ -198,13 +198,13 @@
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">
     <TargetExt>.lib</TargetExt>
     <UseOfMfc>False</UseOfMfc>
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
     <TargetExt>.lib</TargetExt>
     <UseOfMfc>False</UseOfMfc>
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
@@ -222,7 +222,7 @@
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'">
     <TargetExt>.lib</TargetExt>
     <UseOfMfc>False</UseOfMfc>
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
@@ -246,7 +246,7 @@
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.lib</TargetExt>
     <UseOfMfc>False</UseOfMfc>
     <IntDir>../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/</IntDir>
@@ -282,68 +282,97 @@
     </BuildMacro>
   </ItemGroup>
   <ImportGroup Label="ExtensionSettings"/>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|x64'" Label="PropertySheets"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'" Label="PropertySheets"/>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|Win32'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|Win32'" Label="PropertySheets"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'" Label="PropertySheets"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets"/>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|x64'" Label="PropertySheets"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'" Label="PropertySheets"/>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'" Label="PropertySheets"/>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugLua|Win32'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'" Label="PropertySheets"/>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|x64'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_26|Win32'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|Win32'" Label="PropertySheets"/>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets"/>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_26|x64'" Label="PropertySheets"/>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugLua|x64'" Label="PropertySheets"/>
   <PropertyGroup>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">BlueExposureStatic</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|x64'">BlueExposureStatic_d</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|x64'">../../autobuild/BlueExposure/lua/$(Platform)/$(PlatformToolset)/</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'">BlueExposureStatic</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'">../../autobuild/BlueExposure/python_26/$(Platform)/$(PlatformToolset)/</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">BlueExposure_d</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|Win32'">BlueExposureStatic</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|Win32'">../../autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'">BlueExposure</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'">../../autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|Win32'">BlueExposureStatic</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|Win32'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">BlueExposureStatic_d</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">BlueExposure</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">BlueExposure_d</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'">BlueExposure</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'">../../autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|x64'">BlueExposureStatic</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|x64'">../../autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset)/</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">BlueExposure_d</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">BlueExposureStatic</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">BlueExposureStatic_d</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">BlueExposureStatic_d</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugLua|Win32'">BlueExposure_d</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugLua|Win32'">../../autobuild/BlueExposure/lua/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">BlueExposure</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">BlueExposureStatic_d</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'">BlueExposureStatic</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'">../../autobuild/BlueExposure/python_26/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|x64'">BlueExposureStatic</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|x64'">../../autobuild/BlueExposure/python_26/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_26|Win32'">BlueExposure</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_26|Win32'">../../autobuild/BlueExposure/python_26/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|Win32'">BlueExposureStatic_d</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|Win32'">../../autobuild/BlueExposure/lua/$(Platform)/$(PlatformToolset)/</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">BlueExposure_d</TargetName>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">BlueExposure</TargetName>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_26|x64'">BlueExposure</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_26|x64'">../../autobuild/BlueExposure/python_26/$(Platform)/$(PlatformToolset)/</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugLua|x64'">BlueExposure_d</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugLua|x64'">../../autobuild/BlueExposure/lua/$(Platform)/$(PlatformToolset)/</OutDir>
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\pc;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>True</MultiProcessorCompilation>
+      <GenerateDebugInformation>True</GenerateDebugInformation>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <TreatWarningAsError>True</TreatWarningAsError>
+      <Optimization>MaxSpeed</Optimization>
+      <BufferSecurityCheck>False</BufferSecurityCheck>
+      <WarningLevel>Level3</WarningLevel>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <CppExceptions>True</CppExceptions>
+      <RuntimeTypeInfo>True</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>True</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>python27.lib;telemetry64.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+    </Link>
+    <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -368,18 +397,22 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\26\include;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\pc;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <TreatWarningAsError>True</TreatWarningAsError>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <BufferSecurityCheck>False</BufferSecurityCheck>
       <WarningLevel>Level3</WarningLevel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -388,11 +421,15 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\26\libs;$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python26.lib;telemetry32.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>python27_d.lib;telemetry32.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|Win32'">
     <ClCompile>
@@ -418,6 +455,10 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'">
     <ClCompile>
@@ -443,13 +484,17 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PreprocessorDefinitions>BLUEBUILD_STATIC;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\pc;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -463,18 +508,22 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>python27.lib;telemetry32.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_DEBUG;BLUEBUILD_STATIC;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\pc;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -488,36 +537,15 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27_d.lib;telemetry32.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>python27_d.lib;telemetry64.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>True</MultiProcessorCompilation>
-      <GenerateDebugInformation>True</GenerateDebugInformation>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
-      <TreatWarningAsError>True</TreatWarningAsError>
-      <Optimization>MaxSpeed</Optimization>
-      <BufferSecurityCheck>False</BufferSecurityCheck>
-      <WarningLevel>Level3</WarningLevel>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <CppExceptions>True</CppExceptions>
-      <RuntimeTypeInfo>True</RuntimeTypeInfo>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>True</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27.lib;telemetry64.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
-    </Link>
-    <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'">
     <ClCompile>
@@ -543,6 +571,10 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|x64'">
     <ClCompile>
@@ -568,13 +600,17 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_DEBUG;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;BLUEBUILD_STATIC;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\pc;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -588,23 +624,27 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>python27_d.lib;telemetry32.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUEBUILD_STATIC;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;BLUEBUILD_STATIC;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\pc;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <TreatWarningAsError>True</TreatWarningAsError>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <BufferSecurityCheck>False</BufferSecurityCheck>
       <WarningLevel>Level3</WarningLevel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -613,11 +653,15 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27.lib;telemetry64.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>python27_d.lib;telemetry64.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugLua|Win32'">
     <ClCompile>
@@ -643,13 +687,17 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PreprocessorDefinitions>CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\pc;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -663,23 +711,27 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>python27.lib;telemetry32.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_DEBUG;BLUEBUILD_STATIC;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\26\include;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <TreatWarningAsError>True</TreatWarningAsError>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <BufferSecurityCheck>False</BufferSecurityCheck>
       <WarningLevel>Level3</WarningLevel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -688,11 +740,15 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27_d.lib;telemetry64.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\26\libs;$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>python26.lib;telemetry32.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|x64'">
     <ClCompile>
@@ -718,6 +774,10 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_26|Win32'">
     <ClCompile>
@@ -743,6 +803,10 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic_Lua|Win32'">
     <ClCompile>
@@ -768,18 +832,22 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_DEBUG;CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CCP_STACKLESS=1;BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\pc;.;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\2.1A3\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <TreatWarningAsError>True</TreatWarningAsError>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <BufferSecurityCheck>False</BufferSecurityCheck>
       <WarningLevel>Level3</WarningLevel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -788,11 +856,15 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27_d.lib;telemetry64.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\2.1A3\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>python27.lib;telemetry64.link.lib;ws2_32.lib;version.lib;crypt32.lib;iphlpapi.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_26|x64'">
     <ClCompile>
@@ -818,6 +890,10 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugLua|x64'">
     <ClCompile>
@@ -843,6 +919,10 @@
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
+    <Manifest/>
+    <PreBuildEvent/>
+    <PreLinkEvent/>
+    <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="autoversion.h"/>
