@@ -79,7 +79,7 @@ BaseConfigurations:
       AdditionalOptions: -std=c++0x
 
 Configurations:
-  Debug|Win32,x64:
+  Debug|Win32,x64,Mac64:
     Imports:
     - ../stackless/stackless.yaml
     BaseConfigurations:
@@ -106,7 +106,7 @@ Configurations:
     General: 
       TargetName: BlueExposure_d
 
-  Release|Win32,x64:
+  Release|Win32,x64,Mac64:
     Imports:
     - ../stackless/stackless.yaml
     BaseConfigurations:

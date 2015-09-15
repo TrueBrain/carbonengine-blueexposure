@@ -657,7 +657,7 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 #ifdef _DEBUG
 		else if (strcmp(name, "__dotrace__") == 0)
 		{
-			PyObject* file = PySys_GetObject("stderr");
+			PyObject* file = PySys_GetObject((char*)"stderr");
 
 			for (unsigned i = 0; i < mTracebacks.size(); i++)
 			{

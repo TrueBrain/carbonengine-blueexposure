@@ -34,7 +34,7 @@ BaseConfigurations:
       - BlueExposure.lib
 
 Configurations:
-  Debug|Win32,x64:
+  Debug|Win32,x64,Mac32,Mac64:
     BaseConfigurations:
     - ExeFile
     - Debug
@@ -51,7 +51,7 @@ Configurations:
       AdditionalDependencies:
       - BlueExposure_d
 
-  Release|Win32,x64:
+  Release|Win32,x64,Mac32,Mac64:
     BaseConfigurations:
     - ExeFile
     - Release

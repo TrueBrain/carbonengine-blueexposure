@@ -1,0 +1,1503 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+		};
+	objects = {
+		0000004D0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000004E0000bbcdbdbf2daa;
+			};
+		000000A20000bbcdbdbf2daa = {
+			name = ICustomPersist.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/ICustomPersist.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000003C0000bbcdbdbf2daa = {
+			name = BlueLuaWrapper.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = BlueLuaWrapper.h;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000A30000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000A40000bbcdbdbf2daa;
+			};
+		000000900000bbcdbdbf2daa = {
+			name = BlueWeakRef.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueWeakRef.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000190000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000001A0000bbcdbdbf2daa;
+			};
+		0000004A0000bbcdbdbf2daa = {
+			name = BlueCallFunction.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueCallFunction.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000440000bbcdbdbf2daa = {
+			name = Copier.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = Copier.h;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000008F0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000900000bbcdbdbf2daa;
+			};
+		000000400000bbcdbdbf2daa = {
+			name = BluePyWrap.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = BluePyWrap.h;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000500000bbcdbdbf2daa = {
+			name = BlueClass.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueClass.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000001F0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000200000bbcdbdbf2daa;
+			};
+		000000980000bbcdbdbf2daa = {
+			name = IBlueClasses.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/IBlueClasses.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000006D0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000006E0000bbcdbdbf2daa;
+			};
+		0000004E0000bbcdbdbf2daa = {
+			name = BlueCallFunctionWithBeResult.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueCallFunctionWithBeResult.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000A90000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000AA0000bbcdbdbf2daa;
+			};
+		000000520000bbcdbdbf2daa = {
+			name = BlueDict.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueDict.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000007A0000bbcdbdbf2daa = {
+			name = BlueScriptValue.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueScriptValue.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000B90000bbcdbdbf2daa = {
+			dependencies = (
+				);
+			productReference = 000000B40000bbcdbdbf2daa;
+			name = Release_27_Mac64;
+			productType = "com.apple.product-type.library.static";
+			buildRules = (
+				);
+			isa = PBXNativeTarget;
+			productName = BlueExposure;
+			buildConfigurationList = 000000BA0000bbcdbdbf2daa;
+			buildPhases = (
+				000000B80000bbcdbdbf2daa,
+				);
+			};
+		000000050000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000060000bbcdbdbf2daa;
+			};
+		0000005C0000bbcdbdbf2daa = {
+			name = BlueExposureMacros.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExposureMacros.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000007C0000bbcdbdbf2daa = {
+			name = BlueSharedString.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueSharedString.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000001D0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000001E0000bbcdbdbf2daa;
+			};
+		0000003B0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000003C0000bbcdbdbf2daa;
+			};
+		000000B40000bbcdbdbf2daa = {
+			path = BlueExposure.lib;
+			isa = PBXFileReference;
+			includeInIndex = 0;
+			explicitFileType = archive.ar;
+			sourceTree = BUILT_PRODUCTS_DIR;
+			};
+		000000480000bbcdbdbf2daa = {
+			name = TypeInfo.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = TypeInfo.h;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000880000bbcdbdbf2daa = {
+			name = BlueTypes.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueTypes.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000004F0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000500000bbcdbdbf2daa;
+			};
+		000000860000bbcdbdbf2daa = {
+			name = BlueStructureList.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueStructureList.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000003F0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000400000bbcdbdbf2daa;
+			};
+		000000A10000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000A20000bbcdbdbf2daa;
+			};
+		000000AF0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000B00000bbcdbdbf2daa;
+			};
+		000000460000bbcdbdbf2daa = {
+			name = Find.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = Find.h;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000780000bbcdbdbf2daa = {
+			name = BlueScriptCallback.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueScriptCallback.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000310000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000320000bbcdbdbf2daa;
+			};
+		000000A80000bbcdbdbf2daa = {
+			name = INotify.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/INotify.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000370000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000380000bbcdbdbf2daa;
+			};
+		000000430000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000440000bbcdbdbf2daa;
+			};
+		000000AA0000bbcdbdbf2daa = {
+			name = IPythonMethods.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/IPythonMethods.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000670000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000680000bbcdbdbf2daa;
+			};
+		000000150000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000160000bbcdbdbf2daa;
+			};
+		000000B80000bbcdbdbf2daa = {
+			files = (
+				000000010000bbcdbdbf2daa,
+				000000030000bbcdbdbf2daa,
+				000000050000bbcdbdbf2daa,
+				000000070000bbcdbdbf2daa,
+				000000090000bbcdbdbf2daa,
+				0000000B0000bbcdbdbf2daa,
+				0000000D0000bbcdbdbf2daa,
+				0000000F0000bbcdbdbf2daa,
+				000000110000bbcdbdbf2daa,
+				000000130000bbcdbdbf2daa,
+				000000150000bbcdbdbf2daa,
+				000000170000bbcdbdbf2daa,
+				000000190000bbcdbdbf2daa,
+				0000001B0000bbcdbdbf2daa,
+				0000001D0000bbcdbdbf2daa,
+				0000001F0000bbcdbdbf2daa,
+				000000210000bbcdbdbf2daa,
+				000000230000bbcdbdbf2daa,
+				000000250000bbcdbdbf2daa,
+				000000270000bbcdbdbf2daa,
+				000000290000bbcdbdbf2daa,
+				0000002B0000bbcdbdbf2daa,
+				0000002D0000bbcdbdbf2daa,
+				0000002F0000bbcdbdbf2daa,
+				000000310000bbcdbdbf2daa,
+				000000330000bbcdbdbf2daa,
+				000000350000bbcdbdbf2daa,
+				);
+			buildActionMask = 2147483647;
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+			};
+		000000410000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000420000bbcdbdbf2daa;
+			};
+		000000740000bbcdbdbf2daa = {
+			name = BluePythonObject.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BluePythonObject.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000002D0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000002E0000bbcdbdbf2daa;
+			};
+		000000750000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000760000bbcdbdbf2daa;
+			};
+		000000B00000bbcdbdbf2daa = {
+			name = StringBeResult.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/StringBeResult.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000560000bbcdbdbf2daa = {
+			name = BlueExposureHelpers.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExposureHelpers.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000002A0000bbcdbdbf2daa = {
+			name = Copier.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = Copier.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000C40000bbcdbdbf2daa = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				};
+			name = Release;
+			};
+		000000380000bbcdbdbf2daa = {
+			name = BlueClasses.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = BlueClasses.h;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000110000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000120000bbcdbdbf2daa;
+			};
+		000000390000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000003A0000bbcdbdbf2daa;
+			};
+		000000C00000bbcdbdbf2daa = {
+			isa = XCConfigurationList;
+			defaultConfigurationName = Release;
+			buildConfigurations = (
+				000000C40000bbcdbdbf2daa,
+				);
+			defaultConfigurationIsVisible = 0;
+			};
+		0000006E0000bbcdbdbf2daa = {
+			name = BlueMemberFunctionAsCallable.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueMemberFunctionAsCallable.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000140000bbcdbdbf2daa = {
+			name = BluePythonThunkers.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BluePythonThunkers.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000001C0000bbcdbdbf2daa = {
+			name = BlueRegistrationPython.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueRegistrationPython.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000180000bbcdbdbf2daa = {
+			name = BlueRegistration.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueRegistration.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000004C0000bbcdbdbf2daa = {
+			name = BlueCallFunctionHelpers.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueCallFunctionHelpers.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000330000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000340000bbcdbdbf2daa;
+			};
+		0000003A0000bbcdbdbf2daa = {
+			name = BlueLuaThunkers.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = BlueLuaThunkers.h;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000280000bbcdbdbf2daa = {
+			name = BlueVariable.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueVariable.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000060000bbcdbdbf2daa = {
+			name = BlueExposure.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueExposure.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000BB0000bbcdbdbf2daa = {
+			dependencies = (
+				);
+			productReference = 000000B50000bbcdbdbf2daa;
+			name = Debug_Mac64;
+			productType = "com.apple.product-type.library.static";
+			buildRules = (
+				);
+			isa = PBXNativeTarget;
+			productName = BlueExposure;
+			buildConfigurationList = 000000BC0000bbcdbdbf2daa;
+			buildPhases = (
+				000000B80000bbcdbdbf2daa,
+				);
+			};
+		000000AD0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000AE0000bbcdbdbf2daa;
+			};
+		000000C30000bbcdbdbf2daa = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"../../../carbon/src/stackless/include",
+					"../../../carbon/src/stackless/stackless",
+					"../../../carbon/src/stackless/Mac",
+					.,
+					"../../../carbon/src",
+					"../../../../../../sdk/telemetry/2.1A3/include",
+					.,
+					..,
+					);
+				CLANG_WARN_INT_CONVERSION = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				PRODUCT_NAME = BlueExposure;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				GCC_OPTIMIZATION_LEVEL = s;
+				ONLY_ACTIVE_ARCH = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
+					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
+					"../../../../../../sdk/telemetry/2.1A3/lib",
+					);
+				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
+				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
+				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"CCP_STACKLESS=1",
+					"BLUE_WITH_PYTHON=1",
+					_SCL_SECURE_NO_WARNINGS,
+					BLUEBUILD,
+					"$(inherited)",
+					);
+				COPY_PHASE_STRIP = NO;
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_DYNAMIC_NO_PIC = NO;
+				SDKROOT = macosx;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				};
+			name = Release;
+			};
+		000000630000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000640000bbcdbdbf2daa;
+			};
+		000000230000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000240000bbcdbdbf2daa;
+			};
+		0000002F0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000300000bbcdbdbf2daa;
+			};
+		000000090000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000000A0000bbcdbdbf2daa;
+			};
+		0000005D0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000005E0000bbcdbdbf2daa;
+			};
+		0000006C0000bbcdbdbf2daa = {
+			name = BlueListUtil.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueListUtil.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000020000bbcdbdbf2daa = {
+			name = BlueClasses.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueClasses.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000260000bbcdbdbf2daa = {
+			name = BlueUtil.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueUtil.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000AE0000bbcdbdbf2daa = {
+			name = PythonKlass.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/PythonKlass.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000006F0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000700000bbcdbdbf2daa;
+			};
+		0000007B0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000007C0000bbcdbdbf2daa;
+			};
+		000000680000bbcdbdbf2daa = {
+			name = BlueExtractArgumentPython.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExtractArgumentPython.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000930000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000940000bbcdbdbf2daa;
+			};
+		000000470000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000480000bbcdbdbf2daa;
+			};
+		000000B70000bbcdbdbf2daa = {
+			isa = PBXGroup;
+			children = (
+				000000B10000bbcdbdbf2daa,
+				000000B30000bbcdbdbf2daa,
+				);
+			sourceTree = "<group>";
+			};
+		000000640000bbcdbdbf2daa = {
+			name = BlueExtractArgument.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExtractArgument.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000A40000bbcdbdbf2daa = {
+			name = IInitialize.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/IInitialize.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000003D0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000003E0000bbcdbdbf2daa;
+			};
+		000000570000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000580000bbcdbdbf2daa;
+			};
+		000000C20000bbcdbdbf2daa = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"../../../carbon/src/stackless/include",
+					"../../../carbon/src/stackless/stackless",
+					"../../../carbon/src/stackless/Mac",
+					.,
+					"../../../carbon/src",
+					"../../../../../../sdk/telemetry/2.1A3/include",
+					.,
+					..,
+					);
+				CLANG_WARN_INT_CONVERSION = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				PRODUCT_NAME = BlueExposure_d;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
+					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
+					"../../../../../../sdk/telemetry/2.1A3/lib",
+					);
+				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
+				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
+				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					_DEBUG,
+					"CCP_STACKLESS=1",
+					"BLUE_WITH_PYTHON=1",
+					_SCL_SECURE_NO_WARNINGS,
+					BLUEBUILD,
+					"$(inherited)",
+					);
+				COPY_PHASE_STRIP = NO;
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_DYNAMIC_NO_PIC = NO;
+				SDKROOT = macosx;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				};
+			name = Release;
+			};
+		000000510000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000520000bbcdbdbf2daa;
+			};
+		0000000E0000bbcdbdbf2daa = {
+			name = BlueLuaThunkers.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueLuaThunkers.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000AC0000bbcdbdbf2daa = {
+			name = IPythonNumeric.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/IPythonNumeric.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000610000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000620000bbcdbdbf2daa;
+			};
+		000000920000bbcdbdbf2daa = {
+			name = BlueWrapReturnValue.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueWrapReturnValue.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000BA0000bbcdbdbf2daa = {
+			isa = XCConfigurationList;
+			defaultConfigurationName = Release;
+			buildConfigurations = (
+				000000C10000bbcdbdbf2daa,
+				);
+			defaultConfigurationIsVisible = 0;
+			};
+		000000C10000bbcdbdbf2daa = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"../../../../../../shared_tools/python/27_mac/include/python2.7",
+					.,
+					"../../../carbon/src",
+					"../../../../../../sdk/telemetry/2.1A3/include",
+					.,
+					..,
+					);
+				CLANG_WARN_INT_CONVERSION = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				PRODUCT_NAME = BlueExposure;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				GCC_OPTIMIZATION_LEVEL = s;
+				ONLY_ACTIVE_ARCH = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"../../../../../../shared_tools/python/27_mac/lib",
+					"../../../../../../sdk/telemetry/2.1A3/lib",
+					);
+				SYMROOT = "../../autobuild/BlueExposure/python_27/MacOsX$(ARCHS)/clang4.2";
+				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
+				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"BLUE_WITH_PYTHON=1",
+					_SCL_SECURE_NO_WARNINGS,
+					BLUEBUILD,
+					"$(inherited)",
+					);
+				COPY_PHASE_STRIP = NO;
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_DYNAMIC_NO_PIC = NO;
+				SDKROOT = macosx;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				};
+			name = Release;
+			};
+		0000000A0000bbcdbdbf2daa = {
+			name = BlueExtractArgumentLua.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueExtractArgumentLua.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000006A0000bbcdbdbf2daa = {
+			name = BlueFunctionTraits.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueFunctionTraits.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000960000bbcdbdbf2daa = {
+			name = BlueWrapReturnValuePython.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueWrapReturnValuePython.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000660000bbcdbdbf2daa = {
+			name = BlueExtractArgumentLua.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExtractArgumentLua.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000690000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000006A0000bbcdbdbf2daa;
+			};
+		0000001A0000bbcdbdbf2daa = {
+			name = BlueRegistrationLua.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueRegistrationLua.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000070000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000080000bbcdbdbf2daa;
+			};
+		000000910000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000920000bbcdbdbf2daa;
+			};
+		000000800000bbcdbdbf2daa = {
+			name = BlueSmartPy.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueSmartPy.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000320000bbcdbdbf2daa = {
+			name = PythonKlass.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = PythonKlass.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000950000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000960000bbcdbdbf2daa;
+			};
+		000000790000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000007A0000bbcdbdbf2daa;
+			};
+		000000100000bbcdbdbf2daa = {
+			name = BlueLuaWrapper.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueLuaWrapper.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000008A0000bbcdbdbf2daa = {
+			name = BlueTypeTraits.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueTypeTraits.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000550000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000560000bbcdbdbf2daa;
+			};
+		000000850000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000860000bbcdbdbf2daa;
+			};
+		000000080000bbcdbdbf2daa = {
+			name = BlueExtractArgument.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueExtractArgument.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000420000bbcdbdbf2daa = {
+			name = BlueVariable.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = BlueVariable.h;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000008D0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000008E0000bbcdbdbf2daa;
+			};
+		000000BF0000bbcdbdbf2daa = {
+			projectDirPath = "";
+			targets = (
+				000000B90000bbcdbdbf2daa,
+				000000BB0000bbcdbdbf2daa,
+				000000BD0000bbcdbdbf2daa,
+				);
+			knownRegions = (
+				en,
+				);
+			developmentRegion = English;
+			projectRoot = "";
+			hasScannedForEncodings = 0;
+			compatibilityVersion = "Xcode 3.2";
+			mainGroup = 000000B70000bbcdbdbf2daa;
+			attributes = {
+				ORGANIZATIONNAME = CCP;
+				LastUpgradeCheck = 0460;
+				};
+			isa = PBXProject;
+			buildConfigurationList = 000000C00000bbcdbdbf2daa;
+			};
+		000000200000bbcdbdbf2daa = {
+			name = BlueSharedString.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueSharedString.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000810000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000820000bbcdbdbf2daa;
+			};
+		000000720000bbcdbdbf2daa = {
+			name = BlueMemberIterator.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueMemberIterator.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000890000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000008A0000bbcdbdbf2daa;
+			};
+		000000770000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000780000bbcdbdbf2daa;
+			};
+		000000490000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000004A0000bbcdbdbf2daa;
+			};
+		0000003E0000bbcdbdbf2daa = {
+			name = BluePythonThunkers.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = BluePythonThunkers.h;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000007F0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000800000bbcdbdbf2daa;
+			};
+		000000010000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000020000bbcdbdbf2daa;
+			};
+		000000240000bbcdbdbf2daa = {
+			name = BlueTypes.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueTypes.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000040000bbcdbdbf2daa = {
+			name = BlueClasses_Blue.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueClasses_Blue.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000820000bbcdbdbf2daa = {
+			name = BlueStdResult.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueStdResult.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000004B0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000004C0000bbcdbdbf2daa;
+			};
+		0000000F0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000100000bbcdbdbf2daa;
+			};
+		0000001E0000bbcdbdbf2daa = {
+			name = BlueScriptCallback.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueScriptCallback.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000008B0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000008C0000bbcdbdbf2daa;
+			};
+		0000005B0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000005C0000bbcdbdbf2daa;
+			};
+		000000350000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000360000bbcdbdbf2daa;
+			};
+		0000002C0000bbcdbdbf2daa = {
+			name = Copier_Blue.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = Copier_Blue.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000000C0000bbcdbdbf2daa = {
+			name = BlueListUtil.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueListUtil.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000590000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000005A0000bbcdbdbf2daa;
+			};
+		0000005F0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000600000bbcdbdbf2daa;
+			};
+		0000008E0000bbcdbdbf2daa = {
+			name = BlueVectorTypes.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueVectorTypes.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000001B0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000001C0000bbcdbdbf2daa;
+			};
+		0000009A0000bbcdbdbf2daa = {
+			name = IBlueDict.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/IBlueDict.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000600000bbcdbdbf2daa = {
+			name = BlueExposureMacrosLua.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExposureMacrosLua.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000030000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000040000bbcdbdbf2daa;
+			};
+		0000009E0000bbcdbdbf2daa = {
+			name = IBlueStructureList.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/IBlueStructureList.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000000D0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000000E0000bbcdbdbf2daa;
+			};
+		000000650000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000660000bbcdbdbf2daa;
+			};
+		000000830000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000840000bbcdbdbf2daa;
+			};
+		000000B30000bbcdbdbf2daa = {
+			isa = PBXGroup;
+			sourceTree = "<group>";
+			children = (
+				);
+			name = Dependencies;
+			};
+		000000B50000bbcdbdbf2daa = {
+			path = BlueExposure_d.lib;
+			isa = PBXFileReference;
+			includeInIndex = 0;
+			explicitFileType = archive.ar;
+			sourceTree = BUILT_PRODUCTS_DIR;
+			};
+		000000210000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000220000bbcdbdbf2daa;
+			};
+		0000005E0000bbcdbdbf2daa = {
+			name = BlueExposureMacrosDeprecated.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExposureMacrosDeprecated.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000540000bbcdbdbf2daa = {
+			name = BlueExposure.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExposure.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000005A0000bbcdbdbf2daa = {
+			name = BlueExposureHelpersPython.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExposureHelpersPython.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000970000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000980000bbcdbdbf2daa;
+			};
+		000000870000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000880000bbcdbdbf2daa;
+			};
+		000000BC0000bbcdbdbf2daa = {
+			isa = XCConfigurationList;
+			defaultConfigurationName = Release;
+			buildConfigurations = (
+				000000C20000bbcdbdbf2daa,
+				);
+			defaultConfigurationIsVisible = 0;
+			};
+		000000730000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000740000bbcdbdbf2daa;
+			};
+		000000B20000bbcdbdbf2daa = {
+			isa = PBXGroup;
+			sourceTree = "<group>";
+			children = (
+				0000004A0000bbcdbdbf2daa,
+				0000004C0000bbcdbdbf2daa,
+				0000004E0000bbcdbdbf2daa,
+				000000500000bbcdbdbf2daa,
+				000000520000bbcdbdbf2daa,
+				000000540000bbcdbdbf2daa,
+				000000560000bbcdbdbf2daa,
+				000000580000bbcdbdbf2daa,
+				0000005A0000bbcdbdbf2daa,
+				0000005C0000bbcdbdbf2daa,
+				0000005E0000bbcdbdbf2daa,
+				000000600000bbcdbdbf2daa,
+				000000620000bbcdbdbf2daa,
+				000000640000bbcdbdbf2daa,
+				000000660000bbcdbdbf2daa,
+				000000680000bbcdbdbf2daa,
+				0000006A0000bbcdbdbf2daa,
+				0000006C0000bbcdbdbf2daa,
+				0000006E0000bbcdbdbf2daa,
+				000000700000bbcdbdbf2daa,
+				000000720000bbcdbdbf2daa,
+				000000740000bbcdbdbf2daa,
+				000000760000bbcdbdbf2daa,
+				000000780000bbcdbdbf2daa,
+				0000007A0000bbcdbdbf2daa,
+				0000007C0000bbcdbdbf2daa,
+				0000007E0000bbcdbdbf2daa,
+				000000800000bbcdbdbf2daa,
+				000000360000bbcdbdbf2daa,
+				000000820000bbcdbdbf2daa,
+				000000840000bbcdbdbf2daa,
+				000000860000bbcdbdbf2daa,
+				0000008A0000bbcdbdbf2daa,
+				000000880000bbcdbdbf2daa,
+				0000008C0000bbcdbdbf2daa,
+				0000008E0000bbcdbdbf2daa,
+				000000900000bbcdbdbf2daa,
+				000000920000bbcdbdbf2daa,
+				000000940000bbcdbdbf2daa,
+				000000960000bbcdbdbf2daa,
+				000000980000bbcdbdbf2daa,
+				0000009A0000bbcdbdbf2daa,
+				0000009C0000bbcdbdbf2daa,
+				0000009E0000bbcdbdbf2daa,
+				000000A00000bbcdbdbf2daa,
+				000000A20000bbcdbdbf2daa,
+				000000A40000bbcdbdbf2daa,
+				000000A60000bbcdbdbf2daa,
+				000000A80000bbcdbdbf2daa,
+				000000AA0000bbcdbdbf2daa,
+				000000AC0000bbcdbdbf2daa,
+				000000AE0000bbcdbdbf2daa,
+				000000B00000bbcdbdbf2daa,
+				);
+			name = include;
+			};
+		000000B10000bbcdbdbf2daa = {
+			isa = PBXGroup;
+			sourceTree = "<group>";
+			children = (
+				000000B20000bbcdbdbf2daa,
+				000000020000bbcdbdbf2daa,
+				000000380000bbcdbdbf2daa,
+				000000040000bbcdbdbf2daa,
+				000000060000bbcdbdbf2daa,
+				000000080000bbcdbdbf2daa,
+				0000000A0000bbcdbdbf2daa,
+				0000000C0000bbcdbdbf2daa,
+				0000000E0000bbcdbdbf2daa,
+				0000003A0000bbcdbdbf2daa,
+				000000100000bbcdbdbf2daa,
+				0000003C0000bbcdbdbf2daa,
+				000000120000bbcdbdbf2daa,
+				000000160000bbcdbdbf2daa,
+				000000400000bbcdbdbf2daa,
+				000000140000bbcdbdbf2daa,
+				0000003E0000bbcdbdbf2daa,
+				000000180000bbcdbdbf2daa,
+				0000001A0000bbcdbdbf2daa,
+				0000001C0000bbcdbdbf2daa,
+				0000001E0000bbcdbdbf2daa,
+				000000200000bbcdbdbf2daa,
+				000000220000bbcdbdbf2daa,
+				000000240000bbcdbdbf2daa,
+				000000260000bbcdbdbf2daa,
+				000000280000bbcdbdbf2daa,
+				000000420000bbcdbdbf2daa,
+				0000002A0000bbcdbdbf2daa,
+				000000440000bbcdbdbf2daa,
+				0000002C0000bbcdbdbf2daa,
+				0000002E0000bbcdbdbf2daa,
+				000000460000bbcdbdbf2daa,
+				000000300000bbcdbdbf2daa,
+				000000320000bbcdbdbf2daa,
+				000000340000bbcdbdbf2daa,
+				000000480000bbcdbdbf2daa,
+				);
+			name = "Source Files";
+			};
+		000000360000bbcdbdbf2daa = {
+			name = BlueStdResult.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = "include/BlueStdResult.cpp";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000300000bbcdbdbf2daa = {
+			name = InterfaceDefinitions.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = InterfaceDefinitions.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000009D0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000009E0000bbcdbdbf2daa;
+			};
+		000000BD0000bbcdbdbf2daa = {
+			dependencies = (
+				);
+			productReference = 000000B60000bbcdbdbf2daa;
+			name = Release_Mac64;
+			productType = "com.apple.product-type.library.static";
+			buildRules = (
+				);
+			isa = PBXNativeTarget;
+			productName = BlueExposure;
+			buildConfigurationList = 000000BE0000bbcdbdbf2daa;
+			buildPhases = (
+				000000B80000bbcdbdbf2daa,
+				);
+			};
+		000000760000bbcdbdbf2daa = {
+			name = BlueRegistration.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueRegistration.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000009F0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000A00000bbcdbdbf2daa;
+			};
+		000000990000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000009A0000bbcdbdbf2daa;
+			};
+		000000620000bbcdbdbf2daa = {
+			name = BlueExposureMacrosPython.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExposureMacrosPython.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000A50000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000A60000bbcdbdbf2daa;
+			};
+		000000450000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000460000bbcdbdbf2daa;
+			};
+		000000710000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000720000bbcdbdbf2daa;
+			};
+		000000940000bbcdbdbf2daa = {
+			name = BlueWrapReturnValueLua.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueWrapReturnValueLua.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000270000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000280000bbcdbdbf2daa;
+			};
+		000000A60000bbcdbdbf2daa = {
+			name = IList.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/IList.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000006B0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000006C0000bbcdbdbf2daa;
+			};
+		000000A00000bbcdbdbf2daa = {
+			name = ICopier.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/ICopier.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000220000bbcdbdbf2daa = {
+			name = BlueStructureList.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueStructureList.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000580000bbcdbdbf2daa = {
+			name = BlueExposureHelpersLua.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueExposureHelpersLua.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000008C0000bbcdbdbf2daa = {
+			name = BlueUtil.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueUtil.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000120000bbcdbdbf2daa = {
+			name = BlueMemberIterator.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BlueMemberIterator.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000840000bbcdbdbf2daa = {
+			name = BlueStringTable.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueStringTable.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000B60000bbcdbdbf2daa = {
+			path = BlueExposure.lib;
+			isa = PBXFileReference;
+			includeInIndex = 0;
+			explicitFileType = archive.ar;
+			sourceTree = BUILT_PRODUCTS_DIR;
+			};
+		000000BE0000bbcdbdbf2daa = {
+			isa = XCConfigurationList;
+			defaultConfigurationName = Release;
+			buildConfigurations = (
+				000000C30000bbcdbdbf2daa,
+				);
+			defaultConfigurationIsVisible = 0;
+			};
+		000000340000bbcdbdbf2daa = {
+			name = TypeInfo.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = TypeInfo.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000A70000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000A80000bbcdbdbf2daa;
+			};
+		000000AB0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000AC0000bbcdbdbf2daa;
+			};
+		000000530000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000540000bbcdbdbf2daa;
+			};
+		000000290000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000002A0000bbcdbdbf2daa;
+			};
+		0000002E0000bbcdbdbf2daa = {
+			name = Find.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = Find.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000007E0000bbcdbdbf2daa = {
+			name = BlueSmartPtr.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueSmartPtr.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000000B0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000000C0000bbcdbdbf2daa;
+			};
+		000000160000bbcdbdbf2daa = {
+			name = BluePyWrap.cpp;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = BluePyWrap.cpp;
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		000000250000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000260000bbcdbdbf2daa;
+			};
+		0000009B0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000009C0000bbcdbdbf2daa;
+			};
+		0000002B0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000002C0000bbcdbdbf2daa;
+			};
+		000000700000bbcdbdbf2daa = {
+			name = BlueMemberFunctionTraits.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/BlueMemberFunctionTraits.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000009C0000bbcdbdbf2daa = {
+			name = IBlueRtti.h;
+			fileEncoding = 4;
+			lastKnownFileType = sourcecode.cpp.h;
+			path = "include/IBlueRtti.h";
+			isa = PBXFileReference;
+			sourceTree = "<group>";
+			};
+		0000007D0000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 0000007E0000bbcdbdbf2daa;
+			};
+		000000130000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000140000bbcdbdbf2daa;
+			};
+		000000170000bbcdbdbf2daa = {
+			isa = PBXBuildFile;
+			fileRef = 000000180000bbcdbdbf2daa;
+			};
+		};
+	objectVersion = 46;
+	rootObject = 000000BF0000bbcdbdbf2daa;
+	}

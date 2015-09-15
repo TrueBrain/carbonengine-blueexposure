@@ -432,6 +432,25 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, unsigned long& resu
 
 	return true;
 }
+#else
+bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, long& result, unsigned int argID, std::false_type isBlueType )
+{
+    if( PyInt_Check(argument) )
+    {
+        result = (long)PyInt_AsLong( argument );
+    }
+    else if( PyLong_Check(argument) )
+    {
+        result = (long)PyLong_AsLongLong( argument );
+    }
+    else
+    {
+        PyErr_Format( PyExc_TypeError, argumentTypeMismatchString, argID, "long" );
+        return false;
+    }
+    
+    return true;
+}
 
 #endif
 

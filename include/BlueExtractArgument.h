@@ -101,6 +101,8 @@ bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, Matrix& resul
 
 #ifdef _MSC_VER
 bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, unsigned long& result, unsigned int argID, std::false_type isBlueType );
+#else
+bool BLUEIMPORT BlueExtractArgumentImpl( BlueScriptValue argument, long& result, unsigned int argID, std::false_type isBlueType );
 #endif
 
 // Special care for enums
