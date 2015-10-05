@@ -298,13 +298,39 @@ template<typename T> static Be::VARTYPE GetVarTypeForVariable( const BlueWeakRef
 	return Be::IROOTWEAKREF;
 }
 
-// Most types don't have a Blue interfaceID
-template<typename T> static const Be::IID* GetBlueIID( const T& )
+namespace BlueListUtils
+{
+class BlueListBase;
+}
+
+template<typename T> inline const Be::IID* GetBlueIIDBluePointerHelper( const T& t, std::true_type isRawBluePointer, std::true_type isBlueList )
 {
 	return nullptr;
 }
 
-template<typename T> static const Be::IID* GetBlueIID( const BluePtr<T>& )
+template<typename T> inline const Be::IID* GetBlueIIDBluePointerHelper( const T& t, std::true_type isRawBluePointer, std::false_type isBlueList )
+{
+	return &BlueInterfaceIID<std::remove_pointer<T>::type>();
+}
+
+template<typename T> inline const Be::IID* GetBlueIIDHelper( const T& t, std::true_type isRawBluePointer )
+{
+	return GetBlueIIDBluePointerHelper( t, isRawBluePointer, std::is_base_of<BlueListUtils::BlueListBase, std::remove_pointer<T>::type>::type() );
+}
+
+template<typename T> inline const Be::IID* GetBlueIIDHelper( const T& t, std::false_type isRawBluePointer )
+{
+	return nullptr;
+}
+
+
+// Most types don't have a Blue interfaceID
+template<typename T> inline const Be::IID* GetBlueIID( const T& t )
+{
+	return GetBlueIIDHelper( t, is_pointer_to_blue<T>::type() );
+}
+
+template<typename T> inline const Be::IID* GetBlueIID( const BluePtr<T>& )
 {
 	return &BlueInterfaceIID<T>();
 }
