@@ -15,9 +15,6 @@ BLUE_DECLARE_EXCEPTION_EX( BlueStdRuntimeError, extern BLUEIMPORT );
 BLUE_DECLARE_EXCEPTION_EX( BlueStdTypeError, extern BLUEIMPORT );
 BLUE_DECLARE_EXCEPTION_EX( BlueStdValueError, extern BLUEIMPORT );
 
-namespace Be
-{
-
 enum BlueStdResultType
 {
 	BLUE_STD_RESULT_OK,
@@ -34,6 +31,9 @@ enum BlueStdResultType
 	BLUE_STD_RESULT_TYPE_ERROR,
 	BLUE_STD_RESULT_VALUE_ERROR,
 };
+
+namespace Be
+{
 
 template <>
 struct Result<BlueStdResultType>
@@ -73,15 +73,16 @@ private:
 	std::string m_message;
 };
 
+}
+
 typedef Be::Result<BlueStdResultType> BlueStdResult;
 
-
-template<> inline bool IsSuccess( const BlueStdResult& result )
+template<> inline bool BeIsSuccess( const BlueStdResult& result )
 {
 	return result;
 }
 
-inline const char* GetErrorMessage( const BlueStdResult& result )
+inline const char* BeGetErrorMessage( const BlueStdResult& result )
 {
 	return result.GetMessage();
 }
@@ -121,83 +122,85 @@ BLUE_END_GET_EXCEPTION()
 
 
 template <typename T1, typename T2>
-struct ResultChoice: public std::pair<T1, T2>
+struct BeResultChoice: public std::pair<T1, T2>
 {
-	ResultChoice()
+	BeResultChoice()
 	{
 	}
 
-	ResultChoice( const T1& result1 )
+	BeResultChoice( const T1& result1 )
 	{
 		this->first = result1;
 	}
-	ResultChoice( const T2& result2 )
+	BeResultChoice( const T2& result2 )
 	{
 		this->second = result2;
 	}
 };
 
 template <typename T1, typename T2>
-struct Result<ResultChoice<T1, T2>>
+struct Be::Result<BeResultChoice<T1, T2>>
 {
-	Result<ResultChoice<T1, T2>>()
+	Result<BeResultChoice<T1, T2>>()
 	{
 	}
 
-	Result<ResultChoice<T1, T2>>( const T1& result1 )
+	Result<BeResultChoice<T1, T2>>( const T1& result1 )
 		:m_results( result1 )
 	{
 	}
 
-	Result<ResultChoice<T1, T2>>( const T2& result2 )
+	Result<BeResultChoice<T1, T2>>( const T2& result2 )
 		:m_results( result2 )
 	{
 	}
 
-	ResultChoice<T1, T2> m_results;
+	BeResultChoice<T1, T2> m_results;
 };
 
-template <typename T1, typename T2> inline bool IsSuccess( const Result<ResultChoice<T1, T2>>& result )
+template <typename T1, typename T2> inline bool BeIsSuccess( const Be::Result<BeResultChoice<T1, T2>>& result )
 {
-	return IsSuccess( result.m_results.first ) && IsSuccess( result.m_results.second );
+	return BeIsSuccess( result.m_results.first ) && BeIsSuccess( result.m_results.second );
 }
 
 template <typename T1, typename T2>
-inline const char* GetErrorMessage( const Result<ResultChoice<T1, T2>>& result )
+inline const char* BeGetErrorMessage( const Be::Result<BeResultChoice<T1, T2>>& result )
 {
-	if( !IsSuccess( result.m_results.first ) )
+	if( !BeIsSuccess( result.m_results.first ) )
 	{
-		return GetErrorMessage( result.m_results.first );
+		return BeGetErrorMessage( result.m_results.first );
 	}
-	return GetErrorMessage( result.m_results.second );
+	return BeGetErrorMessage( result.m_results.second );
 }
 
 #if BLUE_WITH_PYTHON
-template <typename T1, typename T2> inline PyObject* GetException( const Be::Result<ResultChoice<T1, T2>>& result ) 
+template <typename T1, typename T2> inline PyObject* BeGetException( const Be::Result<BeResultChoice<T1, T2>>& result ) 
 {
-	if( !IsSuccess( result.m_results.first ) )
+	if( !BeIsSuccess( result.m_results.first ) )
 	{
-		return GetException( result.m_results.first );
+		return BeGetException( result.m_results.first );
 	}
-	return GetException( result.m_results.second );
+	return BeGetException( result.m_results.second );
 }
 #elif BLUE_WITH_LUA
-template <typename T1, typename T2> inline const char* GetException( const Be::Result<ResultChoice<T1, T2>>& result ) 
+template <typename T1, typename T2> inline const char* BeGetException( const Be::Result<BeResultChoice<T1, T2>>& result ) 
 {
-	if( !IsSuccess( result.m_results.first ) )
+	if( !BeIsSuccess( result.m_results.first ) )
 	{
-		return GetException( result.m_results.first );
+		return BeGetException( result.m_results.first );
 	}
-	return GetException( result.m_results.second );
+	return BeGetException( result.m_results.second );
 }
 #endif
+
+namespace Be
+{
 
 template <typename T>
 struct BlueWithStdResult
 {
-	typedef Result<ResultChoice<T, BlueStdResult>> type;
+	typedef Be::Result<BeResultChoice<T, BlueStdResult>> type;
 };
 
 }
-
 #endif

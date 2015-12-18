@@ -14,7 +14,7 @@
 template< typename resultType, typename argType >
 BlueScriptValue BlueGetReturnValueIfSuccess( BlueScriptArguments args, const resultType& result, const argType& arg )
 {
-	if( Be::IsSuccess( result ) )
+	if( BeIsSuccess( result ) )
 	{
 		return BlueWrapReturnValue( args, arg );
 	}
@@ -27,7 +27,7 @@ BlueScriptValue BlueGetReturnValueIfSuccess( BlueScriptArguments args, const res
 template< typename resultType>
 BlueScriptValue BlueGetVoidReturnValueIfSuccess( const resultType& result )
 {
-	if( Be::IsSuccess( result ) )
+	if( BeIsSuccess( result ) )
 	{
 		BLUE_SCRIPT_NO_RETURN_VALUE;
 	}
@@ -40,7 +40,7 @@ BlueScriptValue BlueGetVoidReturnValueIfSuccess( const resultType& result )
 template< typename resultType>
 BlueScriptValue BlueGetWrappedObjectReturnValueIfSuccess( BlueScriptArguments args, const resultType& result, IRoot* p )
 {
-	if( Be::IsSuccess( result ) )
+	if( BeIsSuccess( result ) )
 	{
 		if( p )
 		{

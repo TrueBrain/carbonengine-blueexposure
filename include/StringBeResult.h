@@ -11,33 +11,29 @@
 
 #include "BlueStdResult.h"
 
-namespace Be
+template<>
+struct Be::Result<std::string>
 {
-	template<>
-	struct Result<std::string>
-	{
-		Result() {}
-		Result( const std::string& s ) : value( s ) {}
-		Result( const Result& other ) : value( other.value ) {}
-		std::string value;
-	};
+	Result<std::string>() {}
+	Result<std::string>( const std::string& s ) : value( s ) {}
+	Result<std::string>( const Result& other ) : value( other.value ) {}
+	std::string value;
+};
 
-	template <>
-	inline bool IsSuccess<std::string>( const Result<std::string>& result )
-	{
-		return result.value.empty();
-	}
-
-	template <>
-	inline const char* GetErrorMessage<std::string>( const Result<std::string>& result )
-	{
-		return result.value.c_str();
-	}
-
-	BLUE_BEGIN_GET_EXCEPTION_INLINE( Result<std::string> )
-		return BLUE_GET_EXCEPTION( BlueStdRuntimeError );
-	BLUE_END_GET_EXCEPTION()
-
+template <>
+inline bool BeIsSuccess<std::string>( const Be::Result<std::string>& result )
+{
+	return result.value.empty();
 }
+
+template <>
+inline const char* BeGetErrorMessage<std::string>( const Be::Result<std::string>& result )
+{
+	return result.value.c_str();
+}
+
+BLUE_BEGIN_GET_EXCEPTION_INLINE( Be::Result<std::string> )
+	return BLUE_GET_EXCEPTION( BlueStdRuntimeError );
+BLUE_END_GET_EXCEPTION()
 
 #endif // StringBeResult_h

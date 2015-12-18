@@ -126,16 +126,16 @@ bool BlueCallPropertySetter( fnType method, C* o, BlueScriptValue val, std::true
 	// call the function
 	ResultType result = (o->*method)( arg1 );
 
-	if( Be::IsSuccess( result ) )
+	if( BeIsSuccess( result ) )
 	{
 		return true;
 	}
 	else
 	{
 #if BLUE_WITH_PYTHON
-		PyErr_SetString( Be::GetException( result ), Be::GetErrorMessage( result ) );
+		PyErr_SetString( BeGetException( result ), BeGetErrorMessage( result ) );
 #elif BLUE_WITH_LUA
-		luaL_error( val.ls, "%s: %s", Be::GetException( result ), Be::GetErrorMessage( result ) );
+		luaL_error( val.ls, "%s: %s", BeGetException( result ), BeGetErrorMessage( result ) );
 #endif
 		return false;
 	}
@@ -170,14 +170,14 @@ BlueScriptValue BlueCallPropertyGetter( fnType method, C* o, BlueScriptArguments
 	// call the function
 	ResultType result = (o->*method)( arg1 );
 
-	if( Be::IsSuccess( result ) )
+	if( BeIsSuccess( result ) )
 	{
 		return BlueGetReturnValueIfSuccess( args, result, arg1 );
 	}
 	else
 	{
 #if BLUE_WITH_PYTHON
-		PyErr_SetString( Be::GetException( result ), Be::GetErrorMessage( result ) );
+		PyErr_SetString( BeGetException( result ), BeGetErrorMessage( result ) );
 #endif
 		return BLUE_SCRIPT_ERROR;
 	}
@@ -591,11 +591,11 @@ BlueScriptValue BlueCallFunctionReturningValue( fnType method, BlueScriptArgumen
 		return BLUE_SCRIPT_ERROR; // Error set by BlueCallFunction
 	}
 
-	if( !Be::IsSuccess( result ) )
+	if( !BeIsSuccess( result ) )
 	{
 #if BLUE_WITH_PYTHON
 		CCP_ASSERT( returnValue == nullptr );
-		PyErr_SetString( Be::GetException( result ), Be::GetErrorMessage( result ) );
+		PyErr_SetString( BeGetException( result ), BeGetErrorMessage( result ) );
 #endif
 		return BLUE_SCRIPT_ERROR;
 	}

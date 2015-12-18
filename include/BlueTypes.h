@@ -22,47 +22,57 @@ typedef ptrdiff_t ssize_t;
 struct IRoot;
 struct IBlueRtti;
 
+
+
 namespace Be
 {
 	typedef int64_t Time;	// Same as Win32 FILETIME
 
 	template<typename T> struct Result;
+}
 
-	template<typename T> bool IsSuccess( const Result<T>& result )
-	{
-		CCP_ASSERT_M( false, "Missing specialization for Be::IsSuccess" );
-		return false;
-	}
 
-	template<typename T> const char* GetErrorMessage( const Result<T>& result )
-	{
-		return "Missing specialization for Be::GetErrorMessage";
-	}
+template<typename T> bool BeIsSuccess( const Be::Result<T>& result )
+{
+	static_assert( sizeof( T ) == 0, "Missing specialization for BeIsSuccess" );
+	CCP_ASSERT_M( false, "Missing specialization for BeIsSuccess" );
+	return false;
+}
+
+template<typename T> const char* BeGetErrorMessage( const Be::Result<T>& result )
+{
+	static_assert( sizeof( T ) == 0, "Missing specialization for BeGetErrorMessage" );
+	return "Missing specialization for BeGetErrorMessage";
+}
 
 #if BLUE_WITH_PYTHON
-#define BLUE_DECLARE_GET_EXCEPTION( type ) template<> PyObject* GetException( const type& result );
-#define BLUE_BEGIN_GET_EXCEPTION( type ) template<> PyObject* GetException( const type& result ) {
-#define BLUE_BEGIN_GET_EXCEPTION_INLINE( type ) template<> inline PyObject* GetException( const type& result ) {
+#define BLUE_DECLARE_GET_EXCEPTION( type ) template<> PyObject* BeGetException( const type& result );
+#define BLUE_BEGIN_GET_EXCEPTION( type ) template<> PyObject* BeGetException( const type& result ) {
+#define BLUE_BEGIN_GET_EXCEPTION_INLINE( type ) template<> inline PyObject* BeGetException( const type& result ) {
 #define BLUE_END_GET_EXCEPTION() }
 
-	template<typename T> PyObject* GetException( const Result<T>& result )
-	{
-		CCP_ASSERT_M( false, "Missing specialization for Be::GetException" );
-		return nullptr;
-	}
+template<typename T> PyObject* BeGetException( const Be::Result<T>& result )
+{
+	static_assert( sizeof( T ) == 0, "Missing specialization for BeGetException" );
+	CCP_ASSERT_M( false, "Missing specialization for BeGetException" );
+	return nullptr;
+}
 #elif BLUE_WITH_LUA
-#define BLUE_DECLARE_GET_EXCEPTION( type ) template<> const char* GetException( const type& result );
-#define BLUE_BEGIN_GET_EXCEPTION( type ) template<> const char* GetException( const type& result ) {
-#define BLUE_BEGIN_GET_EXCEPTION_INLINE( type ) template<> inline const char* GetException( const type& result ) {
+#define BLUE_DECLARE_GET_EXCEPTION( type ) template<> const char* BeGetException( const type& result );
+#define BLUE_BEGIN_GET_EXCEPTION( type ) template<> const char* BeGetException( const type& result ) {
+#define BLUE_BEGIN_GET_EXCEPTION_INLINE( type ) template<> inline const char* BeGetException( const type& result ) {
 #define BLUE_END_GET_EXCEPTION() }
 
-	template<typename T> const char* GetException( const Result<T>& result )
-	{
-		CCP_ASSERT_M( false, "Missing specialization for Be::GetException" );
-		return nullptr;
-	}
+template<typename T> const char* BeGetException( const Be::Result<T>& result )
+{
+	static_assert( sizeof( T ) == 0, "Missing specialization for BeGetException" );
+	CCP_ASSERT_M( false, "Missing specialization for BeGetException" );
+	return nullptr;
+}
 #endif
 
+namespace Be
+{
 	// --------------------------------------------------------------------------------------
 	// Description:
 	//   A helper object to wrap an optional exposed function argument for function that
