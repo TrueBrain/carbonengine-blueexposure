@@ -5,6 +5,7 @@
 #include "Copier.h"
 
 #include "include/IBlueDict.h"
+#include "include/BlueMemberIterator.h"
 
 #include <vector>
 #include <stack>
@@ -596,6 +597,89 @@ PyObject* IList_Thunk::Pyreverse(PyObject* args)
 PyObject* IList_Thunk::Pysort(PyObject*)
 {
 	return PyErr_SetString( PyExc_RuntimeError, "not implemented yet"), nullptr;
+}
+
+namespace
+{
+
+bool VarEquals( const Be::VarEntry* entry, const Be::Var* variable, const char* value )
+{
+	switch( entry->mType )
+	{
+	case Be::CSTRING:
+		if( strcmp( variable->mCharPtr, value ) == 0 )
+		{
+			return true;
+		}
+		break;
+	case Be::STDSTRING:
+		if( strcmp( reinterpret_cast<const std::string*>( variable )->c_str(), value ) == 0 )
+		{
+			return true;
+		}
+		break;
+	case Be::WCSTRING:
+		if( wcscmp( variable->mWCharPtr, CA2W( value ) ) == 0 )
+		{
+			return true;
+		}
+		break;
+	case Be::STDWSTRING:
+		if( wcscmp( reinterpret_cast<const std::wstring*>( variable )->c_str(), CA2W( value ) ) == 0 )
+		{
+			return true;
+		}
+		break;
+	case Be::SHAREDSTRING:
+		if( strcmp( reinterpret_cast<const BlueSharedString*>( variable )->c_str(), value ) == 0 )
+		{
+			return true;
+		}
+	default:
+		break;
+	}
+	return false;
+}
+
+}
+
+PyObject* IList_Thunk::PyFindByName(PyObject* args)
+{
+	const char* name;
+	if( !PyArg_ParseTuple( args, "s", &name ) )
+	{
+		return nullptr;
+	}
+
+	auto count = GetSize();
+	for( ssize_t i = 0; i < count; ++i )
+	{
+		auto element = GetAt( i );
+		if( !element )
+		{
+			continue;
+		}
+		auto type = element->ClassType();
+		if( !type )
+		{
+			continue;
+		}
+
+		for( BlueMemberIterator it( element ); !it.Eof(); it.Next() )
+		{
+			auto entry = it.Entry();
+			if( strcmp( entry->mName, "name" ) == 0 )
+			{
+				if( !entry->mGetProperty && VarEquals( entry, it.Var(), name ) )
+				{
+					return BlueWrapObjectForPython( element );
+				}
+				break;
+			}
+		}
+	}
+
+	Py_RETURN_NONE;
 }
 
 

@@ -129,6 +129,8 @@ public:
 			MAPPYTHON( sort,		"L.sort([cmpfunc]) -- sort *IN PLACE*; if given, cmpfunc(x, y) -> -1, 0, 1")
 			MAPPYTHON( fremove,		"L.fremove(value) -- returns true if object was removed.  list order is not preserved.")
 
+			MAPPYTHON( FindByName,	"L.FindByName(name) -- returns list element with name attribute equal to passed name or None if not found.")
+
 			MAPPYTHON( GetInfo,		"GetInfo")
 
 		THUNKER_END()
@@ -146,6 +148,8 @@ public:
 	DECLARE_PYMETHODTHUNK( reverse );
 	DECLARE_PYMETHODTHUNK( sort );
 	DECLARE_PYMETHODTHUNK( fremove );
+
+	DECLARE_PYMETHODTHUNK( FindByName );
 
 	DECLARE_PYMETHODTHUNK( GetInfo );
 };
