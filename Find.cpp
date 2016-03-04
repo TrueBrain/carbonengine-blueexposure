@@ -307,4 +307,217 @@ static void PushChildren(IRoot *obj, int level, objectstack_t &stack)
 }
 
 
+
+namespace
+{
+
+class RouteItem
+{
+public:
+	enum ItemType
+	{
+		ATTRIBUTE,
+		INDEX,
+	};
+
+	RouteItem( IRoot* parent )
+		:m_parent( parent ),
+		m_type( parent->ClassType() ),
+		m_entry( nullptr ),
+		m_offset( 0 ),
+		m_listIndex( -1 ),
+		m_dictIndex( -1 ),
+		m_value( nullptr ),
+		m_list( nullptr ),
+		m_dict( nullptr )
+	{
+		IListPtr list( BlueCastPtr( m_parent ) );
+		m_list = list.p;
+		IBlueDictPtr dict( BlueCastPtr( m_parent ) );
+		m_dict = dict.p;
+	}
+
+	IRoot* Value() const
+	{
+		return m_value ? m_value->GetRootObject() : nullptr;
+	}
+
+	PyObject* GetPathItem() const
+	{
+		if( !m_value )
+		{
+			return nullptr;
+		}
+		if( m_dictIndex >= 0 )
+		{
+			return Py_BuildValue( "(Nis)", BlueWrapObjectForPython( m_parent ), INDEX, m_dict->GetKey( m_dictIndex ) );
+		}
+		else if( m_listIndex >= 0 )
+		{
+			return Py_BuildValue( "(Nii)", BlueWrapObjectForPython( m_parent ), INDEX, m_listIndex );
+		}
+		else
+		{
+			return Py_BuildValue( "(Nis)", BlueWrapObjectForPython( m_parent ), ATTRIBUTE, m_entry->mName );
+		}
+	}
+
+	bool Next()
+	{
+		m_value = nullptr;
+		if( NextAttribute() )
+		{
+			return true;
+		}
+		if( NextListItem() )
+		{
+			return true;
+		}
+		if( NextDictItem() )
+		{
+			return true;
+		}
+		return false;
+	}
+private:
+	bool NextAttribute()
+	{
+		for( ; m_type; m_offset += m_type->mOffsetToParent, m_type = m_type->mParentClassInfo )
+		{
+			if( !m_entry )
+			{
+				m_entry = m_type->mMemberTable;
+			}
+			else
+			{
+				++m_entry;
+			}
+			for( ; m_entry->mName; m_entry++ )
+			{
+				if( ( m_entry->mEditFlags & Be::PERSIST ) && ( m_entry->mType == Be::IROOT || m_entry->mType == Be::IROOTPTR ) )
+				{
+					Be::Var* value = BLUEMAPMEMBEROFFSET( m_parent, m_entry, m_type, m_offset );
+					if( m_entry->mType == Be::IROOTPTR) 
+					{
+						m_value = value->mIRootPtr;
+					} 
+					else 
+					{ 
+						m_value = reinterpret_cast<IRoot*>( value );
+					}
+					if( m_value )
+					{
+						return true;
+					}
+				}
+			}
+			m_entry = nullptr;
+		}
+		return false;
+	}
+
+	bool NextListItem()
+	{
+		if( m_list )
+		{
+			for( ++m_listIndex; m_listIndex < m_list->GetSize(); ++m_listIndex ) 
+			{
+				m_value = m_list->GetAt( m_listIndex );
+				if (m_value)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	bool NextDictItem()
+	{
+		if( m_dict )
+		{
+			ssize_t n = ssize_t( m_dict->GetLength() );
+			for( ++m_dictIndex; m_dictIndex < n; ++m_dictIndex )
+			{
+				const char* key = m_dict->GetKey( m_dictIndex );
+				m_value = m_dict->Subscript( key );
+				if( m_value )
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	IRoot* m_parent;
+	const Be::ClassInfo* m_type;
+	const Be::VarEntry* m_entry;
+	ptrdiff_t m_offset;
+	ssize_t m_listIndex;
+	ssize_t m_dictIndex;
+	IRoot* m_value;
+	IList* m_list;
+	IBlueDict* m_dict;
+};
+
+}
+
+PyObject* FindRoute( IRoot* from, IRoot* to )
+{
+	if( !from || !to )
+	{
+		return PyErr_SetString( PyExc_ValueError, "both from and to parameters cannot be None" ), nullptr;
+	}
+
+	PyObject* result = PyList_New( 0 );
+
+	from = from->GetRootObject();
+	to = to->GetRootObject();
+	if( from == to )
+	{
+		PyObject* path = PyList_New( 0 );
+		PyList_Append( result, path );
+		Py_DECREF( path );
+		return result;
+	}
+
+	std::vector<RouteItem> stack;
+	std::unordered_set<IRoot*> visited;
+
+	stack.push_back( RouteItem( from ) );
+
+	while( !stack.empty() )
+	{
+		RouteItem& item = stack.back();
+		if( !item.Next() )
+		{
+			stack.pop_back();
+			continue;
+		}
+
+		auto value = item.Value();
+
+		if( value == to )
+		{
+			PyObject* path = PyList_New( Py_ssize_t( stack.size() ) );
+			for( size_t i = 0; i < stack.size(); ++i )
+			{
+				PyList_SET_ITEM( path, i, stack[i].GetPathItem() );
+			}
+			PyList_Append( result, path );
+			Py_DECREF( path );
+		}
+		else
+		{
+			auto inserted = visited.insert( value );
+			if( inserted.second )
+			{
+				stack.push_back( RouteItem( value ) );
+			}
+		}
+	}
+	return result;
+}
+
 #endif
