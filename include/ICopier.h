@@ -13,6 +13,17 @@
 
 BLUE_INTERFACE(ICopier) : public IRoot
 {
+	enum OverrideResult
+	{
+		SUCCESS,
+		FAILURE,
+		FALLBACK,
+	};
+	typedef OverrideResult (*CopyOverrideCallback)( IRoot* source, IRoot** dest, ICopier* copier, void* context );
+	typedef void (*PostCopyCallback)( IRoot* source, IRoot** dest, ICopier* copier, void* context );
+
+	virtual void SetCopyOverrideCallback( CopyOverrideCallback copyOverride, void* context ) = 0;
+	virtual void SetPostCopyCallback( PostCopyCallback postCopy, void* context ) = 0;
 	virtual bool CopyTo(IRoot* source, IRoot** dest) = 0;
 };
 

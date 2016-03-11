@@ -37,9 +37,7 @@ BLUE_CLASS( Copier ) : public ICopier
 public:
 	EXPOSE_TO_BLUE();
 
-	Copier() {
-		mLevel = 0;
-	}
+	Copier();
 
 	//Copy a structure, but doesn't preserve topology.  i.e. multiple
 	//shared children will become separate instances
@@ -49,6 +47,8 @@ public:
 	//instances.
 	bool CloneTo(IRoot *source, IRoot **dest);
 
+	void SetCopyOverrideCallback( CopyOverrideCallback copyOverride, void* context );
+	void SetPostCopyCallback( PostCopyCallback postCopy, void* context );
 private:
 
 	// Handle copying between existing classes
@@ -57,6 +57,10 @@ private:
 	// Same, for Python Objects
 	bool CopyPyObjectPtr(Be::Var &dst, Be::Var &src);
 
+	CopyOverrideCallback m_override;
+	void* m_overrideContext;
+	PostCopyCallback m_postCopy;
+	void* m_postCopyContext;
 	int mLevel; //the recursion level
 	typedef BlueStdMap<IRoot *, IRoot *> tMap;
 	typedef tMap::const_iterator tMapIter;

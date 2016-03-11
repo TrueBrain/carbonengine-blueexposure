@@ -494,9 +494,17 @@ void BlueClasses::UpdateObjectCount( IRoot* obj, int instinc, int lockinc )
 #endif
 }
 
-bool BlueClasses::CopyTo( IRoot* source, IRoot** dest )
+bool BlueClasses::CopyTo( 
+	IRoot* source, 
+	IRoot** dest, 
+	ICopier::CopyOverrideCallback copyOverride, 
+	void* overrideContext,
+	ICopier::PostCopyCallback postCopy,
+	void* postCopyContext )
 {
 	CCopier copier;
+	copier.SetCopyOverrideCallback( copyOverride, overrideContext );
+	copier.SetPostCopyCallback( postCopy, postCopyContext );
 	return copier.CopyTo(source, dest);
 }
 

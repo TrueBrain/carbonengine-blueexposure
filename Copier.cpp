@@ -9,6 +9,27 @@
 #include "BlueVariable.h"
 #include "CcpCore/include/CCPLog.h"
 
+Copier::Copier()
+:	m_override( nullptr ),
+	m_overrideContext( nullptr ),
+	m_postCopy( nullptr ),
+	m_postCopyContext( nullptr ),
+	mLevel( 0 )
+{
+}
+
+void Copier::SetCopyOverrideCallback( CopyOverrideCallback copyOverride, void* context )
+{
+	m_override = copyOverride;
+	m_overrideContext = context;
+}
+
+void Copier::SetPostCopyCallback( PostCopyCallback postCopy, void* context )
+{
+	m_postCopy = postCopy;
+	m_postCopyContext = context;
+}
+
 //finally obsoleted.  Same as copy (copyto used to do a blind deep copy)
 bool Copier::CloneTo(IRoot* source, IRoot** dest)
 {
@@ -21,6 +42,19 @@ bool Copier::CloneTo(IRoot* source, IRoot** dest)
 //objects.
 bool Copier::CopyTo(IRoot* source, IRoot** _dest)
 {
+	if( m_override )
+	{
+		switch( m_override( source, _dest, this, m_overrideContext ) )
+		{
+		case SUCCESS:
+			return true;
+		case FAILURE:
+			return false;
+		default:
+			break;
+		}
+	}
+
 	IRootPtr dest(*_dest);
 
 	const Be::Clsid* sclsid = source->ClassType()->mClassId;
@@ -89,6 +123,11 @@ bool Copier::CopyTo(IRoot* source, IRoot** _dest)
 	//after a single copying operation, clear the pointer array
 	if (mLevel == 0 && mPointers.get())
 		mPointers.get()->clear();
+
+	if( m_postCopy )
+	{
+		m_postCopy( source, _dest, this, m_postCopyContext );
+	}
 	return true;
 }
 

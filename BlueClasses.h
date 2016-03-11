@@ -75,7 +75,11 @@ public:
 	// the data is copied into the object.
 	virtual bool CopyTo(
 		IRoot* source,
-		IRoot** dest
+		IRoot** dest,
+		ICopier::CopyOverrideCallback copyOverride = nullptr,
+		void* overrideContext = nullptr,
+		ICopier::PostCopyCallback postCopy = nullptr,
+		void* postCopyContext = nullptr
 		);
 
 	// Same as CopyTo, except that it preserves topology of multiply instanced

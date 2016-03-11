@@ -10,6 +10,7 @@
 #define IBlueClasses_h
 
 #include "BlueTypes.h"
+#include "ICopier.h"
 
 #include <vector>
 
@@ -70,7 +71,11 @@ BLUE_INTERFACE( IBlueClasses ) : public IRoot
 	// the data is copied into the object.
 	virtual bool CopyTo(
 		IRoot* source,
-		IRoot** dest
+		IRoot** dest,
+		ICopier::CopyOverrideCallback copyOverride = nullptr,
+		void* overrideContext = nullptr,
+		ICopier::PostCopyCallback postCopy = nullptr,
+		void* postCopyContext = nullptr
 		) = 0;
 
 	// Same as CopyTo, except that it preserves topology of multiply instanced
