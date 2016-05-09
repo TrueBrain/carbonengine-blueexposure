@@ -411,6 +411,9 @@ public:
         va_copy(args1, args);
 #endif
 		size_t s = _vscprintf(format, args1);
+#ifndef _MSC_VER
+		va_end( args1 );
+#endif
 		BluePy str(PyString_FromStringAndSize(0, s));
 		if (!str)
 			return str;
