@@ -712,6 +712,18 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 			return retval;
 	}
 
+	val = BeClasses->GetRtti( Type() )->FindMethod( "__getattr__" );
+	if( val )
+	{
+		CCP_ASSERT(val->mType == BlueRttiValue::pymethod);
+
+		auto args = PyTuple_New( 1 );
+		PyTuple_SET_ITEM( args, 0, PyString_FromString( name ) );
+		auto result = ( *val->mPyMethod->ml_meth )( (PyObject *)this, args );
+		Py_DECREF( args );
+		return result;
+	}
+
 	PyErr_SetString(PyExc_AttributeError, name);			
 	return NULL;
 }
@@ -835,12 +847,49 @@ int BlueWrapper::PySetAttr(const char* name, PyObject* v)
 		const BlueRttiValue* rttiValue = BeClasses->GetRtti( Type() )->FindAttribute( name );
 
 		// CASE 5
-		if (!rttiValue && klass != NULL)
+		if (!rttiValue)
 		{
-			//set this attribute, even if it didn't exist before
-			int fail = klass->SetAttr(&handled, this, name, v, true, nosetattr);
-			if (fail)
-				return fail;
+			if( klass )
+			{
+				//set this attribute, even if it didn't exist before
+				int fail = klass->SetAttr(&handled, this, name, v, true, nosetattr);
+				if (fail)
+					return fail;
+			}
+			else if( v )
+			{
+				auto val = BeClasses->GetRtti( Type() )->FindMethod( "__setattr__" );
+				if( val )
+				{
+					CCP_ASSERT(val->mType == BlueRttiValue::pymethod);
+
+					auto args = PyTuple_New( 2 );
+					PyTuple_SET_ITEM( args, 0, PyString_FromString( name ) );
+					PyTuple_SET_ITEM( args, 1, v );
+					Py_INCREF( v );
+					auto result = ( *val->mPyMethod->ml_meth )( (PyObject *)this, args );
+					bool success = result != nullptr;
+					Py_DECREF( args );
+					Py_XDECREF( result );
+					return success ? 0 : -1;
+				}
+			}
+			else
+			{
+				auto val = BeClasses->GetRtti( Type() )->FindMethod( "__delattr__" );
+				if( val )
+				{
+					CCP_ASSERT(val->mType == BlueRttiValue::pymethod);
+
+					auto args = PyTuple_New( 1 );
+					PyTuple_SET_ITEM( args, 0, PyString_FromString( name ) );
+					auto result = ( *val->mPyMethod->ml_meth )( (PyObject *)this, args );
+					bool success = result != nullptr;
+					Py_DECREF( args );
+					Py_XDECREF( result );
+					return success ? 0 : -1;
+				}
+			}
 		}
 	
 		// CASE 6
