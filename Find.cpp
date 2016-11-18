@@ -394,20 +394,23 @@ private:
 			}
 			for( ; m_entry->mName; m_entry++ )
 			{
-				if( ( m_entry->mEditFlags & Be::PERSIST ) && ( m_entry->mType == Be::IROOT || m_entry->mType == Be::IROOTPTR ) )
+				if( m_entry->mType == Be::IROOT || m_entry->mType == Be::IROOTPTR )
 				{
-					Be::Var* value = BLUEMAPMEMBEROFFSET( m_parent, m_entry, m_type, m_offset );
-					if( m_entry->mType == Be::IROOTPTR) 
+					if( !m_entry->mGetProperty )
 					{
-						m_value = value->mIRootPtr;
-					} 
-					else 
-					{ 
-						m_value = reinterpret_cast<IRoot*>( value );
-					}
-					if( m_value )
-					{
-						return true;
+						Be::Var* value = BLUEMAPMEMBEROFFSET( m_parent, m_entry, m_type, m_offset );
+						if( m_entry->mType == Be::IROOTPTR) 
+						{
+							m_value = value->mIRootPtr;
+						} 
+						else 
+						{ 
+							m_value = reinterpret_cast<IRoot*>( value );
+						}
+						if( m_value )
+						{
+							return true;
+						}
 					}
 				}
 			}
