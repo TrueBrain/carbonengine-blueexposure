@@ -1684,6 +1684,13 @@ int BlueWrapper::PyStructureListAssignItem(Py_ssize_t index, PyObject* value)
 		return -1;
 	}
 
+	if( !value )
+	{
+		// this is a del operation
+		structureList->Remove( index );
+		return 0;
+	}
+
 	uint8_t* item = (uint8_t*)structureList->GetAt( index );
 
 	try
