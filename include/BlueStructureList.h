@@ -267,6 +267,41 @@ public:
 		Py_RETURN_NONE;
 	}
 
+	static PyObject* PyInsert( PyObject* self, PyObject* args )
+	{
+		ClassDef* pThis = BluePythonCast<ClassDef*>( self );
+
+		ssize_t index;
+		PyObject* obj;
+		if( !PyArg_ParseTuple( args, "nO", &index, &obj ) )
+		{
+			return nullptr;
+		}
+		auto length = pThis->GetSize();
+		if( index > ssize_t( length ) )
+		{
+			index = ssize_t( length );
+		}
+		if( index < 0 )
+		{
+			index = length + index % length;
+		}
+
+		T item;
+
+		try
+		{
+			BlueStructureList_PyObjectToStructure( pThis, obj, (uint8_t*)&item );
+			pThis->Insert( index, &item );
+		}
+		catch( std::exception& e )
+		{
+			PyErr_Format( PyExc_TypeError, "%s", e.what() );
+			return nullptr;
+		}
+		Py_RETURN_NONE;
+	}
+
 	static PyObject* PyRemoveAt( PyObject* self, PyObject* args )
 	{
 		ClassDef* pThis = BluePythonCast<ClassDef*>( self );
@@ -338,6 +373,13 @@ public:
 				"append",
 				PyAppend,
 				"Appends a value to the list"
+			)
+
+			MAP_METHOD
+			(
+				"insert",
+				PyInsert,
+				"Inserts a value to the list"
 			)
 
 			MAP_METHOD
