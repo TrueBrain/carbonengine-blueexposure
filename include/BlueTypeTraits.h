@@ -13,6 +13,7 @@
 #include <type_traits>
 #include "BlueClass.h"
 #include "BlueSharedString.h"
+#include "BlueWeakRef.h"
 
 struct IRoot;
 struct Vector2;
@@ -246,6 +247,10 @@ template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootParentL
 {
 	return Be::IROOT;
 }
+template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootParentLockWR<T>& )
+{
+	return Be::IROOT;
+}
 // for O<classname>
 template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootRefLock<T>& )
 {
@@ -253,6 +258,10 @@ template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootRefLock
 }
 // for C<classname>
 template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootNoLock<T>& )
+{
+	return Be::IROOT;
+}
+template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootNoLockWR<T>& )
 {
 	return Be::IROOT;
 }

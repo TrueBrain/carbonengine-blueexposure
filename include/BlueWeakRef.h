@@ -146,5 +146,98 @@ public:
 };
 
 
+template <class T>
+class BlueEmptyWeakAdapter : public T, public IWeakObject
+{
+public:
+	BlueEmptyWeakAdapter() 
+	{
+	}
+	
+	BlueEmptyWeakAdapter(IRoot *parent) 
+		:T(parent) 
+	{
+	}
+};
+
+
+template <class T>
+class RootParentLockWR : public RootParentLock<BlueEmptyWeakAdapter<T>>
+{
+public:
+	RootParentLockWR( IRoot *lockobj ) 
+		:RootParentLock<BlueEmptyWeakAdapter<T>>( lockobj )
+	{
+	}
+
+	const Be::ClassInfo* ClassType() const
+	{
+		return T::ClassType();
+	}
+
+	void WeakRefRegister( IWeakRef *ref )
+	{
+		IWeakObject* weak = nullptr;
+		if( this->mLockObj->QueryInterface( GetIWeakObjectIID(), reinterpret_cast<void**>( &weak ), BEQI_SILENT ) && weak )
+		{
+			weak->WeakRefRegister( ref );
+			weak->Unlock();
+		}
+	}
+	
+	void WeakRefUnregister( IWeakRef *ref ) 
+	{
+		IWeakObject* weak = nullptr;
+		if( this->mLockObj->QueryInterface( GetIWeakObjectIID(), reinterpret_cast<void**>( &weak ), BEQI_SILENT ) && weak )
+		{
+			weak->WeakRefUnregister( ref );
+			weak->Unlock();
+		}
+	}
+
+	bool QueryInterface( const Be::IID& riid, void** ppv, BLUEQIOPT options )
+	{
+		if( GetIWeakObjectIID().IsEqual( riid ) )
+		{
+			*ppv = (void*)static_cast<IWeakObject*>( this );
+			this->Lock();
+			return true;
+		}
+
+		return RootParentLock<BlueEmptyWeakAdapter<T>>::QueryInterface(riid, ppv, options);
+	}
+};
+
+
+
+template <class T>
+class RootNoLockWR : public RootNoLock<BlueEmptyWeakAdapter<T>>
+{
+public:
+	const Be::ClassInfo* ClassType() const
+	{
+		return T::ClassType();
+	}
+
+	void WeakRefRegister( IWeakRef* )
+	{
+	}
+	
+	void WeakRefUnregister( IWeakRef* )
+	{
+	}
+
+	bool QueryInterface( const Be::IID& riid, void** ppv, BLUEQIOPT options )
+	{
+		if( GetIWeakObjectIID().IsEqual( riid ) )
+		{
+			*ppv = (void*)static_cast<IWeakObject*>( this );
+			this->Lock();
+			return true;
+		}
+
+		return RootNoLock<BlueEmptyWeakAdapter<T>>::QueryInterface(riid, ppv, options);
+	}
+};
 
 #endif

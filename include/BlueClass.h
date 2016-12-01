@@ -247,8 +247,8 @@ public:
 
 //The default final class types. Note that this includes support for weak references
 #define TYPEDEF_BLUECLASS(Class)\
-	typedef RootNoLock<Class> C##Class;\
-	typedef RootParentLock<Class> P##Class;\
+	typedef RootNoLockWR<Class> C##Class;\
+	typedef RootParentLockWR<Class> P##Class;\
 	typedef RootRefLockWR<Class> O##Class;
 
 //Final class types without weak ref support.
@@ -259,8 +259,8 @@ public:
 
 //Final class types, calls Shutdown before destructor
 #define TYPEDEF_BLUECLASS_SHUTDOWN(Class)\
-	typedef RootNoLock<Class> C##Class;\
-	typedef RootParentLock<Class> P##Class;\
+	typedef RootNoLockWR<Class> C##Class;\
+	typedef RootParentLockWR<Class> P##Class;\
 	typedef RootRefLockWRShutdown<Class> O##Class;
 
 //Default setup now includes weak ref support - this macro is now deprecated
@@ -269,8 +269,8 @@ public:
 
 //Final class types with weak ref support, calls Shutdown before destruction
 #define TYPEDEF_BLUECLASS_WR_SHUTDOWN(Class)\
-	typedef RootNoLock<Class> C##Class;\
-	typedef RootParentLock<Class> P##Class;\
+	typedef RootNoLockWR<Class> C##Class;\
+	typedef RootParentLockWR<Class> P##Class;\
 	typedef RootRefLockWRShutdown<Class> O##Class;
 
 
