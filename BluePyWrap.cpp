@@ -1856,6 +1856,11 @@ static PyObject* PyGetID( PyObject* module, PyObject* args )
 	return PyInt_FromSize_t( ptrVal );
 }
 
-MAP_FUNCTION( "GetID", PyGetID, "GetID( o )\nGet's a unique ID (like the python id() function for Blue objects. The ID is the pointer address of the underlying IRoot instance." );
+MAP_FUNCTION( 
+	"GetID", 
+	PyGetID, 
+	"GetID( o )\nGet's a unique ID (like the python id() function for Blue objects. The ID is the pointer address of the underlying IRoot instance.\n"
+	":param obj: IRoot\n"
+	":rtype: int" );
 
 #endif
