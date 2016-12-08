@@ -948,6 +948,7 @@
     <ClInclude Include="include\BlueExposureMacrosDeprecated.h"/>
     <ClInclude Include="include\BlueExposureMacrosLua.h"/>
     <ClInclude Include="include\BlueExposureMacrosPython.h"/>
+    <ClInclude Include="include\BlueExposureTypeSignature.h"/>
     <ClInclude Include="include\BlueExtractArgument.h"/>
     <ClInclude Include="include\BlueExtractArgumentLua.h"/>
     <ClInclude Include="include\BlueExtractArgumentPython.h"/>

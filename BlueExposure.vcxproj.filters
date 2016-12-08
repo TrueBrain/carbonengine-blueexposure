@@ -74,6 +74,9 @@
     <ClInclude Include="include\BlueExposureMacrosPython.h">
       <Filter>Source Files\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\BlueExposureTypeSignature.h">
+      <Filter>Source Files\include</Filter>
+    </ClInclude>
     <ClInclude Include="include\BlueExtractArgument.h">
       <Filter>Source Files\include</Filter>
     </ClInclude>
