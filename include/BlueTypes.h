@@ -151,6 +151,14 @@ namespace Be
 		}
 	};
 
+	struct BlueExposureFunctionSignature
+	{
+		const char* returnType;
+		const char* argumentTypes[16];
+		uint32_t argumentCount;
+		uint32_t optionalCount;
+	};
+
 	// Class ID used at runtime - adds a hash of the name for
 	// more efficient lookups.
 	struct BLUEIMPORT Clsid
@@ -378,6 +386,8 @@ namespace Be
 
 		mutable CcpAtomic<uint32_t>	mLiveCount;
 		mutable CcpAtomic<uint32_t>	mLockCount;
+
+		std::map<std::string, BlueExposureFunctionSignature>* mFunctionSignatures;
 	};
 
 

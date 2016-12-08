@@ -248,7 +248,8 @@ BLUEIMPORT void BlueRegisterToModule(
 	const FuncRegsVector& funcRegs,						   
 	const EnumRegsMap& enumRegs, 
 	const TestRegsVector& testRegs,
-	const ThunkerRegsVector& thunkerRegs
+	const ThunkerRegsVector& thunkerRegs,
+	const FuncSignatures& funcSignatures
 	)
 {
 	if( !PyExc_BlueError )
@@ -333,6 +334,36 @@ BLUEIMPORT void BlueRegisterToModule(
 			Py_DECREF(thunk);
 		}
 		PyModule_AddObject( module, "unittests", unittestmodule);
+	}
+
+	if( !funcSignatures.empty() )
+	{
+		PyObject* signatures = PyDict_New();
+
+		for( auto it = funcSignatures.begin(); it != funcSignatures.end(); ++it )
+		{
+			PyObject* signature = PyDict_New();
+			PyObject* tmp;
+			tmp = PyString_FromString( it->second.returnType );
+			PyDict_SetItemString( signature, "rtype", tmp );
+			Py_DECREF( tmp );
+			PyObject* args = PyTuple_New( it->second.argumentCount );
+			for( uint32_t j = 0; j < it->second.argumentCount; ++j )
+			{
+				PyTuple_SET_ITEM( args, j, PyString_FromString( it->second.argumentTypes[j] ) );
+			}
+			PyDict_SetItemString( signature, "parameters", args );
+			Py_DECREF( args );
+
+			PyObject* count = PyInt_FromLong( it->second.optionalCount );
+			PyDict_SetItemString( signature, "optionalCount", count );
+			Py_DECREF( count );
+
+			PyDict_SetItemString( signatures, it->first.c_str(), signature );
+			Py_DECREF( signature );
+		}
+
+		PyModule_AddObject( module, "__func_signatures__", signatures );
 	}
 
 	ThunkerRegsVector& globalRegs = BlueRegistration::GetGlobalThunkerRegs();

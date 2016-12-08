@@ -11,6 +11,7 @@
 
 #include "BlueFunctionTraits.h"
 #include "BlueExtractArgument.h"
+#include "BlueExposureTypeSignature.h"
 #include "BlueExposureMacros.h"
 
 #if BLUE_WITH_LUA

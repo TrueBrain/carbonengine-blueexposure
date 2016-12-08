@@ -67,7 +67,6 @@ PyObject* PyGetChooserInfo( const Be::VarEntry& entry )
 	return choosers;
 }
 
-
 PyObject* PyGetTypeInfo(const Be::ClassInfo* info, long flags)
 {
 	// no error checking done - should never fail, and is only used in development
@@ -96,6 +95,10 @@ PyObject* PyGetTypeInfo(const Be::ClassInfo* info, long flags)
 	tmp = PyInt_FromLong((flags & BLUERT_AUTOVAR) ? 1 : 0);
 	PyDict_SetItemString(dict1, "autovar", tmp);
 	Py_DECREF(tmp);
+
+	PyObject* signatures = PyDict_New();
+	PyDict_SetItemString( dict1, "signatures", signatures );
+	Py_DECREF( signatures );
 
 	// create dicts
 	PyObject* dict2 = PyDict_New();
@@ -162,6 +165,31 @@ PyObject* PyGetTypeInfo(const Be::ClassInfo* info, long flags)
 			tmp = PyString_FromString(meth->ml_doc);
 			PyDict_SetItemString(dict4, meth->ml_name, tmp);
 			Py_DECREF(tmp);
+		}
+		if( i->mFunctionSignatures )
+		{
+			for( auto it = i->mFunctionSignatures->begin(); it != i->mFunctionSignatures->end(); ++it )
+			{
+				PyObject* signature = PyDict_New();
+				PyObject* tmp;
+				tmp = PyString_FromString( it->second.returnType );
+				PyDict_SetItemString( signature, "rtype", tmp );
+				Py_DECREF( tmp );
+				PyObject* args = PyTuple_New( it->second.argumentCount );
+				for( uint32_t j = 0; j < it->second.argumentCount; ++j )
+				{
+					PyTuple_SET_ITEM( args, j, PyString_FromString( it->second.argumentTypes[j] ) );
+				}
+				PyDict_SetItemString( signature, "parameters", args );
+				Py_DECREF( args );
+
+				PyObject* count = PyInt_FromLong( it->second.optionalCount );
+				PyDict_SetItemString( signature, "optionalCount", count );
+				Py_DECREF( count );
+
+				PyDict_SetItemString( signatures, it->first.c_str(), signature );
+				Py_DECREF( signature );
+			}
 		}
 	}
 

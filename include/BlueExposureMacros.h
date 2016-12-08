@@ -13,6 +13,7 @@
 #include "BlueTypeTraits.h"
 #include "BlueMemberFunctionTraits.h"
 #include "BlueCallFunction.h"
+#include "BlueExposureTypeSignature.h"
 #include "BlueRegistration.h"
 #include "BlueExposureHelpers.h"
 #include "BlueWeakRef.h"

@@ -64,6 +64,7 @@ BLUEIMPORT int BlueCreateInstanceFromLua( lua_State* ls, const Be::Clsid& clsid 
 	_classinfo.mRtti = nullptr; \
 	_classinfo.mMetatableName = CCP_STRDUP( "metatableName", metatableName.c_str() ); \
 	_classinfo.mCreateWrapper = LuaNew; \
+	_classinfo.mFunctionSignatures = nullptr; \
 	\
 	s_classInfo = &_classinfo; \
 	return &_classinfo;

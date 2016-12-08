@@ -18,6 +18,8 @@ typedef std::vector<BlueMethodDefinition> FuncRegsVector;
 
 typedef FuncRegsVector TestRegsVector;
 
+typedef std::map<std::string, Be::BlueExposureFunctionSignature> FuncSignatures;
+
 typedef std::vector<std::pair<const char*, IRoot**>> ObjectRegsVector;
 
 //////////////////////
@@ -65,7 +67,8 @@ extern BLUEIMPORT void BlueRegisterToModule( PyObject* module,
 											 const FuncRegsVector& funcRegs = FuncRegsVector(), 
 											 const EnumRegsMap& enumRegs = EnumRegsMap(),
 											 const TestRegsVector& testRegs = TestRegsVector(),
-											 const ThunkerRegsVector& thunkerRegs = ThunkerRegsVector() );
+											 const ThunkerRegsVector& thunkerRegs = ThunkerRegsVector(),
+											 const FuncSignatures& funcSignatures = FuncSignatures() );
 
 extern BLUEIMPORT void BlueRegisterObjectsToModule( PyObject* module, ObjectRegsVector& objectRegs );
 extern BLUEIMPORT void BlueRegisterExceptionsToModule( PyObject* module, ExceptionRegsMap& exceptionRegs );
@@ -107,6 +110,12 @@ public:
 	{
 		static FuncRegsVector s_funcRegs;
 		return s_funcRegs;
+	}
+
+	static FuncSignatures& GetFuncSignatures()
+	{
+		static FuncSignatures s_funcSignatures;
+		return s_funcSignatures;
 	}
 
 	static EnumRegsMap& GetEnumRegs()
@@ -197,7 +206,7 @@ BLUEIMPORT void BlueRegisterInterfaceMethods( lua_State* ls, const ThunkerRegsVe
 class FunctionRegistrar
 {
 public:
-	FunctionRegistrar( const char* expname, BlueScriptCFunction func, const char* docstring )
+	FunctionRegistrar( const char* expname, BlueScriptCFunction func, const char* docstring, Be::BlueExposureFunctionSignature* signature = nullptr )
 	{
 		BlueMethodDefinition md;
 		md.ml_name = expname;
@@ -207,6 +216,10 @@ public:
 #endif
 		md.ml_doc = docstring;
 		BlueRegistration::GetFuncRegs().push_back( md );
+		if( signature )
+		{
+			BlueRegistration::GetFuncSignatures()[expname] = *signature;
+		}
 	}
 };
 
@@ -214,7 +227,7 @@ public:
 	static FunctionRegistrar s_##_func##FunctionRegistrar(_expname, _func, _docstring)
 
 #define MAP_FUNCTION_AND_WRAP( _expname, _func, _docstring ) \
-	static FunctionRegistrar s_##_func##FunctionRegistrar(_expname, &BlueFunctionHelper<decltype(&_func), &_func>, _docstring)
+	static FunctionRegistrar s_##_func##FunctionRegistrar(_expname, &BlueFunctionHelper<decltype(&_func), &_func>, _docstring, &BlueGetFunctionSignature( &_func ) )
 
 
 /////////////////

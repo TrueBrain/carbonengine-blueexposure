@@ -32,6 +32,7 @@
 	static std::vector<PyMethodDef> s_methods;\
 	static std::vector<Be::VarEntry> s_attributes; \
 	static std::vector<Be::InterfaceEntry> s_interfaces; \
+	static std::map<std::string, Be::BlueExposureFunctionSignature> s_signatures; \
 	Be::InterfaceEntry rootEntry = {&s_iroot, BLUE_INTERFACEOFFSET(_Class)}; \
 	s_interfaces.push_back( rootEntry ); \
 	Be::InterfaceEntry myEntry = {&s_iid, BLUE_INTERFACEOFFSET(_Class)}; \
@@ -60,6 +61,7 @@
 	_classinfo.mTypeObject = &s_pyType; \
 	_classinfo.mLiveCount = 0; \
 	_classinfo.mLockCount = 0; \
+	_classinfo.mFunctionSignatures = &s_signatures; \
 	\
 	s_classInfo = &_classinfo; \
 	return &_classinfo;
@@ -129,12 +131,14 @@ BLUEIMPORT PyObject* BlueCreateInstanceFromPython( const Be::Clsid& clsid, PyObj
 {\
 	PyMethodDef d = { name, &BlueMethodHelper<decltype(&_Class::functionName), &_Class::functionName>, METH_VARARGS, docString };\
 	s_methods.push_back( d );\
+	s_signatures[name] = BlueGetFunctionSignature( &_Class::functionName ); \
 }
 
 #define MAP_METHOD_AND_WRAP_OPTIONAL_ARGS( name, functionName, numOptional, docString ) \
 {\
 	PyMethodDef d = { name, &BlueMethodHelperWithOptionalArgs<decltype(&_Class::functionName), &_Class::functionName, numOptional>, METH_VARARGS, docString };\
 	s_methods.push_back( d );\
+	s_signatures[name] = BlueGetFunctionSignature( &_Class::functionName, numOptional ); \
 }
 
 // MAP_METHOD_AS_METHOD maps a member function with the signature
@@ -221,7 +225,8 @@ BLUEIMPORT PyObject* BlueCreateInstanceFromPython( const Be::Clsid& clsid, PyObj
 			BlueRegistration::GetFuncRegs(), \
 			BlueRegistration::GetEnumRegs(), \
 			BlueRegistration::GetTestRegs(), \
-			BlueRegistration::GetThunkerRegs()); \
+			BlueRegistration::GetThunkerRegs(), \
+			BlueRegistration::GetFuncSignatures() ); \
 		BlueRegisterObjectsToModule( module, BlueRegistration::GetObjectRegs() ); \
 		BlueRegisterExceptionsToModule( module, BlueRegistration::GetExceptionRegs() ); \
 		PyModule_AddObject( module, "BlueWrapper", (PyObject*)BePyTypePtr ); \
