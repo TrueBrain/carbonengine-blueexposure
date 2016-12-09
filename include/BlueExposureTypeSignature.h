@@ -4,6 +4,12 @@
 #include "BlueVectorTypes.h"
 
 
+template <typename T>
+const char* BlueGetArgumentTypeName();
+
+template <typename T>
+const char* BlueGetReturnTypeName();
+
 namespace BlueExposureTypeSignaturePrivate
 {
 
@@ -104,7 +110,7 @@ void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnT
 template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity0Type, std::false_type returnsBlueResult )
 {
-	signature.returnType = BlueGetReturnTypeName<function_traits<fnType>::return_type>();
+	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 0;
 	signature.optionalCount = 0;
 }
@@ -115,11 +121,11 @@ void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnT
 {
 	BlueGetFunctionSignature( signature, method, arity, std::false_type() );
 
-	if( std::is_reference<last_argument<fnType>::type>::type::value )
+	if( std::is_reference<typename last_argument<fnType>::type>::type::value )
 	{
 		signature.returnType = signature.argumentTypes[--signature.argumentCount];
 	}
-	else if( is_pointer_to_pointer_to_blue<last_argument<fnType>::type>::type::value )
+	else if( is_pointer_to_pointer_to_blue<typename last_argument<fnType>::type>::type::value )
 	{
 		signature.returnType = BlueGetReturnTypeName<std::remove_pointer<last_argument<fnType>::type>::type>();
 		--signature.argumentCount;
@@ -133,117 +139,117 @@ void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnT
 template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity1Type, std::false_type returnsBlueResult )
 {
-	signature.returnType = BlueGetReturnTypeName<function_traits<fnType>::return_type>();
+	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 1;
-	signature.argumentTypes[0] = BlueGetArgumentTypeName<function_traits<fnType>::arg1_type>();
+	signature.argumentTypes[0] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg1_type>();
 	signature.optionalCount = uint32_t( function_traits<fnType>::numOptional );
 }
 
 template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity2Type, std::false_type returnsBlueResult )
 {
-	signature.returnType = BlueGetReturnTypeName<function_traits<fnType>::return_type>();
+	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 2;
-	signature.argumentTypes[0] = BlueGetArgumentTypeName<function_traits<fnType>::arg1_type>();
-	signature.argumentTypes[1] = BlueGetArgumentTypeName<function_traits<fnType>::arg2_type>();
+	signature.argumentTypes[0] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg1_type>();
+	signature.argumentTypes[1] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg2_type>();
 	signature.optionalCount = uint32_t( function_traits<fnType>::numOptional );
 }
 
 template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity3Type, std::false_type returnsBlueResult )
 {
-	signature.returnType = BlueGetReturnTypeName<function_traits<fnType>::return_type>();
+	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 3;
-	signature.argumentTypes[0] = BlueGetArgumentTypeName<function_traits<fnType>::arg1_type>();
-	signature.argumentTypes[1] = BlueGetArgumentTypeName<function_traits<fnType>::arg2_type>();
-	signature.argumentTypes[2] = BlueGetArgumentTypeName<function_traits<fnType>::arg3_type>();
+	signature.argumentTypes[0] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg1_type>();
+	signature.argumentTypes[1] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg2_type>();
+	signature.argumentTypes[2] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg3_type>();
 	signature.optionalCount = uint32_t( function_traits<fnType>::numOptional );
 }
 
 template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity4Type, std::false_type returnsBlueResult )
 {
-	signature.returnType = BlueGetReturnTypeName<function_traits<fnType>::return_type>();
+	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 4;
-	signature.argumentTypes[0] = BlueGetArgumentTypeName<function_traits<fnType>::arg1_type>();
-	signature.argumentTypes[1] = BlueGetArgumentTypeName<function_traits<fnType>::arg2_type>();
-	signature.argumentTypes[2] = BlueGetArgumentTypeName<function_traits<fnType>::arg3_type>();
-	signature.argumentTypes[3] = BlueGetArgumentTypeName<function_traits<fnType>::arg4_type>();
+	signature.argumentTypes[0] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg1_type>();
+	signature.argumentTypes[1] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg2_type>();
+	signature.argumentTypes[2] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg3_type>();
+	signature.argumentTypes[3] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg4_type>();
 	signature.optionalCount = uint32_t( function_traits<fnType>::numOptional );
 }
 
 template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity5Type, std::false_type returnsBlueResult )
 {
-	signature.returnType = BlueGetReturnTypeName<function_traits<fnType>::return_type>();
+	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 5;
-	signature.argumentTypes[0] = BlueGetArgumentTypeName<function_traits<fnType>::arg1_type>();
-	signature.argumentTypes[1] = BlueGetArgumentTypeName<function_traits<fnType>::arg2_type>();
-	signature.argumentTypes[2] = BlueGetArgumentTypeName<function_traits<fnType>::arg3_type>();
-	signature.argumentTypes[3] = BlueGetArgumentTypeName<function_traits<fnType>::arg4_type>();
-	signature.argumentTypes[4] = BlueGetArgumentTypeName<function_traits<fnType>::arg5_type>();
+	signature.argumentTypes[0] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg1_type>();
+	signature.argumentTypes[1] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg2_type>();
+	signature.argumentTypes[2] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg3_type>();
+	signature.argumentTypes[3] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg4_type>();
+	signature.argumentTypes[4] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg5_type>();
 	signature.optionalCount = uint32_t( function_traits<fnType>::numOptional );
 }
 
 template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity6Type, std::false_type returnsBlueResult )
 {
-	signature.returnType = BlueGetReturnTypeName<function_traits<fnType>::return_type>();
+	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 6;
-	signature.argumentTypes[0] = BlueGetArgumentTypeName<function_traits<fnType>::arg1_type>();
-	signature.argumentTypes[1] = BlueGetArgumentTypeName<function_traits<fnType>::arg2_type>();
-	signature.argumentTypes[2] = BlueGetArgumentTypeName<function_traits<fnType>::arg3_type>();
-	signature.argumentTypes[3] = BlueGetArgumentTypeName<function_traits<fnType>::arg4_type>();
-	signature.argumentTypes[4] = BlueGetArgumentTypeName<function_traits<fnType>::arg5_type>();
-	signature.argumentTypes[5] = BlueGetArgumentTypeName<function_traits<fnType>::arg6_type>();
+	signature.argumentTypes[0] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg1_type>();
+	signature.argumentTypes[1] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg2_type>();
+	signature.argumentTypes[2] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg3_type>();
+	signature.argumentTypes[3] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg4_type>();
+	signature.argumentTypes[4] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg5_type>();
+	signature.argumentTypes[5] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg6_type>();
 	signature.optionalCount = uint32_t( function_traits<fnType>::numOptional );
 }
 
 template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity7Type, std::false_type returnsBlueResult )
 {
-	signature.returnType = BlueGetReturnTypeName<function_traits<fnType>::return_type>();
+	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 7;
-	signature.argumentTypes[0] = BlueGetArgumentTypeName<function_traits<fnType>::arg1_type>();
-	signature.argumentTypes[1] = BlueGetArgumentTypeName<function_traits<fnType>::arg2_type>();
-	signature.argumentTypes[2] = BlueGetArgumentTypeName<function_traits<fnType>::arg3_type>();
-	signature.argumentTypes[3] = BlueGetArgumentTypeName<function_traits<fnType>::arg4_type>();
-	signature.argumentTypes[4] = BlueGetArgumentTypeName<function_traits<fnType>::arg5_type>();
-	signature.argumentTypes[5] = BlueGetArgumentTypeName<function_traits<fnType>::arg6_type>();
-	signature.argumentTypes[6] = BlueGetArgumentTypeName<function_traits<fnType>::arg7_type>();
+	signature.argumentTypes[0] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg1_type>();
+	signature.argumentTypes[1] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg2_type>();
+	signature.argumentTypes[2] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg3_type>();
+	signature.argumentTypes[3] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg4_type>();
+	signature.argumentTypes[4] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg5_type>();
+	signature.argumentTypes[5] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg6_type>();
+	signature.argumentTypes[6] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg7_type>();
 	signature.optionalCount = uint32_t( function_traits<fnType>::numOptional );
 }
 
 template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity8Type, std::false_type returnsBlueResult )
 {
-	signature.returnType = BlueGetReturnTypeName<function_traits<fnType>::return_type>();
+	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 8;
-	signature.argumentTypes[0] = BlueGetArgumentTypeName<function_traits<fnType>::arg1_type>();
-	signature.argumentTypes[1] = BlueGetArgumentTypeName<function_traits<fnType>::arg2_type>();
-	signature.argumentTypes[2] = BlueGetArgumentTypeName<function_traits<fnType>::arg3_type>();
-	signature.argumentTypes[3] = BlueGetArgumentTypeName<function_traits<fnType>::arg4_type>();
-	signature.argumentTypes[4] = BlueGetArgumentTypeName<function_traits<fnType>::arg5_type>();
-	signature.argumentTypes[5] = BlueGetArgumentTypeName<function_traits<fnType>::arg6_type>();
-	signature.argumentTypes[6] = BlueGetArgumentTypeName<function_traits<fnType>::arg7_type>();
-	signature.argumentTypes[7] = BlueGetArgumentTypeName<function_traits<fnType>::arg8_type>();
+	signature.argumentTypes[0] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg1_type>();
+	signature.argumentTypes[1] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg2_type>();
+	signature.argumentTypes[2] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg3_type>();
+	signature.argumentTypes[3] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg4_type>();
+	signature.argumentTypes[4] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg5_type>();
+	signature.argumentTypes[5] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg6_type>();
+	signature.argumentTypes[6] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg7_type>();
+	signature.argumentTypes[7] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg8_type>();
 	signature.optionalCount = uint32_t( function_traits<fnType>::numOptional );
 }
 
 template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity9Type, std::false_type returnsBlueResult )
 {
-	signature.returnType = BlueGetReturnTypeName<function_traits<fnType>::return_type>();
+	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 9;
-	signature.argumentTypes[0] = BlueGetArgumentTypeName<function_traits<fnType>::arg1_type>();
-	signature.argumentTypes[1] = BlueGetArgumentTypeName<function_traits<fnType>::arg2_type>();
-	signature.argumentTypes[2] = BlueGetArgumentTypeName<function_traits<fnType>::arg3_type>();
-	signature.argumentTypes[3] = BlueGetArgumentTypeName<function_traits<fnType>::arg4_type>();
-	signature.argumentTypes[4] = BlueGetArgumentTypeName<function_traits<fnType>::arg5_type>();
-	signature.argumentTypes[5] = BlueGetArgumentTypeName<function_traits<fnType>::arg6_type>();
-	signature.argumentTypes[6] = BlueGetArgumentTypeName<function_traits<fnType>::arg7_type>();
-	signature.argumentTypes[7] = BlueGetArgumentTypeName<function_traits<fnType>::arg8_type>();
-	signature.argumentTypes[8] = BlueGetArgumentTypeName<function_traits<fnType>::arg9_type>();
+	signature.argumentTypes[0] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg1_type>();
+	signature.argumentTypes[1] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg2_type>();
+	signature.argumentTypes[2] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg3_type>();
+	signature.argumentTypes[3] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg4_type>();
+	signature.argumentTypes[4] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg5_type>();
+	signature.argumentTypes[5] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg6_type>();
+	signature.argumentTypes[6] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg7_type>();
+	signature.argumentTypes[7] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg8_type>();
+	signature.argumentTypes[8] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg9_type>();
 	signature.optionalCount = uint32_t( function_traits<fnType>::numOptional );
 }
 
@@ -745,12 +751,12 @@ struct TypeSignatureForValueOrBlueObjectImpl<T, std::true_type>
 {
 	static const char* ArgumentType()
 	{
-		auto& iid = BlueInterfaceIID<remove_const_and_reference<std::remove_pointer<T>::type>::type>();
+		auto& iid = BlueInterfaceIID<typename remove_const_and_reference<typename std::remove_pointer<T>::type>::type>();
 		return iid.GetName();
 	}
 	static const char* ReturnType()
 	{
-		auto& iid = BlueInterfaceIID<remove_const_and_reference<std::remove_pointer<T>::type>::type>();
+		auto& iid = BlueInterfaceIID<typename remove_const_and_reference<typename std::remove_pointer<T>::type>::type>();
 		return iid.GetName();
 	}
 };
@@ -803,7 +809,7 @@ template< typename fnType >
 Be::BlueExposureFunctionSignature BlueGetFunctionSignature( fnType method, uint32_t numOptional = 0 )
 {
 	Be::BlueExposureFunctionSignature result;
-	BlueExposureTypeSignaturePrivate::BlueGetFunctionSignature( result, method, function_traits<fnType>::arity_type(), is_be_result<function_traits<fnType>::return_type>::type() );
+	BlueExposureTypeSignaturePrivate::BlueGetFunctionSignature( result, method, function_traits<fnType>::arity_type(), is_be_result<typename function_traits<fnType>::return_type>::type() );
 	result.optionalCount = numOptional;
 	return result;
 }
