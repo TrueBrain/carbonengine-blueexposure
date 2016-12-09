@@ -809,7 +809,11 @@ template< typename fnType >
 Be::BlueExposureFunctionSignature BlueGetFunctionSignature( fnType method, uint32_t numOptional = 0 )
 {
 	Be::BlueExposureFunctionSignature result;
-	BlueExposureTypeSignaturePrivate::BlueGetFunctionSignature( result, method, function_traits<fnType>::arity_type(), is_be_result<typename function_traits<fnType>::return_type>::type() );
+	BlueExposureTypeSignaturePrivate::BlueGetFunctionSignature( 
+		result, 
+		method, 
+		typename function_traits<fnType>::arity_type(), 
+		typename is_be_result<typename function_traits<fnType>::return_type>::type() );
 	result.optionalCount = numOptional;
 	return result;
 }
