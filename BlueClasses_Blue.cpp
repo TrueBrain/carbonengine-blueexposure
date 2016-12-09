@@ -280,21 +280,30 @@ const Be::ClassInfo* BlueClasses::ExposeToBlue()
 		(
 			"GetClassTypes",
 			PyGetClassTypes,
-			"Get a list of all registered classes"
+			"Get a list of all registered classes\n"
+			":param moduleName: name of the module; if ommited, returns classes from all modules\n"
+			":type moduleName: Optional[str]\n"
+			":rtype: list"
 		)
 
 		MAP_METHOD
 		(
 			"CreateInstance",
 			PyCreateInstance,
-			"Creates an instance of the given class"
+			"Creates an instance of the given class\n"
+			":param clsid: class id\n"
+			":type clsid: str\n"
+			":param args: __init__ call arguments\n"
+			":type args: Optional[Any]\n"
+			":rtype: IRoot"
 		)
 
 		MAP_METHOD
 		(
 			"LiveCount",
 			PyLiveCount,
-			"Returns a dict of blue objects alive."
+			"Returns a dict of blue objects alive.\n"
+			":rtype: dict[str, int]"
 		)
 
 #if BLUE_LIVELIST_ENABLED
@@ -302,7 +311,8 @@ const Be::ClassInfo* BlueClasses::ExposeToBlue()
 		(
 			"LiveList",
 			PyLiveList,
-			"Returns a list with stats on live objects."
+			"Returns a list with stats on live objects.\n"
+			":rtype: list"
 		)
 #endif
 		MAP_METHOD_AND_WRAP
@@ -344,27 +354,37 @@ const Be::ClassInfo* BlueClasses::ExposeToBlue()
 		(
 			"Copy",
 			PyCopy,
-			"Copy the given object"
+			"Copy the given object\n"
+			":param src: source object\n"
+			":type src: IRoot\n"
+			":rtype: IRoot"
 		)
 
 		MAP_METHOD
 		(
 			"Find",
 			PyFind,
-			"Find a Blue class type, or list of path objects to it"
-			"\n"
-			"\nKeyword arguments:"
-			"\nclass name -- class name or list of class names, e.g. ['trinity.TriEffect']"
-			"\nmaxLevel -- maximum depth to search to (default -1)"
-			"\nprune -- prune duplicate instances (default False)"
-			"\nnParents -- number of parents to return in a list (default -1)"
+			"Find a Blue class type, or list of path objects to it\n"
+			":param obj: root object\n"
+			":type obj: IRoot\n"
+			":param className: class name or list of class names, e.g. ['trinity.TriEffect']\n"
+			":type className: str | list[str]\n"
+			":param maxLevel: maximum depth to search to (default -1)\n"
+			":type maxLevel: Optional[int]\n"
+			":param prune: prune duplicate instances (default False)\n"
+			":type prune: bool\n"
+			":param nParents: number of parents to return in a list (default -1)\n"
+			":type nParents: int\n"
+			":rtype: list[IRoot]"
 		)
 
 		MAP_METHOD
 		(
 			"GetTypeInfo",
 			PyTypeInfo,
-			"Returns various type info for the given object"
+			"Returns various type info for the given object\n"
+			":param obj: object\n"
+			":type obj: IRoot\n"
 		)
 
 		MAP_METHOD_AND_WRAP
