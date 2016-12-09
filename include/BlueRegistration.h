@@ -206,7 +206,7 @@ BLUEIMPORT void BlueRegisterInterfaceMethods( lua_State* ls, const ThunkerRegsVe
 class FunctionRegistrar
 {
 public:
-	FunctionRegistrar( const char* expname, BlueScriptCFunction func, const char* docstring, Be::BlueExposureFunctionSignature* signature = nullptr )
+	FunctionRegistrar( const char* expname, BlueScriptCFunction func, const char* docstring )
 	{
 		BlueMethodDefinition md;
 		md.ml_name = expname;
@@ -216,10 +216,18 @@ public:
 #endif
 		md.ml_doc = docstring;
 		BlueRegistration::GetFuncRegs().push_back( md );
-		if( signature )
-		{
-			BlueRegistration::GetFuncSignatures()[expname] = *signature;
-		}
+	}
+	FunctionRegistrar( const char* expname, BlueScriptCFunction func, const char* docstring, const Be::BlueExposureFunctionSignature& signature )
+	{
+		BlueMethodDefinition md;
+		md.ml_name = expname;
+		md.ml_meth = func;
+#if BLUE_WITH_PYTHON
+		md.ml_flags = METH_VARARGS;
+#endif
+		md.ml_doc = docstring;
+		BlueRegistration::GetFuncRegs().push_back( md );
+		BlueRegistration::GetFuncSignatures()[expname] = signature;
 	}
 };
 
@@ -227,7 +235,7 @@ public:
 	static FunctionRegistrar s_##_func##FunctionRegistrar(_expname, _func, _docstring)
 
 #define MAP_FUNCTION_AND_WRAP( _expname, _func, _docstring ) \
-	static FunctionRegistrar s_##_func##FunctionRegistrar(_expname, &BlueFunctionHelper<decltype(&_func), &_func>, _docstring, &BlueGetFunctionSignature( &_func ) )
+	static FunctionRegistrar s_##_func##FunctionRegistrar(_expname, &BlueFunctionHelper<decltype(&_func), &_func>, _docstring, BlueGetFunctionSignature( &_func ) )
 
 
 /////////////////
