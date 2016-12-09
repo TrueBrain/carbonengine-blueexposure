@@ -100,40 +100,11 @@ struct remove_optional<Be::OptionalWithDefaultValue<T, defaultValue>>
 
 
 template< typename fnType >
-void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity0Type, std::true_type returnsBlueResult )
-{
-	signature.returnType = BlueGetReturnTypeName<void>();
-	signature.argumentCount = 0;
-	signature.optionalCount = 0;
-}
-
-template< typename fnType >
 void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity0Type, std::false_type returnsBlueResult )
 {
 	signature.returnType = BlueGetReturnTypeName<typename function_traits<fnType>::return_type>();
 	signature.argumentCount = 0;
 	signature.optionalCount = 0;
-}
-
-
-template< typename fnType, typename arityType >
-void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arityType arity, std::true_type returnsBlueResult )
-{
-	BlueGetFunctionSignature( signature, method, arity, std::false_type() );
-
-	if( std::is_reference<typename last_argument<fnType>::type>::type::value )
-	{
-		signature.returnType = signature.argumentTypes[--signature.argumentCount];
-	}
-	else if( is_pointer_to_pointer_to_blue<typename last_argument<fnType>::type>::type::value )
-	{
-		signature.returnType = BlueGetReturnTypeName<typename std::remove_pointer<typename last_argument<fnType>::type>::type>();
-		--signature.argumentCount;
-	}
-	else
-	{
-		signature.returnType = BlueGetReturnTypeName<void>();
-	}
 }
 
 template< typename fnType >
@@ -252,6 +223,36 @@ void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnT
 	signature.argumentTypes[8] = BlueGetArgumentTypeName<typename function_traits<fnType>::arg9_type>();
 	signature.optionalCount = uint32_t( function_traits<fnType>::numOptional );
 }
+
+
+template< typename fnType >
+void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arity0Type, std::true_type returnsBlueResult )
+{
+	signature.returnType = BlueGetReturnTypeName<void>();
+	signature.argumentCount = 0;
+	signature.optionalCount = 0;
+}
+
+template< typename fnType, typename arityType >
+void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnType method, arityType arity, std::true_type returnsBlueResult )
+{
+	BlueGetFunctionSignature( signature, method, arity, std::false_type() );
+
+	if( std::is_reference<typename last_argument<fnType>::type>::type::value )
+	{
+		signature.returnType = signature.argumentTypes[--signature.argumentCount];
+	}
+	else if( is_pointer_to_pointer_to_blue<typename last_argument<fnType>::type>::type::value )
+	{
+		signature.returnType = BlueGetReturnTypeName<typename std::remove_pointer<typename last_argument<fnType>::type>::type>();
+		--signature.argumentCount;
+	}
+	else
+	{
+		signature.returnType = BlueGetReturnTypeName<void>();
+	}
+}
+
 
 template <typename T>
 struct TypeSignature
