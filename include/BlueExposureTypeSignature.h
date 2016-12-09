@@ -127,7 +127,7 @@ void BlueGetFunctionSignature( Be::BlueExposureFunctionSignature& signature, fnT
 	}
 	else if( is_pointer_to_pointer_to_blue<typename last_argument<fnType>::type>::type::value )
 	{
-		signature.returnType = BlueGetReturnTypeName<std::remove_pointer<last_argument<fnType>::type>::type>();
+		signature.returnType = BlueGetReturnTypeName<typename std::remove_pointer<typename last_argument<fnType>::type>::type>();
 		--signature.argumentCount;
 	}
 	else
@@ -782,11 +782,11 @@ struct TypeSignatureForValueOrBlueObject
 
 	static const char* ArgumentType()
 	{
-		return TypeSignatureForValueOrBlueObjectImpl<type, is_blue_type<type>::type>::ArgumentType();
+		return TypeSignatureForValueOrBlueObjectImpl<type, typename is_blue_type<type>::type>::ArgumentType();
 	}
 	static const char* ReturnType()
 	{
-		return TypeSignatureForValueOrBlueObjectImpl<type, is_blue_type<type>::type>::ReturnType();
+		return TypeSignatureForValueOrBlueObjectImpl<type, typename is_blue_type<type>::type>::ReturnType();
 	}
 };
 
