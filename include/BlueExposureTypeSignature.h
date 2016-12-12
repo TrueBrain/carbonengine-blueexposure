@@ -726,11 +726,11 @@ struct TypeSignatureForValueOrBlueObjectImpl<IRoot*, std::true_type>
 {
 	static const char* ArgumentType()
 	{
-		return "BlueWrapper";
+		return "IRoot";
 	}
 	static const char* ReturnType()
 	{
-		return "BlueWrapper";
+		return "IRoot";
 	}
 };
 
@@ -739,11 +739,11 @@ struct TypeSignatureForValueOrBlueObjectImpl<const IRoot*, std::true_type>
 {
 	static const char* ArgumentType()
 	{
-		return "BlueWrapper";
+		return "IRoot";
 	}
 	static const char* ReturnType()
 	{
-		return "BlueWrapper";
+		return "IRoot";
 	}
 };
 
