@@ -372,9 +372,9 @@ const Be::ClassInfo* BlueClasses::ExposeToBlue()
 			":param maxLevel: maximum depth to search to (default -1)\n"
 			":type maxLevel: Optional[int]\n"
 			":param prune: prune duplicate instances (default False)\n"
-			":type prune: bool\n"
+			":type prune: Optional[bool]\n"
 			":param nParents: number of parents to return in a list (default -1)\n"
-			":type nParents: int\n"
+			":type nParents: Optional[int]\n"
 			":rtype: list[IRoot]"
 		)
 
