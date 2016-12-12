@@ -726,7 +726,7 @@ struct TypeSignatureForValueOrBlueObjectImpl<IRoot*, std::true_type>
 {
 	static const char* ArgumentType()
 	{
-		return "IRoot";
+		return "IRoot | None";
 	}
 	static const char* ReturnType()
 	{
@@ -739,7 +739,7 @@ struct TypeSignatureForValueOrBlueObjectImpl<const IRoot*, std::true_type>
 {
 	static const char* ArgumentType()
 	{
-		return "IRoot";
+		return "IRoot | None";
 	}
 	static const char* ReturnType()
 	{
@@ -752,8 +752,14 @@ struct TypeSignatureForValueOrBlueObjectImpl<T, std::true_type>
 {
 	static const char* ArgumentType()
 	{
-		auto& iid = BlueInterfaceIID<typename remove_const_and_reference<typename std::remove_pointer<T>::type>::type>();
-		return iid.GetName();
+		static std::string result;
+		if( result.empty() )
+		{
+			auto& iid = BlueInterfaceIID<typename remove_const_and_reference<typename std::remove_pointer<T>::type>::type>();
+			result = iid.GetName();
+			result += "| None";
+		}
+		return result.c_str();
 	}
 	static const char* ReturnType()
 	{
