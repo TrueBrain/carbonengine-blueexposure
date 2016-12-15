@@ -51,6 +51,21 @@ typedef PyObject* (*BluePropertySetterFunction)(PyObject*, PyObject*);
 typedef PyMethodDef BlueMethodDefinition;
 typedef PyCFunction BlueScriptCFunction;
 
+#elif BLUE_NO_EXPOSURE
+
+typedef void* BlueScriptValue;
+typedef void* BlueScriptArguments;
+#define BLUE_SCRIPT_ERROR nullptr
+#define BLUE_SCRIPT_NO_RETURN_VALUE return nullptr
+typedef void (*BluePropertyGetterFunction)();
+typedef void (*BluePropertySetterFunction)();
+typedef void (*BlueScriptCFunction)();
+struct BlueMethodDefinition {
+	const char* ml_name;		/* The name of the built-in function/method */
+	BlueScriptCFunction ml_meth;	/* The C function that implements it */
+	const char* ml_doc;			/* The __doc__ attribute, or NULL */
+};
+
 #endif
 
 BLUEIMPORT struct IRoot* BlueUnwrapObjectFromScriptValue( BlueScriptValue sv );

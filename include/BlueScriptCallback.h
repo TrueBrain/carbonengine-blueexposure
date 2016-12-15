@@ -161,6 +161,8 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue )
 		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
+	return BlueScriptCallbackStatus::EXCEPTION;
 #endif
 }
 
@@ -198,6 +200,8 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0 )
 	{
 		PyErr_Clear();
 	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
 	return BlueScriptCallbackStatus::EXCEPTION;
 #endif
 }
@@ -249,6 +253,8 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0 )
 		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
+	return BlueScriptCallbackStatus::EXCEPTION;
 #endif
 }
 
@@ -289,6 +295,8 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1 )
 	{
 		PyErr_Clear();
 	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
 	return BlueScriptCallbackStatus::EXCEPTION;
 #endif
 }
@@ -343,6 +351,8 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
+	return BlueScriptCallbackStatus::EXCEPTION;
 #endif
 }
 
@@ -386,6 +396,8 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2 )
 	{
 		PyErr_Clear();
 	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
 	return BlueScriptCallbackStatus::EXCEPTION;
 #endif
 }
@@ -443,6 +455,8 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
+	return BlueScriptCallbackStatus::EXCEPTION;
 #endif
 }
 
@@ -489,6 +503,8 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2, A3 a
 	{
 		PyErr_Clear();
 	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
 	return BlueScriptCallbackStatus::EXCEPTION;
 #endif
 }
@@ -548,6 +564,8 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 	{
 		PyErr_Clear();
 	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
 	return BlueScriptCallbackStatus::EXCEPTION;
 #endif
 }

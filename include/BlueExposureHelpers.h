@@ -18,6 +18,16 @@
 #include "BlueExposureHelpersLua.h"
 #elif BLUE_WITH_PYTHON
 #include "BlueExposureHelpersPython.h"
+#elif BLUE_NO_EXPOSURE
+template< typename FnType, FnType fn >
+void BlueFunctionHelper()
+{
+}
+template< typename class_type, typename memFnType, memFnType memFn >
+void BlueMethodHelper()
+{
+}
+
 #endif
 
 // Get the VARTYPE for the return value of the property getter function.

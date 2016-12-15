@@ -81,7 +81,7 @@ bool BlueExtractArgumentOrNullValue( FunctionType func, BlueScriptArguments args
 	return true;
 }
 
-#else
+#elif BLUE_WITH_LUA
 
 static inline bool CheckArgumentLength( BlueScriptArguments args, unsigned int length, unsigned int numOptional )
 {

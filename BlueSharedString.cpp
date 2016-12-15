@@ -116,6 +116,8 @@ BlueScriptValue BlueWrapReturnValueImpl(
 	return returnValue;
 #elif BLUE_WITH_PYTHON
 	return PyString_FromString( val.c_str() );
+#elif BLUE_NO_EXPOSURE
+	return nullptr;
 #endif
 }
 
@@ -144,6 +146,7 @@ bool BlueExtractArgumentImpl(
 	{
 #if BLUE_WITH_LUA
 		luaL_error( argument.ls, argumentTypeMismatchString, argID, "string" );
+#elif BLUE_NO_EXPOSURE
 #else
 		PyErr_Format( PyExc_TypeError, argumentTypeMismatchString, argID, "string" );
 #endif

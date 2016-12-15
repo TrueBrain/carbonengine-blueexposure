@@ -11,7 +11,7 @@
 #ifndef BlueExposure_h
 #define BlueExposure_h
 
-#if !defined(BLUE_WITH_PYTHON) && !defined(BLUE_WITH_LUA)
+#if !defined(BLUE_WITH_PYTHON) && !defined(BLUE_WITH_LUA) && !defined(BLUE_NO_EXPOSURE)
 #define BLUE_WITH_PYTHON 1
 #endif
 

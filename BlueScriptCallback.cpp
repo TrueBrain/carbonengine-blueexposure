@@ -283,6 +283,8 @@ BLUEIMPORT bool BlueScriptCallback::IsValid() const
 	return m_refCount != nullptr;
 #elif BLUE_WITH_PYTHON
 	return m_callback != nullptr;
+#elif BLUE_NO_EXPOSURE
+	return false;
 #endif
 }
 
@@ -332,6 +334,8 @@ BLUEIMPORT BlueScriptCallbackStatus BlueScriptCallback::CallVoid()
 		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus( BlueScriptCallbackStatus::EXCEPTION );
+#elif BLUE_NO_EXPOSURE
+	return BlueScriptCallbackStatus::EXCEPTION;
 #endif
 }
 
@@ -358,6 +362,8 @@ BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const BlueScr
 	{
 		Py_RETURN_NONE;
 	}
+#elif BLUE_NO_EXPOSURE
+	return nullptr;
 #endif
 }
 
@@ -395,5 +401,7 @@ bool BlueExtractArgumentImpl( BlueScriptValue argument, BlueScriptCallback& resu
 		Py_INCREF( result.m_callback );
 	}
 	return true;
+#elif BLUE_NO_EXPOSURE
+	return false;
 #endif
 }

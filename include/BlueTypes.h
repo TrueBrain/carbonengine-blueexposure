@@ -57,7 +57,7 @@ template<typename T> PyObject* BeGetException( const Be::Result<T>& result )
 	CCP_ASSERT_M( false, "Missing specialization for BeGetException" );
 	return nullptr;
 }
-#elif BLUE_WITH_LUA
+#elif BLUE_WITH_LUA || BLUE_NO_EXPOSURE
 #define BLUE_DECLARE_GET_EXCEPTION( type ) template<> const char* BeGetException( const type& result );
 #define BLUE_BEGIN_GET_EXCEPTION( type ) template<> const char* BeGetException( const type& result ) {
 #define BLUE_BEGIN_GET_EXCEPTION_INLINE( type ) template<> inline const char* BeGetException( const type& result ) {
