@@ -925,7 +925,6 @@
     <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="autoversion.h"/>
     <ClInclude Include="BlueClasses.h"/>
     <ClInclude Include="BlueLuaThunkers.h"/>
     <ClInclude Include="BlueLuaWrapper.h"/>
@@ -948,7 +947,6 @@
     <ClInclude Include="include\BlueExposureMacrosDeprecated.h"/>
     <ClInclude Include="include\BlueExposureMacrosLua.h"/>
     <ClInclude Include="include\BlueExposureMacrosPython.h"/>
-    <ClInclude Include="include\BlueExposureTypeSignature.h"/>
     <ClInclude Include="include\BlueExtractArgument.h"/>
     <ClInclude Include="include\BlueExtractArgumentLua.h"/>
     <ClInclude Include="include\BlueExtractArgumentPython.h"/>
