@@ -28,6 +28,11 @@ BaseConfigurations:
       AdditionalLibraryDirectories:
       - ../../autobuild/BlueExposure/lua/$(Platform)/$(PlatformToolset)
 
+  NoExposure:
+    Link:
+      AdditionalLibraryDirectories:
+      - ../../autobuild/BlueExposure/noexposure/$(Platform)/$(PlatformToolset)
+
   Debug:
     Link:
       AdditionalDependencies:
@@ -60,6 +65,16 @@ Configurations:
     Link:
       AdditionalDependencies:
       - BlueExposureStatic
+
+  DebugNoExposure|Win32,x64:
+    BaseConfigurations:
+    - NoExposure
+    - Debug
+
+  ReleaseNoExposure|Win32,x64:
+    BaseConfigurations:
+    - NoExposure
+    - Release
 
   Release|Win32,x64:
     BaseConfigurations:

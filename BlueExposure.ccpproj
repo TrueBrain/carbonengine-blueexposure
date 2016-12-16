@@ -69,6 +69,13 @@ BaseConfigurations:
     General:
       OutDir: ../../autobuild/BlueExposure/lua/$(Platform)/$(PlatformToolset)/
 
+  NoExposure:
+    ClCompile:
+      PreprocessorDefinitions:
+      - BLUE_NO_EXPOSURE=1
+    General:
+      OutDir: ../../autobuild/BlueExposure/noexposure/$(Platform)/$(PlatformToolset)/
+
   Android:
     General:
       AndroidTargetAPI: android-14
@@ -106,6 +113,14 @@ Configurations:
     General: 
       TargetName: BlueExposure_d
 
+  DebugNoExposure|Win32,x64:
+    BaseConfigurations:
+    - Debug
+    - NoExposure
+    - Static
+    General: 
+      TargetName: BlueExposureStatic_d
+
   Release|Win32,x64,Mac64:
     Imports:
     - ../stackless/stackless.yaml
@@ -132,6 +147,14 @@ Configurations:
     General:
       OutDir: ../../autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset)/
       TargetName: BlueExposure
+
+  ReleaseNoExposure|Win32,x64:
+    BaseConfigurations:
+    - Release
+    - NoExposure
+    - Static
+    General: 
+      TargetName: BlueExposureStatic
 
   DebugStatic|Win32,x64:
     Imports:
