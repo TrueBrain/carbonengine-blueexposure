@@ -605,5 +605,12 @@ PyObject* ConvertMatrixToSequence( const Matrix* m )
 
 #elif BLUE_WITH_LUA
 
+#elif BLUE_NO_EXPOSURE
+
+bool BlueExtractString( BlueScriptValue, std::string& )
+{
+	return false;
+}
+
 #endif
 
