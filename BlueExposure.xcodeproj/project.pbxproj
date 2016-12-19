@@ -310,7 +310,7 @@
 			fileRef = 000000160000bbcdbdbf2daa;
 			};
 		000000B80000bbcdbdbf2daa = {
-			path = BlueExposure.lib;
+			path = BlueExposure_d.lib;
 			isa = PBXFileReference;
 			includeInIndex = 0;
 			explicitFileType = archive.ar;
@@ -379,12 +379,12 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				PRODUCT_NAME = BlueExposure_d;
+				PRODUCT_NAME = BlueExposure;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				ONLY_ACTIVE_ARCH = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -400,7 +400,6 @@
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					_DEBUG,
 					"CCP_STACKLESS=1",
 					"BLUE_WITH_PYTHON=1",
 					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
@@ -655,7 +654,7 @@
 			fileRef = 000000480000bbcdbdbf2daa;
 			};
 		000000B70000bbcdbdbf2daa = {
-			path = BlueExposure_d.lib;
+			path = BlueExposure.lib;
 			isa = PBXFileReference;
 			includeInIndex = 0;
 			explicitFileType = archive.ar;
@@ -905,7 +904,7 @@
 			dependencies = (
 				);
 			productReference = 000000B80000bbcdbdbf2daa;
-			name = Release_Mac64;
+			name = Debug_Mac64;
 			productType = "com.apple.product-type.library.static";
 			buildRules = (
 				);
@@ -959,12 +958,12 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				PRODUCT_NAME = BlueExposure;
+				PRODUCT_NAME = BlueExposure_d;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				ONLY_ACTIVE_ARCH = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -980,6 +979,7 @@
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					_DEBUG,
 					"CCP_STACKLESS=1",
 					"BLUE_WITH_PYTHON=1",
 					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
@@ -1281,7 +1281,7 @@
 			dependencies = (
 				);
 			productReference = 000000B70000bbcdbdbf2daa;
-			name = Debug_Mac64;
+			name = Release_Mac64;
 			productType = "com.apple.product-type.library.static";
 			buildRules = (
 				);
