@@ -372,6 +372,14 @@ public:
 	}
 };
 
+template <typename T>
+BluePtr<T> CreateInstance()
+{
+	BluePtr<T> ptr;
+	ptr.CreateInstance();
+	return ptr;
+}
+
 
 BLUE_DECLARE_INTERFACE(IWeakObject);	//an object that can be weakrefed
 
