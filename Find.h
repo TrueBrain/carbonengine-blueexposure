@@ -13,4 +13,6 @@ PyObject* PyFindImpl( IRoot* pThis, PyObject* args );
 
 PyObject* FindRoute( IRoot* from, IRoot* to );
 
+PyObject *FindInterface( IRoot *obj, const char* iidName );
+
 #endif

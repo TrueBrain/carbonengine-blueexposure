@@ -36,7 +36,8 @@ PyObject *FindSingle(IRoot *obj, const idvector_t &ids, int maxLevel, bool prune
 PyObject *FindMultiple(IRoot *obj, const idvector_t &ids, int maxLevel, bool prune, int nParents);
 
 static bool IsMatch(IRoot *obj, const idvector_t &clsids);
-static void PushChildren(IRoot *obj, int level, objectstack_t &stack);
+static bool IsMatch( IRoot *obj, const Be::IID& iid );
+static void PushChildren(IRoot *obj, int level, objectstack_t &stack, long flagFilter );
 
 PyObject* PyFindImpl( IRoot* pThis, PyObject* args )
 {
@@ -122,11 +123,56 @@ PyObject *FindSingle(IRoot *obj, const idvector_t &ids, int maxLevel, bool prune
 		if (maxLevel >= 0 && e.level >= maxLevel)
 			continue;  //no, we don't go any deeper.
 
-		PushChildren(obj, e.level, stack);
+		PushChildren(obj, e.level, stack, Be::PERSIST);
 	}
 	return result;
 }
 
+
+PyObject *FindInterface( IRoot *obj, const char* iidName )
+{
+	Be::IID iid( iidName );
+
+	objectstack_t stack;
+	rootset_t seen;
+
+	PyObject *result = PyList_New( 0 );
+	if( !result )
+		return 0;
+
+	//Prime the stack and start
+	stack.push_back( StackEntry( obj, 0, true ) );  // 'true' since we must assume it's not an autovar.
+	while( !stack.empty() )
+	{
+		StackEntry e = stack.back();
+		stack.pop_back();
+
+		obj = e.obj;
+		if( e.check )
+		{
+			// We need to check this, if we've seen it before
+			std::pair<rootset_t::iterator, bool> res = seen.insert( obj );
+			if( !res.second )
+				continue;
+		}
+
+		// do we have a winner here?  See if the class matches what we are looking for.
+		if( IsMatch( obj, iid ) )
+		{
+			PyObject *item = BlueWrapObjectForPython( obj );
+			if( !item || PyList_Append( result, item ) )
+			{
+				Py_XDECREF( item );
+				Py_DECREF( result );
+				return 0;
+			}
+			Py_DECREF( item );
+		}
+
+		PushChildren( obj, e.level, stack, 0 );
+	}
+	return result;
+}
 
 // A stack class to manage the recursion data in the PyFindMultiple
 class RealStack
@@ -231,25 +277,41 @@ PyObject *FindMultiple(IRoot *obj, const idvector_t &ids, int maxLevel, bool pru
 		if (maxLevel >= 0 && e.level >= maxLevel)
 			continue;  //no, we don't go any deeper.
 
-		PushChildren(obj, e.level, stack);
+		PushChildren(obj, e.level, stack, Be::PERSIST);
 	}
 	return result;
 }
 
 
 
-static bool IsMatch(IRoot *obj, const idvector_t &clsids)
+static bool IsMatch( IRoot *obj, const idvector_t &clsids )
 {
 	// do we have a winner here?  See if the class matches what we are looking for.
 	const Be::ClassInfo* type = obj->ClassType();
-	for (const Be::ClassInfo* other = type; other; other = other->mParentClassInfo)
-		for (idvector_t::const_iterator it = clsids.begin(); it!= clsids.end() ; ++it)
-			if ((*it).IsEqual(*other->mClassId))
-				return true;			
+	for( const Be::ClassInfo* other = type; other; other = other->mParentClassInfo )
+		for( idvector_t::const_iterator it = clsids.begin(); it != clsids.end(); ++it )
+			if( ( *it ).IsEqual( *other->mClassId ) )
+				return true;
 	return false;
 }
 
-static void PushChildren(IRoot *obj, int level, objectstack_t &stack)
+static bool IsMatch( IRoot *obj, const Be::IID& iid )
+{
+	auto type = obj->ClassType();
+	for( auto other = type; other; other = other->mParentClassInfo )
+	{
+		for( auto entry = type->mInterfaceTable; entry->mIID; entry++ )
+		{
+			if( entry->mIID->IsEqual( iid ) )
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+static void PushChildren(IRoot *obj, int level, objectstack_t &stack, long flagFilter)
 {
 	const Be::ClassInfo* type = obj->ClassType();
 	// go thru members, see if any is IROOT or IROOTPTR
@@ -257,7 +319,7 @@ static void PushChildren(IRoot *obj, int level, objectstack_t &stack)
 	{
 		for (const Be::VarEntry *entry = type->mMemberTable; entry->mName; entry++)
 		{
-			if ((entry->mEditFlags & Be::PERSIST) &&
+			if ((!flagFilter || (entry->mEditFlags & flagFilter)) && entry->mSize &&
 				(entry->mType == Be::IROOT || entry->mType == Be::IROOTPTR))
 			{
 				Be::Var* value = BLUEMAPMEMBEROFFSET(obj, entry, type, xtraoffs);
