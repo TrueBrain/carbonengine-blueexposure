@@ -403,7 +403,6 @@ public:
 		return r;
 	}
 	static BluePyStr FormatV(const char *format, va_list args) {
-#ifndef __BORLANDC__ //borlandc doesn't have _vscprintf.
         va_list args1;
 #ifdef _MSC_VER
 		args1 = args;
@@ -419,10 +418,6 @@ public:
 			return str;
 		vsprintf_s(PyString_AS_STRING(str.o), s+1, format, args);
 		return str;
-#else
-		//this is less capable.
-		return BluePy(PyString_FromFormatV(format, args));
-#endif
 	}
 
 	
