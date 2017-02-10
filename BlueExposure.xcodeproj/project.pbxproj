@@ -398,6 +398,7 @@
 					);
 				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"CCP_STACKLESS=1",
@@ -561,6 +562,7 @@
 					);
 				SYMROOT = "../../autobuild/BlueExposure/python_27/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"BLUE_WITH_PYTHON=1",
@@ -977,6 +979,7 @@
 					);
 				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_DEBUG,
