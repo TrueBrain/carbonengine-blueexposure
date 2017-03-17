@@ -63,27 +63,12 @@ BaseConfigurations:
       PreprocessorDefinitions:
       - BLUEBUILD_STATIC
 
-  Lua:
-    Imports:
-    - ../lua/uses_Lua.yaml
-    General:
-      OutDir: ../../autobuild/BlueExposure/lua/$(Platform)/$(PlatformToolset)/
-
   NoExposure:
     ClCompile:
       PreprocessorDefinitions:
       - BLUE_NO_EXPOSURE=1
     General:
       OutDir: ../../autobuild/BlueExposure/noexposure/$(Platform)/$(PlatformToolset)/
-
-  Android:
-    General:
-      AndroidTargetAPI: android-14
-      TargetExt: .a
-      AndroidStlType: gnustl_static
-      AndroidArch: armv7-a
-    ClCompile:
-      AdditionalOptions: -std=c++0x
 
 Configurations:
   Debug|Win32,x64,Mac64:
@@ -93,24 +78,6 @@ Configurations:
     - Debug
     General: 
       OutDir: ../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/
-      TargetName: BlueExposure_d
-
-  DebugLua|ORBIS:
-    BaseConfigurations:
-    - Debug
-    - Lua
-    General: 
-      TargetName: libBlueExposure_d
-      TargetExt: .a
-    ClCompile:
-      AdditionalOptions:
-      - -Wno-unused-function
-
-  DebugLua|Win32,x64:
-    BaseConfigurations:
-    - Debug
-    - Lua
-    General: 
       TargetName: BlueExposure_d
 
   DebugNoExposure|Win32,x64:
@@ -195,41 +162,3 @@ Configurations:
     General:
       OutDir: ../../autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset)/
       TargetName: BlueExposureStatic
-
-  DebugStatic_Lua|Win32,x64:
-    BaseConfigurations:
-    - Debug
-    - Static
-    - Lua
-    General: 
-      TargetName: BlueExposureStatic_d
-
-  DebugStatic_Lua|ORBIS:
-    BaseConfigurations:
-    - Debug
-    - Static
-    - Lua
-    General: 
-      TargetName: libBlueExposureStatic_d
-      TargetExt: .a
-    ClCompile:
-      AdditionalOptions:
-      - -Wno-unused-function
-
-  DebugStatic_Lua|Tegra-Android:
-    BaseConfigurations:
-    - Debug
-    - Static
-    - Lua
-    - Android
-    General: 
-      TargetName: libBlueExposureStatic_d
-
-  ReleaseStatic_Lua|Tegra-Android:
-    BaseConfigurations:
-    - Release
-    - Static
-    - Lua
-    - Android
-    General: 
-      TargetName: libBlueExposureStatic
