@@ -369,7 +369,7 @@
 					"../../../carbon/src/stackless/Mac",
 					.,
 					"../../../carbon/src",
-					"../../../../../../sdk/telemetry/2.1A3/include",
+					"../../../../../../sdk/telemetry/3.0.1.1008/include",
 					.,
 					..,
 					);
@@ -394,7 +394,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
-					"../../../../../../sdk/telemetry/2.1A3/lib",
+					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
 					);
 				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
@@ -534,7 +534,7 @@
 					"../../../../../../shared_tools/python/27_mac/include/python2.7",
 					.,
 					"../../../carbon/src",
-					"../../../../../../sdk/telemetry/2.1A3/include",
+					"../../../../../../sdk/telemetry/3.0.1.1008/include",
 					.,
 					..,
 					);
@@ -558,7 +558,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"../../../../../../shared_tools/python/27_mac/lib",
-					"../../../../../../sdk/telemetry/2.1A3/lib",
+					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
 					);
 				SYMROOT = "../../autobuild/BlueExposure/python_27/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
@@ -950,7 +950,7 @@
 					"../../../carbon/src/stackless/Mac",
 					.,
 					"../../../carbon/src",
-					"../../../../../../sdk/telemetry/2.1A3/include",
+					"../../../../../../sdk/telemetry/3.0.1.1008/include",
 					.,
 					..,
 					);
@@ -975,7 +975,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
-					"../../../../../../sdk/telemetry/2.1A3/lib",
+					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
 					);
 				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
