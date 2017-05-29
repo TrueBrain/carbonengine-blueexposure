@@ -138,7 +138,13 @@ PyObject *FindInterface( IRoot *obj, const char* iidName )
 
 	PyObject *result = PyList_New( 0 );
 	if( !result )
+	{
 		return 0;
+	}
+	if( !obj )
+	{
+		return result;
+	}
 
 	//Prime the stack and start
 	stack.push_back( StackEntry( obj, 0, true ) );  // 'true' since we must assume it's not an autovar.
