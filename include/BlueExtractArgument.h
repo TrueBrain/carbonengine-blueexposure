@@ -245,6 +245,12 @@ inline void BlueGetNullValue( Vector4d& resultRef )
 	memset( &resultRef, 0, sizeof( double ) * 4 );
 }
 
+inline void BlueGetNullValue( Color& resultRef )
+{
+	// Don't use sizeof( Vector4d )
+	memset( &resultRef, 0, sizeof( float ) * 4 );
+}
+
 #if BLUE_WITH_PYTHON
 inline void BlueGetNullValue( PyObject*& resultRef )
 {
