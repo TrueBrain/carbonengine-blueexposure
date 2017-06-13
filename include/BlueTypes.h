@@ -149,6 +149,11 @@ namespace Be
 		{
 			this->m_value = defaultValue;
 		}
+
+		OptionalWithDefaultValue( const T& value )
+			:Be::Optional<T>( value )
+		{
+		}
 	};
 
 	struct BlueExposureFunctionSignature
