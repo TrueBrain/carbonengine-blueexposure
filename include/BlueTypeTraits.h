@@ -99,6 +99,10 @@ extern BLUEIMPORT const Be::IID BlueColorIID;
 extern BLUEIMPORT const Be::IID BlueMatrixIID;
 extern BLUEIMPORT const Be::IID BlueTimeIID;
 
+BLUE_DECLARE_INTERFACE( IList );
+BLUE_DECLARE_INTERFACE( IBlueDict );
+BLUE_DECLARE_INTERFACE( IBlueStructureList );
+
 //////////////////////////////////////////////////////////////////////////
 // Useful Type-traits
 //////////////////////////////////////////////////////////////////////////
@@ -312,19 +316,69 @@ namespace BlueListUtils
 class BlueListBase;
 }
 
-template<typename T> inline const Be::IID* GetBlueIIDBluePointerHelper( const T& t, std::true_type isRawBluePointer, std::true_type isBlueList )
+template <typename T>
+struct remove_lock
 {
-	return nullptr;
+	typedef T type;
+};
+
+template <typename T>
+struct remove_lock<RootParentLock<T>>
+{
+	typedef T type;
+};
+
+template <typename T>
+struct remove_lock<RootParentLockWR<T>>
+{
+	typedef T type;
+};
+
+template <typename T>
+struct remove_lock<RootRefLock<T>>
+{
+	typedef T type;
+};
+
+template <typename T>
+struct remove_lock<RootNoLock<T>>
+{
+	typedef T type;
+};
+
+template <typename T>
+struct remove_lock<RootNoLockWR<T>>
+{
+	typedef T type;
+};
+
+
+
+template<typename T> inline const Be::IID* GetBlueIIDBluePointerHelper( std::false_type isBlueList, std::false_type isBlueDict, std::false_type isStructureList )
+{
+	return &BlueInterfaceIID<T>();
 }
 
-template<typename T> inline const Be::IID* GetBlueIIDBluePointerHelper( const T& t, std::true_type isRawBluePointer, std::false_type isBlueList )
+template<typename T> inline const Be::IID* GetBlueIIDBluePointerHelper( std::true_type isBlueList, std::false_type isBlueDict, std::false_type isStructureList )
 {
-	return &BlueInterfaceIID<typename std::remove_pointer<T>::type>();
+	return &BlueInterfaceIID<IList>();
+}
+
+template<typename T> inline const Be::IID* GetBlueIIDBluePointerHelper( std::false_type isBlueList, std::true_type isBlueDict, std::false_type isStructureList )
+{
+	return &BlueInterfaceIID<IBlueDict>();
+}
+
+template<typename T> inline const Be::IID* GetBlueIIDBluePointerHelper( std::false_type isBlueList, std::false_type isBlueDict, std::true_type isStructureList )
+{
+	return &BlueInterfaceIID<IBlueStructureList>();
 }
 
 template<typename T> inline const Be::IID* GetBlueIIDHelper( const T& t, std::true_type isRawBluePointer )
 {
-	return GetBlueIIDBluePointerHelper( t, isRawBluePointer, typename std::is_base_of<BlueListUtils::BlueListBase, typename std::remove_pointer<T>::type>::type() );
+	typedef typename remove_lock<typename std::remove_const<typename std::remove_pointer<T>::type>::type>::type RawType;
+
+	return GetBlueIIDBluePointerHelper<RawType>( typename std::is_base_of<IList, RawType>::type(), typename std::is_base_of<IBlueDict, RawType>::type(), typename std::is_base_of<IBlueStructureList, RawType>::type() );
 }
 
 template<typename T> inline const Be::IID* GetBlueIIDHelper( const T& t, std::false_type isRawBluePointer )
@@ -332,11 +386,21 @@ template<typename T> inline const Be::IID* GetBlueIIDHelper( const T& t, std::fa
 	return nullptr;
 }
 
+template<typename T> inline const Be::IID* GetBlueIIDPointerHelper( const T& t, std::true_type isPointer )
+{
+	return GetBlueIIDHelper( t, typename is_pointer_to_blue<T>::type() );
+}
+
+template<typename T> inline const Be::IID* GetBlueIIDPointerHelper( const T& t, std::false_type isPointer )
+{
+	return GetBlueIIDHelper( &t, typename is_pointer_to_blue<T*>::type() );
+}
+
 
 // Most types don't have a Blue interfaceID
 template<typename T> inline const Be::IID* GetBlueIID( const T& t )
 {
-	return GetBlueIIDHelper( t, typename is_pointer_to_blue<T>::type() );
+	return GetBlueIIDPointerHelper( t, typename std::is_pointer<T>::type() );
 }
 
 template<typename T> inline const Be::IID* GetBlueIID( const BluePtr<T>& )
