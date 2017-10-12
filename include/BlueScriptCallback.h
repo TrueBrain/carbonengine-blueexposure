@@ -98,6 +98,9 @@ public:
 	template <typename Ret, typename A0, typename A1, typename A2, typename A3>
 	BlueScriptCallbackStatus Call( Ret& returnValue, A0 a0, A1 a1, A2 a2, A3 a3 );
 
+	template <typename A0, typename A1, typename A2, typename A3, typename A4>
+	BlueScriptCallbackStatus CallVoid( A0 a0, A1 a1, A2 a2, A3 a3, A4 a4 );
+
 private:
 	BlueScriptValue m_callback;
 #if BLUE_WITH_LUA
@@ -557,6 +560,58 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
+		Py_DECREF( ret );
+		return BlueScriptCallbackStatus::OK;
+	}
+	else
+	{
+		PyErr_Clear();
+	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
+	return BlueScriptCallbackStatus::EXCEPTION;
+#endif
+}
+
+
+template <typename A0, typename A1, typename A2, typename A3, typename A4>
+BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2, A3 a3, A4 a4 )
+{
+	if( !IsValid() )
+	{
+		return BlueScriptCallbackStatus::CALL_ERROR;
+	}
+
+#if BLUE_WITH_LUA
+	BlueScriptArguments args = m_callback.ls;
+
+	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
+	BlueWrapReturnValue( args, a0 );
+	BlueWrapReturnValue( args, a1 );
+	BlueWrapReturnValue( args, a2 );
+	BlueWrapReturnValue( args, a3 );
+	BlueWrapReturnValue( args, a4 );
+	if( lua_pcall( m_callback.ls, 5, 0, 0 ) )
+	{
+		return BlueScriptCallbackStatus::EXCEPTION;
+	}
+	return BlueScriptCallbackStatus::OK;
+#elif BLUE_WITH_PYTHON
+	BlueScriptArguments args = 0;
+
+	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
+	BlueScriptValue arg1 = BlueWrapReturnValue( args, a1 );
+	BlueScriptValue arg2 = BlueWrapReturnValue( args, a2 );
+	BlueScriptValue arg3 = BlueWrapReturnValue( args, a3 );
+	BlueScriptValue arg4 = BlueWrapReturnValue( args, a4 );
+	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, arg0, arg1, arg2, arg3, arg4, nullptr );
+	Py_DECREF( arg0 );
+	Py_DECREF( arg1 );
+	Py_DECREF( arg2 );
+	Py_DECREF( arg3 );
+	Py_DECREF( arg4 );
+	if( ret )
+	{
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
 	}
