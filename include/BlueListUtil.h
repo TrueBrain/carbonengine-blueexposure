@@ -462,7 +462,7 @@ bool BlueList_Impl<T, ops>::Insert(ssize_t key, IRoot* val)
 	}
 
 	T* tmp;
-	if( !val->QueryInterface( BlueInterfaceIID<T>(), (void**)&tmp ) )
+	if( !val->QueryInterface( BlueInterfaceIID<T>(), (void**)&tmp, BEQI_SILENT ) )
 	{
 #if BLUE_WITH_PYTHON
 		PyErr_SetString( PyExc_TypeError, "Incorrect type" );
@@ -499,7 +499,7 @@ bool BlueList_Impl<T, ops>::Append( IRoot* val )
 	}
 
 	T* tmp;
-	if( !val->QueryInterface( BlueInterfaceIID<T>(), (void**)&tmp ) )
+	if( !val->QueryInterface( BlueInterfaceIID<T>(), (void**)&tmp, BEQI_SILENT ) )
 	{
 #if BLUE_WITH_PYTHON
 		PyErr_SetString( PyExc_TypeError, "Incorrect type" );
