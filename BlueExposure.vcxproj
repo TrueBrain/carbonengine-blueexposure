@@ -347,9 +347,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD_STATIC;_DEBUG;CCP_STACKLESS=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;_DEBUG;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -364,7 +364,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27_d.lib;rad_tm_win64.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27_d.lib;rad_tm_win64.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -376,9 +376,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;_DEBUG;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;_DEBUG;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -393,7 +393,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27_d.lib;rad_tm_win32.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27_d.lib;rad_tm_win32.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -405,9 +405,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD_STATIC;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\27\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\27\include;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -422,7 +422,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\27\libs;$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27.lib;rad_tm_win32.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27.lib;rad_tm_win32.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -434,9 +434,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\27\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\27\include;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -451,7 +451,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\27\libs;$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27.lib;rad_tm_win32.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27.lib;rad_tm_win32.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -463,9 +463,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD_STATIC;CCP_STACKLESS=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -480,7 +480,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27.lib;rad_tm_win32.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27.lib;rad_tm_win32.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -492,9 +492,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD_STATIC;_DEBUG;CCP_STACKLESS=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;_DEBUG;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -509,7 +509,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27_d.lib;rad_tm_win32.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27_d.lib;rad_tm_win32.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -521,9 +521,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -538,7 +538,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27.lib;rad_tm_win64.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27.lib;rad_tm_win64.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -550,9 +550,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseNoExposure|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_NO_EXPOSURE=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_NO_EXPOSURE=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -567,7 +567,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>rad_tm_win32.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>rad_tm_win32.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -579,9 +579,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_27|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD_STATIC;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\27_64\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\27_64\include;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -596,7 +596,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\27_64\libs;$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27.lib;rad_tm_win64.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27.lib;rad_tm_win64.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -608,9 +608,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugNoExposure|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_NO_EXPOSURE=1;_DEBUG;BLUEBUILD_STATIC;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_NO_EXPOSURE=1;_DEBUG;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -625,7 +625,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>rad_tm_win64.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>rad_tm_win64.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -637,9 +637,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseNoExposure|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_NO_EXPOSURE=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_NO_EXPOSURE=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -654,7 +654,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>rad_tm_win64.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>rad_tm_win64.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -666,9 +666,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD_STATIC;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\26\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\26\include;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -683,7 +683,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\26\libs;$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python26.lib;rad_tm_win32.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python26.lib;rad_tm_win32.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -695,9 +695,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_27|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\27_64\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\27_64\include;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -712,7 +712,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\27_64\libs;$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27.lib;rad_tm_win64.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27.lib;rad_tm_win64.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -724,9 +724,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD_STATIC;CCP_STACKLESS=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -741,7 +741,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27.lib;rad_tm_win64.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27.lib;rad_tm_win64.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -753,9 +753,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugNoExposure|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_NO_EXPOSURE=1;_DEBUG;BLUEBUILD_STATIC;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_NO_EXPOSURE=1;_DEBUG;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -770,7 +770,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>rad_tm_win32.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>rad_tm_win32.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -782,9 +782,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_26|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD_STATIC;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUEBUILD_STATIC;BLUE_WITH_PYTHON=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\26_64\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\26_64\include;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -799,7 +799,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\26_64\libs;$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python26.lib;rad_tm_win64.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python26.lib;rad_tm_win64.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -811,9 +811,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_26|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\26\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\26\include;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -828,7 +828,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\26\libs;$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python26.lib;rad_tm_win32.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python26.lib;rad_tm_win32.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -840,9 +840,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;_DEBUG;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;_DEBUG;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -857,7 +857,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27_d.lib;rad_tm_win64.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27_d.lib;rad_tm_win64.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -869,9 +869,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_26|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\26_64\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CcpSdkPath)\Python\26_64\include;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -886,7 +886,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CcpSdkPath)\Python\26_64\libs;$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python26.lib;rad_tm_win64.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python26.lib;rad_tm_win64.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -898,9 +898,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;_SCL_SECURE_NO_WARNINGS;BLUEBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BLUE_WITH_PYTHON=1;CCP_STACKLESS=1;BLUEBUILD;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;..\..\..\carbon\src\stackless\include;$(CcpBranchPath)/carbon/src;..;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\carbon\src\stackless\include;..\..\..\carbon\src\stackless\pc;..\..\..\carbon\src\stackless\stackless;$(CcpBranchPath)/carbon/src;$(CcpSdkPath)\telemetry\3.0.1.1008\include;.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>True</MultiProcessorCompilation>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -915,7 +915,7 @@
     <Link>
       <GenerateDebugInformation>True</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\carbon\autobuild\stackless\$(Platform);$(CcpSdkPath)\telemetry\3.0.1.1008\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python27.lib;rad_tm_win32.lib;ws2_32.lib;psapi.lib;crypt32.lib;version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python27.lib;rad_tm_win32.lib;crypt32.lib;iphlpapi.lib;psapi.lib;version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>psapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <ResourceCompile/>
@@ -925,6 +925,7 @@
     <PostBuildEvent/>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="autoversion.h"/>
     <ClInclude Include="BlueClasses.h"/>
     <ClInclude Include="BlueLuaThunkers.h"/>
     <ClInclude Include="BlueLuaWrapper.h"/>
