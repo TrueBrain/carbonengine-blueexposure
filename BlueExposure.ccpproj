@@ -73,7 +73,7 @@ BaseConfigurations:
 Configurations:
   Debug|Win32,x64,Mac64:
     Imports:
-    - ../stackless/stackless.yaml
+    - ../stackless/Include/stackless.yaml
     BaseConfigurations:
     - Debug
     General: 
@@ -90,7 +90,7 @@ Configurations:
 
   Release|Win32,x64,Mac64:
     Imports:
-    - ../stackless/stackless.yaml
+    - ../stackless/Include/stackless.yaml
     BaseConfigurations:
     - Release
     General:
@@ -125,7 +125,7 @@ Configurations:
 
   DebugStatic|Win32,x64:
     Imports:
-    - ../stackless/stackless.yaml
+    - ../stackless/Include/stackless.yaml
     BaseConfigurations:
     - Debug
     - Static
@@ -135,7 +135,7 @@ Configurations:
 
   ReleaseStatic|Win32,x64:
     Imports:
-    - ../stackless/stackless.yaml
+    - ../stackless/Include/stackless.yaml
     BaseConfigurations:
     - Release
     - Static
