@@ -40,7 +40,7 @@ struct BlueMethodDefinition {
 
 #elif BLUE_WITH_PYTHON
 
-#include <python.h>
+#include <Python.h>
 
 typedef PyObject* BlueScriptValue;
 typedef PyObject* BlueScriptArguments;
