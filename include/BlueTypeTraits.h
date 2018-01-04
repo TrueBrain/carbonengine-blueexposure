@@ -293,8 +293,8 @@ private:
 		static const Be::VARTYPE type = Be::IROOT;
 	};
 
-	template<>
-	struct GetVarTypeForVariableImpl<IRootPtr, std::false_type>
+	template<typename T2>
+	struct GetVarTypeForVariableImpl<BlueBasicPtr<T2>, std::false_type>
 	{
 		static const Be::VARTYPE type = Be::IROOTPTR;
 	};
