@@ -387,55 +387,81 @@ template<typename T> inline const Be::IID* GetBlueIIDBluePointerHelper( std::fal
 	return &BlueInterfaceIID<IBlueStructureList>();
 }
 
-template<typename T> inline const Be::IID* GetBlueIIDHelper( const T& t, std::true_type isRawBluePointer )
+template<typename T> inline const Be::IID* GetBlueIIDHelper( std::true_type isRawBluePointer )
 {
 	typedef typename remove_lock<typename std::remove_const<typename std::remove_pointer<T>::type>::type>::type RawType;
 
 	return GetBlueIIDBluePointerHelper<RawType>( typename std::is_base_of<IList, RawType>::type(), typename std::is_base_of<IBlueDict, RawType>::type(), typename std::is_base_of<IBlueStructureList, RawType>::type() );
 }
 
-template<typename T> inline const Be::IID* GetBlueIIDHelper( const T& t, std::false_type isRawBluePointer )
+template<typename T> inline const Be::IID* GetBlueIIDHelper( std::false_type isRawBluePointer )
 {
 	return nullptr;
 }
 
-template<typename T> inline const Be::IID* GetBlueIIDPointerHelper( const T& t, std::true_type isPointer )
+template<typename T> inline const Be::IID* GetBlueIIDPointerHelper( std::true_type isPointer )
 {
-	return GetBlueIIDHelper( t, typename is_pointer_to_blue<T>::type() );
+	return GetBlueIIDHelper<T>( typename is_pointer_to_blue<T>::type() );
 }
 
-template<typename T> inline const Be::IID* GetBlueIIDPointerHelper( const T& t, std::false_type isPointer )
+template<typename T> inline const Be::IID* GetBlueIIDPointerHelper( std::false_type isPointer )
 {
-	return GetBlueIIDHelper( &t, typename is_pointer_to_blue<T*>::type() );
+	return GetBlueIIDHelper<T*>( typename is_pointer_to_blue<T*>::type() );
 }
+
+
+template <typename T>
+struct GetBlueIIDImpl
+{
+	static const Be::IID* GetIID()
+	{
+		return GetBlueIIDPointerHelper<T>( typename std::is_pointer<T>::type() );
+	}
+};
+
+template <typename T>
+struct GetBlueIIDImpl<BluePtr<T>>
+{
+	static const Be::IID* GetIID()
+	{
+		return &BlueInterfaceIID<T>();
+	}
+};
+
+template <>
+struct GetBlueIIDImpl<Quaternion>
+{
+	static const Be::IID* GetIID()
+	{
+		return &BlueRotationIID;
+	}
+};
+
+template <>
+struct GetBlueIIDImpl<Color>
+{
+	static const Be::IID* GetIID()
+	{
+		return &BlueColorIID;
+	}
+};
+
+template <>
+struct GetBlueIIDImpl<Matrix>
+{
+	static const Be::IID* GetIID()
+	{
+		return &BlueMatrixIID;
+	}
+};
+
 
 
 // Most types don't have a Blue interfaceID
-template<typename T> inline const Be::IID* GetBlueIID( const T& t )
+template<typename T> inline const Be::IID* GetBlueIID()
 {
-	return GetBlueIIDPointerHelper( t, typename std::is_pointer<T>::type() );
-}
-
-template<typename T> inline const Be::IID* GetBlueIID( const BluePtr<T>& )
-{
-	return &BlueInterfaceIID<T>();
-}
-
-// We provide explicit default IIDs for those 'vector types' that have built in blue exposure support
-template<> inline const Be::IID* GetBlueIID( const Quaternion& )
-{
-	return &BlueRotationIID;
-}
-
-
-template<> inline const Be::IID* GetBlueIID( const Color& )
-{
-	return &BlueColorIID;
-}
-
-template<> inline const Be::IID* GetBlueIID( const Matrix& )
-{
-	return &BlueMatrixIID;
+	typedef typename std::remove_const<typename std::remove_reference<T>::type>::type Stripped;
+	return GetBlueIIDImpl<Stripped>::GetIID();
 }
 
 #endif // BlueTypeTraits_h

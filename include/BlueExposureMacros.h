@@ -124,13 +124,12 @@
 #define MAP_ATTRIBUTE( attributeName, member, docString, _flags )\
 {\
 	_Class* temp = NULL;\
-	static Be::VarEntry d = MAP_MEMBER( attributeName, VarTypeForVariable<decltype(temp->member)>::type, member, GetBlueIID(temp->member), docString, _flags, NULL );\
+	static Be::VarEntry d = MAP_MEMBER( attributeName, VarTypeForVariable<decltype(temp->member)>::type, member, GetBlueIID<decltype(temp->member)>(), docString, _flags, NULL );\
 	s_attributes.push_back( d );\
 }
 
 #define MAP_ATTRIBUTE_AS_CUSTOM_BINARY_BLOCK( attributeName )\
 {\
-	_Class* temp = NULL;\
 	static Be::VarEntry d = {attributeName, Be::BINARYBLOCK, 0, 0, nullptr, "", Be::PERSISTONLY, nullptr, nullptr, nullptr};\
 	s_attributes.push_back( d );\
 }
@@ -138,7 +137,7 @@
 #define MAP_ATTRIBUTE_WITH_CHOOSER( attributeName, member, docString, _flags, _chooser )\
 {\
 	_Class* temp = NULL;\
-	static Be::VarEntry d = MAP_MEMBER( attributeName, VarTypeForVariable<decltype(temp->member)>::type, member, GetBlueIID(temp->member), docString, _flags, _chooser );\
+	static Be::VarEntry d = MAP_MEMBER( attributeName, VarTypeForVariable<decltype(temp->member)>::type, member, GetBlueIID<decltype(temp->member)>(), docString, _flags, _chooser );\
 	s_attributes.push_back( d );\
 }
 
@@ -157,10 +156,7 @@
 template <typename fnType> static const Be::IID* GetBlueReturnTypeIID( const fnType& )
 {
 	typedef typename remove_const_and_reference< typename function_traits< fnType >::return_type >::type R;
-	// Although it looks like we're dereferencing a NULL pointer, we really aren't - this is done
-	// so the compiler can select the correct templated version of GetBlueIID()
-	R* pR = NULL;
-	return GetBlueIID( *pR );
+	return GetBlueIID<R>();
 }
 
 
