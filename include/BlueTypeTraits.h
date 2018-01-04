@@ -204,13 +204,13 @@ template<typename T>
 struct VarTypeForVariable
 {
 private:
-	template <typename T, typename IsPointerToBlue>
+	template <typename T2, typename IsPointerToBlue>
 	struct CheckPointerToBlue
 	{
 	};
 
-	template <typename T>
-	struct CheckPointerToBlue<T, std::false_type>
+	template <typename T2>
+	struct CheckPointerToBlue<T2, std::false_type>
 	{
 		// If you get a cryptic template compilation error that points to the
 		// line below, it is probably because you are using MAP_ATTRIBUTE on
@@ -219,76 +219,76 @@ private:
 		// known. In particular, Blue objects and interfaces must be fully
 		// declared (include the header file) so the compiler can figure out
 		// that they inherit from IRoot.
-		static const Be::VARTYPE type = BlueTypeTraits<T>::VARTYPE_VALUE;
+		static const Be::VARTYPE type = BlueTypeTraits<T2>::VARTYPE_VALUE;
 	};
 
-	template <typename T>
-	struct CheckPointerToBlue<T, std::true_type>
+	template <typename T2>
+	struct CheckPointerToBlue<T2, std::true_type>
 	{
 		static const Be::VARTYPE type = Be::IROOTPTR;
 	};
 
-	template <typename T, typename IsCharacterArray>
+	template <typename T2, typename IsCharacterArray>
 	struct CheckCharacterArray
 	{
 	};
 
-	template <typename T>
-	struct CheckCharacterArray<T, std::false_type>
+	template <typename T2>
+	struct CheckCharacterArray<T2, std::false_type>
 	{
-		static const Be::VARTYPE type = CheckPointerToBlue<T, typename is_pointer_to_blue<T>::type>::type;
+		static const Be::VARTYPE type = CheckPointerToBlue<T2, typename is_pointer_to_blue<T2>::type>::type;
 	};
 
-	template <typename T>
-	struct CheckCharacterArray<T, std::true_type>
+	template <typename T2>
+	struct CheckCharacterArray<T2, std::true_type>
 	{
 		static const Be::VARTYPE type = Be::CHARARRAY;
 	};
 
 
-	template <typename T, typename IsEnum>
+	template <typename T2, typename IsEnum>
 	struct GetVarTypeForVariableImpl
 	{
 	};
 
-	template <typename T>
-	struct GetVarTypeForVariableImpl<T, std::true_type>
+	template <typename T2>
+	struct GetVarTypeForVariableImpl<T2, std::true_type>
 	{
 		static const Be::VARTYPE type = Be::LONG;
 	};
 
-	template <typename T>
-	struct GetVarTypeForVariableImpl<T, std::false_type>
+	template <typename T2>
+	struct GetVarTypeForVariableImpl<T2, std::false_type>
 	{
-		static const Be::VARTYPE type = CheckCharacterArray<T, typename is_char_array<T>::type>::type;
+		static const Be::VARTYPE type = CheckCharacterArray<T2, typename is_char_array<T2>::type>::type;
 	};
 
-	template<typename T>
-	struct GetVarTypeForVariableImpl<RootParentLock<T>, std::false_type>
-	{
-		static const Be::VARTYPE type = Be::IROOT;
-	};
-
-	template<typename T>
-	struct GetVarTypeForVariableImpl<RootParentLockWR<T>, std::false_type>
+	template<typename T2>
+	struct GetVarTypeForVariableImpl<RootParentLock<T2>, std::false_type>
 	{
 		static const Be::VARTYPE type = Be::IROOT;
 	};
 
-	template<typename T>
-	struct GetVarTypeForVariableImpl<RootRefLock<T>, std::false_type>
+	template<typename T2>
+	struct GetVarTypeForVariableImpl<RootParentLockWR<T2>, std::false_type>
 	{
 		static const Be::VARTYPE type = Be::IROOT;
 	};
 
-	template<typename T>
-	struct GetVarTypeForVariableImpl<RootNoLock<T>, std::false_type>
+	template<typename T2>
+	struct GetVarTypeForVariableImpl<RootRefLock<T2>, std::false_type>
 	{
 		static const Be::VARTYPE type = Be::IROOT;
 	};
 
-	template<typename T>
-	struct GetVarTypeForVariableImpl<RootNoLockWR<T>, std::false_type>
+	template<typename T2>
+	struct GetVarTypeForVariableImpl<RootNoLock<T2>, std::false_type>
+	{
+		static const Be::VARTYPE type = Be::IROOT;
+	};
+
+	template<typename T2>
+	struct GetVarTypeForVariableImpl<RootNoLockWR<T2>, std::false_type>
 	{
 		static const Be::VARTYPE type = Be::IROOT;
 	};
@@ -299,23 +299,23 @@ private:
 		static const Be::VARTYPE type = Be::IROOTPTR;
 	};
 
-	template<typename T>
-	struct GetVarTypeForVariableImpl<BluePtr<T>, std::false_type>
+	template<typename T2>
+	struct GetVarTypeForVariableImpl<BluePtr<T2>, std::false_type>
 	{
 		static const Be::VARTYPE type = Be::IROOTPTR;
 	};
 
-	template<typename T>
-	struct GetVarTypeForVariableImpl<BlueWeakRef<T>, std::false_type>
+	template<typename T2>
+	struct GetVarTypeForVariableImpl<BlueWeakRef<T2>, std::false_type>
 	{
 		static const Be::VARTYPE type = Be::IROOTWEAKREF;
 	};
 
 
-	template <typename T>
+	template <typename T2>
 	struct CleanType
 	{
-		typedef typename std::remove_const<typename std::remove_reference<T>::type>::type type;
+		typedef typename std::remove_const<typename std::remove_reference<T2>::type>::type type;
 	};
 
 public:
