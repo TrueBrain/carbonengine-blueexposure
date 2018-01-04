@@ -198,118 +198,131 @@ struct is_char_array
 // Blue Type Trait Functions
 //////////////////////////////////////////////////////////////////////////
 
-// These are extended to handle the list and pointer types in blue
-
-template<typename T> static Be::VARTYPE GetVarTypeForVariableImpl3( const T&, std::false_type isPointerToBlueObject )
-{
-	// If you get a cryptic template compilation error that points to the
-	// line below, it is probably because you are using MAP_ATTRIBUTE on
-	// an unsupported type. This could be the result of exposing a variable
-	// of a type that has only been forward-declared and isn't fully
-	// known. In particular, Blue objects and interfaces must be fully
-	// declared (include the header file) so the compiler can figure out
-	// that they inherit from IRoot.
-	return BlueTypeTraits<T>::VARTYPE_VALUE;
-}
 
 
-// For raw pointers to blue objects to be able to replace MAPIROOTPTR macro.
-// Used alot in the UI framework
-template<typename T> static Be::VARTYPE GetVarTypeForVariableImpl3( const T&, std::true_type isPointerToBlueObject )
+template<typename T>
+struct VarTypeForVariable
 {
-	return Be::IROOTPTR;
-}
+private:
+	template <typename T, typename IsPointerToBlue>
+	struct CheckPointerToBlue
+	{
+	};
 
-template<typename T> static Be::VARTYPE GetVarTypeForVariableImpl2( const T& v, std::false_type isCharacterArray )
-{
-	return GetVarTypeForVariableImpl3( v, typename is_pointer_to_blue<T>::type() );
-}
+	template <typename T>
+	struct CheckPointerToBlue<T, std::false_type>
+	{
+		// If you get a cryptic template compilation error that points to the
+		// line below, it is probably because you are using MAP_ATTRIBUTE on
+		// an unsupported type. This could be the result of exposing a variable
+		// of a type that has only been forward-declared and isn't fully
+		// known. In particular, Blue objects and interfaces must be fully
+		// declared (include the header file) so the compiler can figure out
+		// that they inherit from IRoot.
+		static const Be::VARTYPE type = BlueTypeTraits<T>::VARTYPE_VALUE;
+	};
 
-template<typename T> static Be::VARTYPE GetVarTypeForVariableImpl2( const T&, std::true_type isCharacterArray )
-{
-	return Be::CHARARRAY;
-}
+	template <typename T>
+	struct CheckPointerToBlue<T, std::true_type>
+	{
+		static const Be::VARTYPE type = Be::IROOTPTR;
+	};
 
-template<typename T> static Be::VARTYPE GetVarTypeForVariableImpl( const T&, std::true_type isEnum )
-{
-	return Be::LONG;
-}
+	template <typename T, typename IsCharacterArray>
+	struct CheckCharacterArray
+	{
+	};
 
-template<typename T> static Be::VARTYPE GetVarTypeForVariableImpl( const T& v, std::false_type isEnum )
-{
-	return GetVarTypeForVariableImpl2( v, typename is_char_array<T>::type() );
-}
+	template <typename T>
+	struct CheckCharacterArray<T, std::false_type>
+	{
+		static const Be::VARTYPE type = CheckPointerToBlue<T, typename is_pointer_to_blue<T>::type>::type;
+	};
 
-template<typename T> static Be::VARTYPE GetVarTypeForVariable( const T& v )
-{
-	return GetVarTypeForVariableImpl( v, typename std::is_enum<T>::type() );
-}
+	template <typename T>
+	struct CheckCharacterArray<T, std::true_type>
+	{
+		static const Be::VARTYPE type = Be::CHARARRAY;
+	};
 
-// This override is for parent-locked objects, not blue pointers
-// for P<classname>
-template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootParentLock<T>& )
-{
-	return Be::IROOT;
-}
-template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootParentLockWR<T>& )
-{
-	return Be::IROOT;
-}
-// for O<classname>
-template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootRefLock<T>& )
-{
-	return Be::IROOT;
-}
-// for C<classname>
-template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootNoLock<T>& )
-{
-	return Be::IROOT;
-}
-template<typename T> static Be::VARTYPE GetVarTypeForVariable( const RootNoLockWR<T>& )
-{
-	return Be::IROOT;
-}
 
-template<typename T> static Be::VARTYPE GetVarTypeForVariableWithChooserImpl( const T&, std::true_type isEnum )
-{
-	return Be::LONG;
-}
+	template <typename T, typename IsEnum>
+	struct GetVarTypeForVariableImpl
+	{
+	};
 
-template<typename T> static Be::VARTYPE GetVarTypeForVariableWithChooserImpl( const T& v, std::false_type isEnum )
-{
-	// If you get a cryptic template compilation error that points to the
-	// line below, it is probably because you are using MAP_ATTRIBUTE on
-	// an unsupported type. This could be the result of exposing a variable
-	// of a type that has only been forward-declared and isn't fully
-	// known. In particular, Blue objects and interfaces must be fully
-	// declared (include the header file) so the compiler can figure out
-	// that they inherit from IRoot.
-	return BlueTypeTraits<T>::VARTYPE_VALUE;
-}
+	template <typename T>
+	struct GetVarTypeForVariableImpl<T, std::true_type>
+	{
+		static const Be::VARTYPE type = Be::LONG;
+	};
 
-template<typename T> static Be::VARTYPE GetVarTypeForVariableWithChooser( const T& v )
-{
-	return GetVarTypeForVariableWithChooserImpl( v, typename std::is_enum<T>::type() );
-}
+	template <typename T>
+	struct GetVarTypeForVariableImpl<T, std::false_type>
+	{
+		static const Be::VARTYPE type = CheckCharacterArray<T, typename is_char_array<T>::type>::type;
+	};
 
-// Since the template matching for the generic case will be taken in preference to type-casting, we
-// need to provide implementations that catch the main blue pointer types
+	template<typename T>
+	struct GetVarTypeForVariableImpl<RootParentLock<T>, std::false_type>
+	{
+		static const Be::VARTYPE type = Be::IROOT;
+	};
 
-static Be::VARTYPE GetVarTypeForVariable( const IRootPtr& )
-{
-	return Be::IROOTPTR;
-}
+	template<typename T>
+	struct GetVarTypeForVariableImpl<RootParentLockWR<T>, std::false_type>
+	{
+		static const Be::VARTYPE type = Be::IROOT;
+	};
 
-template<typename T> static Be::VARTYPE GetVarTypeForVariable( const BluePtr<T>& )
-{
-	return Be::IROOTPTR;
-}
+	template<typename T>
+	struct GetVarTypeForVariableImpl<RootRefLock<T>, std::false_type>
+	{
+		static const Be::VARTYPE type = Be::IROOT;
+	};
 
-// Specialization for weak references
-template<typename T> static Be::VARTYPE GetVarTypeForVariable( const BlueWeakRef<T>& )
-{
-	return Be::IROOTWEAKREF;
-}
+	template<typename T>
+	struct GetVarTypeForVariableImpl<RootNoLock<T>, std::false_type>
+	{
+		static const Be::VARTYPE type = Be::IROOT;
+	};
+
+	template<typename T>
+	struct GetVarTypeForVariableImpl<RootNoLockWR<T>, std::false_type>
+	{
+		static const Be::VARTYPE type = Be::IROOT;
+	};
+
+	template<>
+	struct GetVarTypeForVariableImpl<IRootPtr, std::false_type>
+	{
+		static const Be::VARTYPE type = Be::IROOTPTR;
+	};
+
+	template<typename T>
+	struct GetVarTypeForVariableImpl<BluePtr<T>, std::false_type>
+	{
+		static const Be::VARTYPE type = Be::IROOTPTR;
+	};
+
+	template<typename T>
+	struct GetVarTypeForVariableImpl<BlueWeakRef<T>, std::false_type>
+	{
+		static const Be::VARTYPE type = Be::IROOTWEAKREF;
+	};
+
+
+	template <typename T>
+	struct CleanType
+	{
+		typedef typename std::remove_const<typename std::remove_reference<T>::type>::type type;
+	};
+
+public:
+	static const Be::VARTYPE type = GetVarTypeForVariableImpl<typename CleanType<T>::type, 
+		typename std::is_enum<typename CleanType<T>::type>::type>::type;
+};
+
 
 namespace BlueListUtils
 {

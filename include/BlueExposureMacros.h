@@ -124,7 +124,7 @@
 #define MAP_ATTRIBUTE( attributeName, member, docString, _flags )\
 {\
 	_Class* temp = NULL;\
-	static Be::VarEntry d = MAP_MEMBER( attributeName, GetVarTypeForVariable(temp->member), member, GetBlueIID(temp->member), docString, _flags, NULL );\
+	static Be::VarEntry d = MAP_MEMBER( attributeName, VarTypeForVariable<decltype(temp->member)>::type, member, GetBlueIID(temp->member), docString, _flags, NULL );\
 	s_attributes.push_back( d );\
 }
 
@@ -138,7 +138,7 @@
 #define MAP_ATTRIBUTE_WITH_CHOOSER( attributeName, member, docString, _flags, _chooser )\
 {\
 	_Class* temp = NULL;\
-	static Be::VarEntry d = MAP_MEMBER( attributeName, GetVarTypeForVariableWithChooser(temp->member), member, GetBlueIID(temp->member), docString, _flags, _chooser );\
+	static Be::VarEntry d = MAP_MEMBER( attributeName, VarTypeForVariable<decltype(temp->member)>::type, member, GetBlueIID(temp->member), docString, _flags, _chooser );\
 	s_attributes.push_back( d );\
 }
 

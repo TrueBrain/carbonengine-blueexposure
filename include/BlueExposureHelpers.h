@@ -42,8 +42,7 @@ Be::VARTYPE BlueGetPropertyTypeBeResult( std::true_type isBeResult )
 		>::type
 		PropertyType;
 
-	PropertyType* var = nullptr;
-	return GetVarTypeForVariable( *var );
+	return VarTypeForVariable<PropertyType>::type;
 }
 
 // Get the VARTYPE for the return value of the property getter function.
@@ -60,12 +59,7 @@ Be::VARTYPE BlueGetPropertyTypeBeResult( std::false_type isBeResult )
 		typename remove_const_and_reference<PropertyType>::type
 		StrippedPropertyType;
 
-	StrippedPropertyType* var = nullptr;
-
-	// This looks like we're dereferencing a nullptr, but the function doesn't
-	// actually do anything with it. We're really just doing this to route it
-	// to the right template specialization.
-	return GetVarTypeForVariable( *var );
+	return VarTypeForVariable<StrippedPropertyType>::type;
 }
 
 // Get the VARTYPE for the return value of the property getter function.
