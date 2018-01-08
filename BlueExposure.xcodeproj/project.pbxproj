@@ -364,14 +364,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"../../../carbon/src/stackless/include",
-					"../../../carbon/src/stackless/stackless",
-					"../../../carbon/src/stackless/Mac",
-					.,
-					"../../../carbon/src",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
-					.,
 					..,
+					"../../../carbon/src/stackless/stackless",
+					"../../../carbon/src/stackless/include",
+					"../../../carbon/src",
+					.,
+					"../../../carbon/src/stackless/Mac",
+					"../../../../../../sdk/telemetry/3.0.1.1008/include",
 					);
 				CLANG_WARN_INT_CONVERSION = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -383,7 +382,7 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				GCC_OPTIMIZATION_LEVEL = s;
 				ONLY_ACTIVE_ARCH = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -392,27 +391,28 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
-					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
 					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
+					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					);
 				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"CCP_STACKLESS=1",
-					"BLUE_WITH_PYTHON=1",
 					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
-					_SCL_SECURE_NO_WARNINGS,
 					BLUEBUILD,
+					"BLUE_WITH_PYTHON=1",
+					"CCP_STACKLESS=1",
+					_SCL_SECURE_NO_WARNINGS,
 					"$(inherited)",
 					);
 				COPY_PHASE_STRIP = NO;
 				CLANG_CXX_LIBRARY = "libc++";
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				SDKROOT = macosx;
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				WARNING_CFLAGS = "-Wno-nonportable-include-path -Wno-inconsistent-missing-override";
 				};
 			name = Release;
 			};
@@ -531,12 +531,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"../../../../../../shared_tools/python/27_mac/include/python2.7",
-					.,
 					"../../../carbon/src",
 					"../../../../../../sdk/telemetry/3.0.1.1008/include",
-					.,
+					"../../../../../../shared_tools/python/27_mac/include/python2.7",
 					..,
+					.,
 					);
 				CLANG_WARN_INT_CONVERSION = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -548,7 +547,7 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				GCC_OPTIMIZATION_LEVEL = s;
 				ONLY_ACTIVE_ARCH = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -565,17 +564,18 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"BLUE_WITH_PYTHON=1",
 					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
-					_SCL_SECURE_NO_WARNINGS,
+					"BLUE_WITH_PYTHON=1",
 					BLUEBUILD,
+					_SCL_SECURE_NO_WARNINGS,
 					"$(inherited)",
 					);
 				COPY_PHASE_STRIP = NO;
 				CLANG_CXX_LIBRARY = "libc++";
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				SDKROOT = macosx;
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				WARNING_CFLAGS = "-Wno-nonportable-include-path -Wno-inconsistent-missing-override";
 				};
 			name = Release;
 			};
@@ -945,14 +945,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"../../../carbon/src/stackless/include",
-					"../../../carbon/src/stackless/stackless",
-					"../../../carbon/src/stackless/Mac",
-					.,
-					"../../../carbon/src",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
-					.,
 					..,
+					"../../../carbon/src/stackless/stackless",
+					"../../../carbon/src/stackless/include",
+					"../../../carbon/src",
+					.,
+					"../../../carbon/src/stackless/Mac",
+					"../../../../../../sdk/telemetry/3.0.1.1008/include",
 					);
 				CLANG_WARN_INT_CONVERSION = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -964,7 +963,7 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				ONLY_ACTIVE_ARCH = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -973,28 +972,29 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
-					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
 					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
+					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					);
 				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					_DEBUG,
 					"CCP_STACKLESS=1",
-					"BLUE_WITH_PYTHON=1",
+					_DEBUG,
 					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
+					"BLUE_WITH_PYTHON=1",
 					_SCL_SECURE_NO_WARNINGS,
 					BLUEBUILD,
 					"$(inherited)",
 					);
 				COPY_PHASE_STRIP = NO;
 				CLANG_CXX_LIBRARY = "libc++";
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				SDKROOT = macosx;
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				WARNING_CFLAGS = "-Wno-nonportable-include-path -Wno-inconsistent-missing-override";
 				};
 			name = Release;
 			};
