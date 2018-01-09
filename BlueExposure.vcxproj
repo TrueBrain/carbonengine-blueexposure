@@ -927,6 +927,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="autoversion.h" />
     <ClInclude Include="BlueClasses.h" />
     <ClInclude Include="BlueLuaThunkers.h" />
     <ClInclude Include="BlueLuaWrapper.h" />

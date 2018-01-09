@@ -5,6 +5,9 @@
     <Filter Include="Source Files\include" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="autoversion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="BlueClasses.h">
       <Filter>Source Files</Filter>
     </ClInclude>
