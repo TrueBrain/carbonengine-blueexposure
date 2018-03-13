@@ -558,11 +558,11 @@ struct TypeSignature<Matrix>
 {
 	static const char* ArgumentType()
 	{
-		return "(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)";
+		return "((float, float, float, float), (float, float, float, float), (float, float, float, float), (float, float, float, float))";
 	}
 	static const char* ReturnType()
 	{
-		return "(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)";
+		return "((float, float, float, float), (float, float, float, float), (float, float, float, float), (float, float, float, float))";
 	}
 };
 
