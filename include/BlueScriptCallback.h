@@ -117,6 +117,24 @@ private:
 		BlueScriptCallback& result, 
 		unsigned int argID, 
 		std::false_type isBlueType );
+
+	template <typename T>
+	static inline void RefIRoot( T obj, std::false_type isBlueObj )
+	{
+	}
+
+	template <typename T>
+	static inline void RefIRoot( T obj, std::true_type isBlueObj )
+	{
+		obj->Lock();
+	}
+
+	template <typename T>
+	static inline void RefIRoot( T obj )
+	{
+		BlueScriptCallback::RefIRoot( obj, typename is_pointer_to_blue<T>::type() );
+	}
+
 };
 
 inline void BlueGetNullValue( BlueScriptCallback& resultRef )
@@ -145,7 +163,8 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue )
         lua_pop( m_callback.ls, 1 );
 		return BlueScriptCallbackStatus::EXCEPTION;
 	}
-    lua_pop( m_callback.ls, 1 );
+	BlueScriptCallback::RefIRoot( returnValue );
+	lua_pop( m_callback.ls, 1 );
 	return BlueScriptCallbackStatus::OK;
 #elif BLUE_WITH_PYTHON
 	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, nullptr );
@@ -156,6 +175,7 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue )
 			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
+		BlueScriptCallback::RefIRoot( returnValue );
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
 	}
@@ -233,7 +253,8 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0 )
         lua_pop( m_callback.ls, 1 );
 		return BlueScriptCallbackStatus::EXCEPTION;
 	}
-    lua_pop( m_callback.ls, 1 );
+	BlueScriptCallback::RefIRoot( returnValue );
+	lua_pop( m_callback.ls, 1 );
 	return BlueScriptCallbackStatus::OK;
 #elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
@@ -248,6 +269,7 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0 )
 			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
+		BlueScriptCallback::RefIRoot( returnValue );
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
 	}
@@ -329,7 +351,8 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
         lua_pop( m_callback.ls, 1 );
 		return BlueScriptCallbackStatus::EXCEPTION;
 	}
-    lua_pop( m_callback.ls, 1 );
+	BlueScriptCallback::RefIRoot( returnValue );
+	lua_pop( m_callback.ls, 1 );
 	return BlueScriptCallbackStatus::OK;
 #elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
@@ -346,6 +369,7 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
+		BlueScriptCallback::RefIRoot( returnValue );
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
 	}
@@ -431,7 +455,8 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
         lua_pop( m_callback.ls, 1 );
 		return BlueScriptCallbackStatus::EXCEPTION;
 	}
-    lua_pop( m_callback.ls, 1 );
+	BlueScriptCallback::RefIRoot( returnValue );
+	lua_pop( m_callback.ls, 1 );
 	return BlueScriptCallbackStatus::OK;
 #elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
@@ -450,6 +475,7 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
+		BlueScriptCallback::RefIRoot( returnValue );
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
 	}
@@ -539,7 +565,8 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
         lua_pop( m_callback.ls, 1 );
 		return BlueScriptCallbackStatus::EXCEPTION;
 	}
-    lua_pop( m_callback.ls, 1 );
+	BlueScriptCallback::RefIRoot( returnValue );
+	lua_pop( m_callback.ls, 1 );
 	return BlueScriptCallbackStatus::OK;
 #elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
@@ -560,6 +587,7 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
+		BlueScriptCallback::RefIRoot( returnValue );
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
 	}
