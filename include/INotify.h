@@ -54,7 +54,12 @@ inline bool IsMatch( Be::Var* value, const T& t, typename std::enable_if<std::is
 template<typename T>
 inline bool IsMatch( Be::Var* value, const BluePtr<T>& t )
 {
-	return (Be::Var*)&t.p == value;
+	return ( Be::Var* )&t.p == value;
+}
+
+inline bool IsMatch( Be::Var* value, const IRootPtr& t )
+{
+	return ( Be::Var* )&t.p == value;
 }
 
 inline bool IsMatch( Be::Var* value, const std::string& t )
