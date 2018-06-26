@@ -236,4 +236,11 @@ BLUEIMPORT void BlueInitializePyType( PyTypeObject* pyType, const Be::Clsid* cls
 // Helper function for looking at command line arguments
 std::vector<std::wstring> GetSplitCommandLine();
 
+
+#ifdef _WIN64
+#define PROCESS_BIT_COUNT 64
+#else
+#define PROCESS_BIT_COUNT 32
+#endif
+
 #endif
