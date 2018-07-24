@@ -66,7 +66,8 @@ public:
 		m_structureDefinition( nullptr ),
 		m_memberCount( 0 ),
 		m_items("BlueStructureList"),
-		m_defaultValue( nullptr )
+		m_defaultValue( nullptr ),
+		m_notify( nullptr )
 	{
 	}
 
@@ -128,6 +129,7 @@ public:
 	{
 		const T* p = static_cast<const T*>( val );
 		m_items.push_back( *p );
+		Notify( IBlueStructureListNotify::BLUE_STRUCTURE_LIST_INSERTED, val, m_items.size() - 1 );
 		return true;
 	}
 
@@ -136,24 +138,40 @@ public:
 		const T* p = static_cast<const T*>( val );
 		iterator it = m_items.begin() + ix;
 		m_items.insert( it, *p );
+		Notify( IBlueStructureListNotify::BLUE_STRUCTURE_LIST_INSERTED, val, ix );
 		return true;
 	}
 
 	virtual bool Remove( size_t ix ) 
 	{
 		iterator it = m_items.begin() + ix;
+		T item = m_items[ix];
 		m_items.erase( it );
+		Notify( IBlueStructureListNotify::BLUE_STRUCTURE_LIST_REMOVED, &item, ix );
 		return true;
 	}
 
 	virtual void Clear() 
 	{
 		m_items.clear();
+		Notify( IBlueStructureListNotify::BLUE_STRUCTURE_LIST_CLEARED, nullptr, 0 );
 	}
 
 	virtual void Resize( size_t numItems )
 	{
 		m_items.resize( numItems );
+	}
+
+	virtual void ItemChanged( size_t ix )
+	{
+		Notify( IBlueStructureListNotify::BLUE_STRUCTURE_LIST_ITEM_CHANGED, &m_items[ix], ix );
+	}
+
+	virtual IBlueStructureListNotify* SetNotify( IBlueStructureListNotify* notify )
+	{
+		auto old = m_notify;
+		m_notify = notify;
+		return old;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -222,6 +240,7 @@ public:
 	void clear()
 	{
 		m_items.clear();
+		Notify( IBlueStructureListNotify::BLUE_STRUCTURE_LIST_CLEARED, nullptr, 0 );
 	}
 
 #if BLUE_WITH_PYTHON
@@ -408,10 +427,18 @@ public:
 
 
 private:
+	void Notify( IBlueStructureListNotify::Event event, const void* item, size_t index )
+	{
+		if( m_notify )
+		{
+			m_notify->OnStructureListModified( event, item, index, this );
+		}
+	}
 	BlueStructureDefinition* m_structureDefinition;
 	size_t m_memberCount;
 	vector_t m_items;
 	const T* m_defaultValue;
+	IBlueStructureListNotify* m_notify;
 };
 
 #endif // BlueStructureList_h

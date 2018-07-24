@@ -1702,6 +1702,7 @@ int BlueWrapper::PyStructureListAssignItem(Py_ssize_t index, PyObject* value)
 		PyErr_Format( PyExc_TypeError, "%s", e.what() );
 		return -1;
 	}
+	structureList->ItemChanged( index );
 
 	return 0;
 }

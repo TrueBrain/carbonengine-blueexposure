@@ -121,6 +121,22 @@ struct BlueStructureDefinition
 	Be::VarChooser* m_chooser;
 };
 
+BLUE_DECLARE_INTERFACE( IBlueStructureList );
+
+struct IBlueStructureListNotify
+{
+	enum Event
+	{
+		BLUE_STRUCTURE_LIST_INSERTED,
+		BLUE_STRUCTURE_LIST_REMOVED,
+		BLUE_STRUCTURE_LIST_CLEARED,
+		BLUE_STRUCTURE_LIST_ITEM_CHANGED,
+	};
+
+	virtual void OnStructureListModified( Event event, const void* item, size_t index, IBlueStructureList* list ) = 0;
+};
+
+
 BLUE_INTERFACE( IBlueStructureList ) : public IRoot
 {
 	virtual BlueStructureDefinition* GetStructureDefinition() = 0;
@@ -134,5 +150,8 @@ BLUE_INTERFACE( IBlueStructureList ) : public IRoot
 	virtual bool Remove( size_t ix ) = 0;
 	virtual void Clear() = 0;
 	virtual void Resize( size_t numItems ) = 0;
+	virtual void ItemChanged( size_t ix ) = 0;
+
+	virtual IBlueStructureListNotify* SetNotify( IBlueStructureListNotify* notify ) = 0;
 };
 #endif // IBlueStructureList_h
