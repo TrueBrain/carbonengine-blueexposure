@@ -648,21 +648,21 @@ std::string BlueClasses::GetPersistedClassesReport()
                 case Be::FLOATARRAY:
 					{
 						size_t memberCount = entry->GetFloatArraySize();
-						sprintf_s( buffer, "    -   %d\n", memberCount );
+						sprintf_s( buffer, "    -   %zd\n", memberCount );
 						result += buffer;
 					}
 					break;
                 case Be::DOUBLEARRAY:
 					{
 						size_t memberCount = entry->GetDoubleArraySize();
-						sprintf_s( buffer, "    -   %d\n", memberCount );
+						sprintf_s( buffer, "    -   %zd\n", memberCount );
 						result += buffer;
 					}
 					break;
                 case Be::INTARRAY:
 					{
 						size_t memberCount = entry->GetIntArraySize();
-						sprintf_s( buffer, "    -   %d\n", memberCount );
+						sprintf_s( buffer, "    -   %zd\n", memberCount );
 						result += buffer;
 					}
 					break;

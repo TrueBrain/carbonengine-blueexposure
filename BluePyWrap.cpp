@@ -1015,7 +1015,8 @@ PyObject* BlueWrapper::PyRepr()
 
 long BlueWrapper::PyHash()
 {
-	return (long)Object();  //note we are just hashing
+	long long o = (long long)Object();  //note we are just hashing
+	return (o & 0xffffffff) ^ (o > 32);
 }
 
 PyObject* BlueWrapper::PyStr()
