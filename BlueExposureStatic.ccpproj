@@ -1,0 +1,105 @@
+SourceFolders:
+- .
+
+# These are the SDKs that are used by all configurations
+Imports:
+- ../core_project/core_project.yaml
+- ../../../../../../sdk/Telemetry/3.0.1.1008/telemetry_3.0.1.1008.yaml
+
+# Settings from the General section, for all configurations
+General:
+  ConfigurationType: StaticLibrary
+  UseOfMfc: false
+  IntDir: ../temp/$(ProjectName)/$(Platform)/$(Configuration)/$(PlatformToolset)/
+  TargetExt: .lib
+
+# Compiler settings for all configurations
+ClCompile:
+  EnableEnhancedInstructionSet: StreamingSIMDExtensions2
+  PreprocessorDefinitions: 
+  # This is to prevent warnings from std::copy
+  - _SCL_SECURE_NO_WARNINGS
+  - BLUEBUILD
+  PrecompiledHeader: NotUsing
+  DebugInformationFormat: OldStyle
+  WarningLevel: Level3
+  TreatWarningAsError: true
+  BufferSecurityCheck: false
+  AdditionalIncludeDirectories:
+  - .
+  - ..
+  CppExceptions: true
+  RuntimeTypeInfo: true
+  GenerateDebugInformation: true
+
+# Linker settings for all configurations
+Link:
+  GenerateDebugInformation: true
+  AdditionalDependencies:
+  - ws2_32.lib
+  - version.lib
+  - crypt32.lib
+  - iphlpapi.lib
+  - psapi.lib
+
+  DelayLoadDLLs:
+  - psapi.dll
+
+BaseConfigurations:
+  Debug:
+    ClCompile:
+      PreprocessorDefinitions:
+      - _DEBUG
+      Optimization: Disabled
+      RuntimeLibrary: MultiThreadedDebugDLL
+
+  Release:
+    ClCompile:
+      Optimization: MaxSpeed
+      RuntimeLibrary: MultiThreadedDLL
+
+  Static:
+    ClCompile:
+      PreprocessorDefinitions:
+      - BLUEBUILD_STATIC
+
+Configurations:
+  DebugStatic|Win32,x64:
+    Imports:
+    - ../stackless/Include/stackless.yaml
+    BaseConfigurations:
+    - Debug
+    - Static
+    General: 
+      OutDir: ../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/
+      TargetName: BlueExposureStatic_d
+
+  ReleaseStatic|Win32,x64:
+    Imports:
+    - ../stackless/Include/stackless.yaml
+    BaseConfigurations:
+    - Release
+    - Static
+    General:
+      OutDir: ../../autobuild/BlueExposure/exefile/$(Platform)/$(PlatformToolset)/
+      TargetName: BlueExposureStatic
+
+  ReleaseStatic_26|Win32,x64:
+    Imports:
+    - ../../../../../../sdk/python/ccpproj/Python_2.6.yaml
+    BaseConfigurations:
+    - Release
+    - Static
+    General:
+      OutDir: ../../autobuild/BlueExposure/python_26/$(Platform)/$(PlatformToolset)/
+      TargetName: BlueExposureStatic
+
+  ReleaseStatic_27|Win32,x64:
+    Imports:
+    - ../../../../../../sdk/python/ccpproj/Python_2.7.yaml
+    BaseConfigurations:
+    - Release
+    - Static
+    General:
+      OutDir: ../../autobuild/BlueExposure/python_27/$(Platform)/$(PlatformToolset)/
+      TargetName: BlueExposureStatic
