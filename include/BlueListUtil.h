@@ -449,7 +449,7 @@ bool BlueList_Impl<T, ops>::AssignTo(
 }
 
 template <class T, long ops>
-bool BlueList_Impl<T, ops>::Insert(ssize_t key, IRoot* val)
+bool BlueList_Impl<T, ops>::Insert(ssize_t key, ::IRoot* val)
 {
 	if( !val )
 	{
@@ -491,7 +491,7 @@ bool BlueList_Impl<T, ops>::Insert(ssize_t key, IRoot* val)
 
 
 template <class T, long ops>
-bool BlueList_Impl<T, ops>::Append( IRoot* val )
+bool BlueList_Impl<T, ops>::Append( ::IRoot* val )
 {		
 	if( !val )
 	{
@@ -578,7 +578,7 @@ IRoot* BlueList_Impl<T, ops>::GetAt(ssize_t key) const
 }
 
 template <class T, long ops>
-ssize_t BlueList_Impl<T, ops>::FindKey(IRoot* value, ssize_t keyFrom)
+ssize_t BlueList_Impl<T, ops>::FindKey( ::IRoot* value, ssize_t keyFrom)
 {
 	if( !value )
 	{
