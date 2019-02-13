@@ -124,6 +124,7 @@
 #define MAP_ATTRIBUTE( attributeName, member, docString, _flags )\
 {\
 	_Class* temp = NULL;\
+	static_assert( VarTypeForVariable<decltype( temp->member )>::type != Be::IROOT || ( ( _flags ) & Be::WRITE ) == 0, "Parent-locked members may not be writable" ); \
 	static Be::VarEntry d = MAP_MEMBER( attributeName, VarTypeForVariable<decltype(temp->member)>::type, member, GetBlueIID<decltype(temp->member)>(), docString, _flags, NULL );\
 	s_attributes.push_back( d );\
 }
@@ -137,6 +138,7 @@
 #define MAP_ATTRIBUTE_WITH_CHOOSER( attributeName, member, docString, _flags, _chooser )\
 {\
 	_Class* temp = NULL;\
+	static_assert( VarTypeForVariable<decltype( temp->member )>::type != Be::IROOT || ( ( _flags ) & Be::WRITE ) == 0, "Parent-locked members may not be writable" ); \
 	static Be::VarEntry d = MAP_MEMBER( attributeName, VarTypeForVariable<decltype(temp->member)>::type, member, GetBlueIID<decltype(temp->member)>(), docString, _flags, _chooser );\
 	s_attributes.push_back( d );\
 }
