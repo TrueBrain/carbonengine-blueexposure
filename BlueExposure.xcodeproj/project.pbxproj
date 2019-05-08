@@ -392,8 +392,8 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
+					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					);
 				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
@@ -973,8 +973,8 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
+					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)/clang4.2",
 					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
-					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)",
 					);
 				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
