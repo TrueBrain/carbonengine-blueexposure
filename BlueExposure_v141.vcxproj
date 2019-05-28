@@ -85,7 +85,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6f04f7eb-1223-56bd-821f-47bc8a039c8d}</ProjectGuid>
     <ProjectName>BlueExposure</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'" Label="Configuration">
     <PlatformToolset>v141</PlatformToolset>
