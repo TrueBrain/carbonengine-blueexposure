@@ -20,6 +20,7 @@ ClCompile:
   # This is to prevent warnings from std::copy
   - _SCL_SECURE_NO_WARNINGS
   - BLUEBUILD
+  - PLATFORM_TOOLSET=$(PlatformToolset)
   PrecompiledHeader: NotUsing
   DebugInformationFormat: OldStyle
   WarningLevel: Level3
