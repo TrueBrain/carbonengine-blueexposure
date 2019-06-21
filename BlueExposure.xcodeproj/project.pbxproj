@@ -400,11 +400,12 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				CONFIGURATION_TEMP_DIR = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
-					BLUEBUILD,
-					"BLUE_WITH_PYTHON=1",
 					"CCP_STACKLESS=1",
+					"PLATFORM_TOOLSET=clang4.2",
+					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
+					"BLUE_WITH_PYTHON=1",
 					_SCL_SECURE_NO_WARNINGS,
+					BLUEBUILD,
 					"$(inherited)",
 					);
 				COPY_PHASE_STRIP = NO;
@@ -567,6 +568,7 @@
 					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
 					"BLUE_WITH_PYTHON=1",
 					BLUEBUILD,
+					"PLATFORM_TOOLSET=clang4.2",
 					_SCL_SECURE_NO_WARNINGS,
 					"$(inherited)",
 					);
@@ -983,6 +985,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"CCP_STACKLESS=1",
 					_DEBUG,
+					"PLATFORM_TOOLSET=clang4.2",
 					"PyMODINIT_FUNC=\"__attribute((visibility(\\\"default\\\"))) extern \\\"C\\\" void\"",
 					"BLUE_WITH_PYTHON=1",
 					_SCL_SECURE_NO_WARNINGS,
