@@ -408,7 +408,7 @@ bool WINAPI QueryPerformanceFrequencyCCP( LARGE_INTEGER *lpFrequency )
 }
 #endif
 
-BLUEIMPORT const char* GetPlatformToolset()
+const char* GetPlatformToolset()
 {
 	return CCP_STRINGIZE( PLATFORM_TOOLSET );
 }
