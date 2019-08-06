@@ -400,7 +400,7 @@ bool BlueClasses::QueryThisInterface(
 
 	*ppv = NULL;
 
-	if( (options & BEQI_SILENT) == 0 )
+	if( tmptype && (options & BEQI_SILENT) == 0 )
 	{
 		CCP_LOGERR( "Interface %s not found on class %s.%s\n",
 			riid.GetName(),

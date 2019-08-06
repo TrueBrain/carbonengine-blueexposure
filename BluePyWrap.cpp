@@ -548,8 +548,10 @@ void BlueWrapper::Destroy()
 	if( Py_REFCNT( this ) > 0 )
 	{
 		CCP_LOGERR( "BlueWrapper::Destroy called on an object with %d Python references", Py_REFCNT( this ) );
+#ifndef __clang_analyzer__
 		char* const dummy = nullptr;
 		*dummy = 0;
+#endif
 	}
 
 	// Return wrapper to the cache
