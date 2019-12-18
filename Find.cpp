@@ -180,6 +180,24 @@ PyObject *FindInterface( IRoot *obj, const char* iidName )
 	return result;
 }
 
+PyObject* PyFindInterface( PyObject* pThis, PyObject* args )
+{
+	PyObject* pObj;
+	const char* iidName;
+	if( !PyArg_ParseTuple( args, "Os", &pObj, &iidName ) )
+	{
+		return NULL;
+	}
+
+	IRoot* obj = BlueUnwrapObjectFromPython( pObj );
+	if ( !obj )
+	{
+		return NULL;
+	}
+	
+	return FindInterface( obj, iidName );
+}
+
 // A stack class to manage the recursion data in the PyFindMultiple
 class RealStack
 {
@@ -589,6 +607,24 @@ PyObject* FindRoute( IRoot* from, IRoot* to )
 		}
 	}
 	return result;
+}
+
+PyObject* PyFindRoute( PyObject* pThis, PyObject* args )
+{
+	PyObject *pFrom, *pTo;
+	if( !PyArg_ParseTuple( args, "OO", &pFrom, &pTo ) )
+	{
+		return NULL;
+	}
+
+	IRoot* from = BlueUnwrapObjectFromPython( pFrom );
+	IRoot* to = BlueUnwrapObjectFromPython( pTo );
+	if( !from || !to )
+	{
+		return NULL;
+	}
+	
+	return FindRoute( from, to );
 }
 
 #endif
