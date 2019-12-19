@@ -192,6 +192,7 @@ PyObject* PyFindInterface( PyObject* pThis, PyObject* args )
 	IRoot* obj = BlueUnwrapObjectFromPython( pObj );
 	if ( !obj )
 	{
+		PyErr_Format( PyExc_TypeError, "Argument 'obj' is not of type IRoot." );
 		return NULL;
 	}
 	
@@ -621,6 +622,7 @@ PyObject* PyFindRoute( PyObject* pThis, PyObject* args )
 	IRoot* to = BlueUnwrapObjectFromPython( pTo );
 	if( !from || !to )
 	{
+		PyErr_Format( PyExc_TypeError, "Argument 'from' or 'to' are not of type IRoot." );
 		return NULL;
 	}
 	
