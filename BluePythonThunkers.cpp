@@ -433,8 +433,11 @@ PyObject* IList_Thunk::Pyremove(PyObject* args)
 
 	ssize_t key = FindKey(value);
 
-	if (key == -1)
-		return PyErr_SetString( PyExc_RuntimeError, "Item not found"), (PyObject*)nullptr;
+	if( key == -1 )
+	{
+		PyErr_SetString( PyExc_ValueError, "Item not found" );
+		return nullptr;
+	}
 
 	if (!Remove(key))
 		return nullptr;
@@ -527,8 +530,11 @@ PyObject* IList_Thunk::Pyindex(PyObject* args)
 
 	ssize_t key = FindKey(value);
 
-	if (key == -1)
-		PyErr_SetString( PyExc_RuntimeError, "Item not found");
+	if( key == -1 )
+	{
+		PyErr_SetString( PyExc_ValueError, "Item not found" );
+		return NULL;
+	}
 
 	return PyInt_FromSsize_t(key);
 }
