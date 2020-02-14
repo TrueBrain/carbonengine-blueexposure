@@ -51,11 +51,7 @@ private:
 //   BlueScriptCallback encapsulates script callback functions. One can store a script 
 //   function in BlueScriptCallback and subsequently call it from C++.
 // --------------------------------------------------------------------------------------
-class 
-#ifndef __ORBIS__
-	BLUEIMPORT
-#endif
-	BlueScriptCallback
+class BLUEIMPORT BlueScriptCallback
 {
 public:
 	BlueScriptCallback();

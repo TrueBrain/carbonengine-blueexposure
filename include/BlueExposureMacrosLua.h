@@ -118,7 +118,7 @@ BLUEIMPORT int BlueCreateInstanceFromLua( lua_State* ls, const Be::Clsid& clsid 
 }
 
 
-#if defined(_MSC_VER) || defined(__ORBIS__)
+#if defined(_MSC_VER)
 #define DLLEXPORT __declspec(dllexport)
 #else
 #define DLLEXPORT

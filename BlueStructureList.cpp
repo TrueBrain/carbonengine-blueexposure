@@ -49,7 +49,7 @@ inline bool signbit( double num )
 	return std::signbit( num );
 }
 
-#elif !defined( __APPLE__) && !defined(__ORBIS__)
+#elif !defined( __APPLE__)
 
 inline bool signbit( double num ) 
 { 
