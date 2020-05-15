@@ -4,7 +4,7 @@ SourceFolders:
 # These are the SDKs that are used by all configurations
 Imports:
 - ../core_project/core_project.yaml
-- ../../../../../../sdk/Telemetry/3.0.1.1008/telemetry_3.0.1.1008.yaml
+- ../../../vendor/Telemetry/3.0.1.1719/telemetry.yaml
 
 # Settings from the General section, for all configurations
 General:
@@ -100,7 +100,7 @@ Configurations:
 
   Release_26|Win32,x64:
     Imports:
-    - ../../../../../../sdk/python/ccpproj/Python_2.6.yaml
+    - ../../../vendor/python/ccpproj/Python_2.6.yaml
     BaseConfigurations:
     - Release
     General:
@@ -109,7 +109,7 @@ Configurations:
 
   Release_27|Win32,x64,Mac32,Mac64,Linux64:
     Imports:
-    - ../../../../../../sdk/python/ccpproj/Python_2.7.yaml
+    - ../../../vendor/python/ccpproj/Python_2.7.yaml
     BaseConfigurations:
     - Release
     General:
@@ -146,7 +146,7 @@ Configurations:
 
   ReleaseStatic_26|Win32,x64:
     Imports:
-    - ../../../../../../sdk/python/ccpproj/Python_2.6.yaml
+    - ../../../vendor/python/ccpproj/Python_2.6.yaml
     BaseConfigurations:
     - Release
     - Static
@@ -156,7 +156,7 @@ Configurations:
 
   ReleaseStatic_27|Win32,x64:
     Imports:
-    - ../../../../../../sdk/python/ccpproj/Python_2.7.yaml
+    - ../../../vendor/python/ccpproj/Python_2.7.yaml
     BaseConfigurations:
     - Release
     - Static
