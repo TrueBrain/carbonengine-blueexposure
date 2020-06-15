@@ -127,7 +127,7 @@ public:
 
 
 template <class T>
-struct ListSorter : public std::binary_function<T*, T*, bool>
+struct ListSorter
 {
 	ListSorter(IList::CompareFn compare, IRoot* context, ssize_t offset) :
 		mCompare(compare),
@@ -148,7 +148,7 @@ struct ListSorter : public std::binary_function<T*, T*, bool>
 };
 
 template <class T>
-struct ListSorterT : public std::binary_function<T*, T*, bool>
+struct ListSorterT
 {
 	ListSorterT(IList::CompareFn compare, IRoot* context) :
 		mCompare(compare),
@@ -380,7 +380,7 @@ public:
 
 
 template <class T>
-struct ListSorterC : public std::binary_function<T, T, bool>
+struct ListSorterC
 {
 	ListSorterC(IList::CompareFn compare, IRoot* context) :
 		mCompare(compare),
