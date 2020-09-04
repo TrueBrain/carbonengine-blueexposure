@@ -86,7 +86,8 @@ namespace Be
 	struct Optional
 	{
 		Optional()
-			:m_isAssigned( false )
+			:m_value(),
+			m_isAssigned( false )
 		{
 		}
 

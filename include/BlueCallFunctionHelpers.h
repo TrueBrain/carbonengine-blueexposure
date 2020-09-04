@@ -35,7 +35,7 @@ static bool CheckArgumentLength( BlueScriptArguments args, unsigned int length, 
 		return false;
 	}
 
-	if( args && (PyTuple_Size(args) > (int)length ) )
+	if( PyTuple_Size(args) > Py_ssize_t( length ) )
 	{
 		if( length == 1 )
 		{

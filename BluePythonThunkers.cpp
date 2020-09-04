@@ -161,7 +161,7 @@ static void PyValidate_Rec(ResList &res, RootSet &set, NameStack &names, IRoot *
 			if (!child)
 				continue;
 			char arrayName[10];
-			sprintf_s(arrayName, "[%d]", i);
+			sprintf_s(arrayName, "[%ld]", i);
 			names.push_back(arrayName);
 			PyValidate_Rec(res, set, names, child);
 			names.pop_back();

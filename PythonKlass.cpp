@@ -31,8 +31,10 @@ PythonKlass::PythonKlass(PyObject *klass) :
 		}
 		//add the variable listed to the dict, with an initial value of None
 		Py_ssize_t size = s.Size();
-		for (Py_ssize_t i = 0; i < size; i++)
-			mVars.Set(s.Get(i), Py_None);
+		for( Py_ssize_t j = 0; j < size; j++ )
+		{
+			mVars.Set( s.Get( j ), Py_None );
+		}
 	}
 	//setting the mKlass, signals success
 	mKlass = BluePy(klass,true);
@@ -396,9 +398,6 @@ bool PythonKlass::Create(IRoot *target, Be::Clsid const &clsid, PyObject *member
 
 PyObject *PythonKlass::GetClass(const char *name)
 {
-	BluePy p1;
-	BluePyTuple t1, t2;
-	t1 = p1;
 	if (!sClassDict)
 		sClassDict = BluePyDict(1);
 

@@ -79,7 +79,7 @@ const char* ConvertDataTypeToBuiltinType( const BlueSharedString& value )
 }
 
 template<typename DataType, typename PyConvertionFunction>
-PyObject* GetStructureElement( const uint8_t*& member, int size, PyConvertionFunction* convertionFunction )
+PyObject* GetStructureElement( const void* member, int size, PyConvertionFunction* convertionFunction )
 {
 	PyObject* returnValue = nullptr;
 	if( size > 1 )
@@ -89,8 +89,8 @@ PyObject* GetStructureElement( const uint8_t*& member, int size, PyConvertionFun
 
 	for( int compIx = 0; compIx < size; ++compIx )
 	{
-		DataType val = *reinterpret_cast<const DataType*>( member );
-		member += sizeof( DataType );
+		DataType val = *static_cast<const DataType*>( member );
+		member = static_cast<const uint8_t*>( member ) + sizeof( DataType );
 
 		PyObject* compVal = ( *convertionFunction )( ConvertDataTypeToBuiltinType( val ) );
 
@@ -274,7 +274,7 @@ void SafeCastToType( Vector4& dest, const Vector4& src )
 }
 
 template<typename DataType, typename PyConvertionFunction>
-void ExtractItem( PyObject* memberObject, uint8_t* member, int size, PyConvertionFunction* conversionFunction )
+void ExtractItem( PyObject* memberObject, void* member, int size, PyConvertionFunction* conversionFunction )
 {
 	if( size > 1 )
 	{
@@ -288,8 +288,8 @@ void ExtractItem( PyObject* memberObject, uint8_t* member, int size, PyConvertio
 			}
 			DataType compVal;
 			SafeCastToType( compVal, src );
-			*reinterpret_cast<DataType*>( member ) = compVal;
-			member += sizeof( DataType );
+			*static_cast<DataType*>( member ) = compVal;
+			member = static_cast<uint8_t*>( member ) + sizeof( DataType );
 		}
 	}
 	else
@@ -301,7 +301,7 @@ void ExtractItem( PyObject* memberObject, uint8_t* member, int size, PyConvertio
 		}
 		DataType compVal;
 		SafeCastToType( compVal, src );
-		*reinterpret_cast<DataType*>( member ) = compVal;
+		*static_cast<DataType*>( member ) = compVal;
 	}
 }
 

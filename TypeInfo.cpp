@@ -171,10 +171,9 @@ PyObject* PyGetTypeInfo(const Be::ClassInfo* info, long flags)
 			for( auto it = i->mFunctionSignatures->begin(); it != i->mFunctionSignatures->end(); ++it )
 			{
 				PyObject* signature = PyDict_New();
-				PyObject* tmp;
-				tmp = PyString_FromString( it->second.returnType );
-				PyDict_SetItemString( signature, "rtype", tmp );
-				Py_DECREF( tmp );
+				PyObject* rtype = PyString_FromString( it->second.returnType );
+				PyDict_SetItemString( signature, "rtype", rtype );
+				Py_DECREF( rtype );
 				PyObject* args = PyTuple_New( it->second.argumentCount );
 				for( uint32_t j = 0; j < it->second.argumentCount; ++j )
 				{

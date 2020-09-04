@@ -286,9 +286,10 @@ void BlueWrapper::Shutdown()
 // Sets up the bare minimum needed to compare objects.  Full construction
 // is in Prepare()
 //--------------------------------------------------------------------
-BlueWrapper::BlueWrapper(IRoot* obj)
+BlueWrapper::BlueWrapper(IRoot* obj) : 
+	mWeakrefList( nullptr )
 #ifdef _DEBUG
-: mTracebacks( "BlueWrapper/mTracebacks" )
+	, mTracebacks( "BlueWrapper/mTracebacks" )
 #endif
 {
 	Init(obj);
@@ -296,16 +297,17 @@ BlueWrapper::BlueWrapper(IRoot* obj)
 
 void BlueWrapper::Init(IRoot* obj)
 {
-		mObj = BlueFinalIRoot(obj);
-	}
+	mObj = BlueFinalIRoot(obj);
+}
 
 
 //--------------------------------------------------------------------
 // Copy Constructor, used only very early
 //--------------------------------------------------------------------
-BlueWrapper::BlueWrapper(const BlueWrapper& x)
+BlueWrapper::BlueWrapper(const BlueWrapper& x) :
+	mWeakrefList( nullptr )
 #ifdef _DEBUG
-	: mTracebacks( "BlueWrapper/mTracebacks" )
+	, mTracebacks( "BlueWrapper/mTracebacks" )
 #endif
 {
 	mObj = x.mObj;
@@ -317,7 +319,7 @@ BlueWrapper::BlueWrapper(const BlueWrapper& x)
 //--------------------------------------------------------------------
 void BlueWrapper::Lock()
 {
-		mObj->Lock();
+	mObj->Lock();
 }
 
 
@@ -326,7 +328,7 @@ void BlueWrapper::Lock()
 //--------------------------------------------------------------------
 void BlueWrapper::Unlock()
 {
-		mObj->Unlock();
+	mObj->Unlock();
 }
 
 
@@ -550,7 +552,7 @@ void BlueWrapper::Destroy()
 		CCP_LOGERR( "BlueWrapper::Destroy called on an object with %d Python references", Py_REFCNT( this ) );
 #ifndef __clang_analyzer__
 		char* const dummy = nullptr;
-		*dummy = 0;
+		*dummy = 0; // cppcheck-suppress nullPointer
 #endif
 	}
 
@@ -637,9 +639,9 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 				for (const Be::VarEntry* entry = type->mMemberTable; entry->mName; entry++) {
 					if (entry->mEditFlags & Be::HIDDEN)
 						continue;
-					PyObject *name = PyString_FromString(entry->mName);
-					PyList_Append(list, name);
-					Py_DECREF(name);
+					PyObject *pyName = PyString_FromString(entry->mName);
+					PyList_Append( list, pyName );
+					Py_DECREF( pyName );
 				}
 			return list;
 		}
@@ -1342,10 +1344,8 @@ int BlueWrapper::PyseqAssignItem_(PyObject* self, Py_ssize_t key, PyObject* valu
 		{
 			return -1;
 		}
-	}
-
-	if (value)
 		key += 1;
+	}
 
 	if (!list->Remove(key))
 	{
