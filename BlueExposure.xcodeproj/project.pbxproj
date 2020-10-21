@@ -370,7 +370,7 @@
 					"../../../carbon/src",
 					.,
 					"../../../carbon/src/stackless/Mac",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
+					"../../../../../../sdk/telemetry/3.5.0.13/include",
 					);
 				CLANG_WARN_INT_CONVERSION = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -393,7 +393,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
 					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)/clang4.2",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
+					"../../../../../../sdk/telemetry/3.5.0.13/lib",
 					);
 				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
@@ -533,7 +533,7 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"../../../carbon/src",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
+					"../../../../../../sdk/telemetry/3.5.0.13/include",
 					"../../../../../../shared_tools/python/27_mac/include/python2.7",
 					..,
 					.,
@@ -558,7 +558,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"../../../../../../shared_tools/python/27_mac/lib",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
+					"../../../../../../sdk/telemetry/3.5.0.13/lib",
 					);
 				SYMROOT = "../../autobuild/BlueExposure/python_27/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
@@ -953,7 +953,7 @@
 					"../../../carbon/src",
 					.,
 					"../../../carbon/src/stackless/Mac",
-					"../../../../../../sdk/telemetry/3.0.1.1008/include",
+					"../../../../../../sdk/telemetry/3.5.0.13/include",
 					);
 				CLANG_WARN_INT_CONVERSION = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -976,7 +976,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"../../../carbon/bin/stackless/MacOsX$(ARCHS)",
 					"../../../carbon/autobuild/stackless/MacOsX$(ARCHS)/clang4.2",
-					"../../../../../../sdk/telemetry/3.0.1.1008/lib",
+					"../../../../../../sdk/telemetry/3.5.0.13/lib",
 					);
 				SYMROOT = "../../autobuild/BlueExposure/exefile/MacOsX$(ARCHS)/clang4.2";
 				OBJROOT = "../temp/BlueExposure/MacOsX$(ARCHS)/$(CONFIGURATION)/clang4.2";
