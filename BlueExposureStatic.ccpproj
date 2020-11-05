@@ -4,7 +4,7 @@ SourceFolders:
 # These are the SDKs that are used by all configurations
 Imports:
 - ../core_project/core_project.yaml
-- ../../../vendor/Telemetry/3.5.0.13/telemetry.yaml
+- ../../../vendor/Telemetry/3.0.1.1719/telemetry.yaml
 
 # Settings from the General section, for all configurations
 General:
