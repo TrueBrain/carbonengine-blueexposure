@@ -65,7 +65,7 @@ private:
 	typedef BlueStdMap<IRoot *, IRoot *> tMap;
 	typedef tMap::const_iterator tMapIter;
 	typedef std::pair<IRoot *, IRoot *> tPair;
-	std::auto_ptr<tMap> mPointers; 
+	std::unique_ptr<tMap> mPointers; 
 };
 
 TYPEDEF_BLUECLASS(Copier);
