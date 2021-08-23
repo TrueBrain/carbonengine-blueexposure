@@ -89,12 +89,12 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	// IBlueDict
 
-	size_t GetLength() const
+	size_t GetLength() const override
 	{
 		return m_entries.size();
 	}
 
-	IRoot* Subscript( const char* key ) const
+	IRoot* Subscript( const char* key ) const override
 	{
 		// Note that don't want to use the operator[] as it will
 		// insert a default value into the map if one isn't found.
@@ -106,7 +106,7 @@ public:
 		return NULL;
 	}
 
-	bool AssignSubscript( const char* key, IRoot* value )
+	bool AssignSubscript( const char* key, IRoot* value ) override
 	{
 		if( m_iteratorsValid )
 		{
@@ -135,7 +135,7 @@ public:
 		return true;
 	}
 
-	const char* GetKey( size_t index )
+	const char* GetKey( size_t index ) override
 	{
 		if( !m_iteratorsValid )
 		{
@@ -334,7 +334,7 @@ public:
 	bool AssignTo(
 		ICopierCustomAssignment* other,
 		ICopier* copier
-		)
+		) override
 	{
 		ClassDef* dest = static_cast<ClassDef*>( other );
 

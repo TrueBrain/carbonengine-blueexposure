@@ -134,8 +134,6 @@ bool BlueCallPropertySetter( fnType method, C* o, BlueScriptValue val, std::true
 	{
 #if BLUE_WITH_PYTHON
 		PyErr_SetString( BeGetException( result ), BeGetErrorMessage( result ) );
-#elif BLUE_WITH_LUA
-		luaL_error( val.ls, "%s: %s", BeGetException( result ), BeGetErrorMessage( result ) );
 #endif
 		return false;
 	}

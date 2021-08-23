@@ -28,85 +28,85 @@ public:
 	// IBlueClasses
 	
 	// Register classes from a null-terminated vector of class registrations
-	virtual void RegisterClasses( const Be::ClassRegistration table[] );
+	void RegisterClasses( const Be::ClassRegistration table[] ) override;
 
 	// Register classes from a std::vector of class registrations (null-termination
 	// not required)
-	virtual void RegisterClasses( std::vector<Be::ClassRegistration>& table	);
+	void RegisterClasses( std::vector<Be::ClassRegistration>& table	) override;
 
 	// Unregister classes from a null-terminated vector of class registrations
-	virtual void UnregisterClasses(	const Be::ClassRegistration table[] );
+	void UnregisterClasses(	const Be::ClassRegistration table[] ) override;
 
 	// Unregister classes from a std::vector of class registrations (null-termination
 	// not required)
-	virtual void UnregisterClasses(	std::vector<Be::ClassRegistration>& table );
+	void UnregisterClasses(	std::vector<Be::ClassRegistration>& table ) override;
 
 	// Get a class registration from a class ID.
-	virtual const Be::ClassRegistration* GetClassRegistration( const Be::Clsid& clsid );
+	const Be::ClassRegistration* GetClassRegistration( const Be::Clsid& clsid ) override;
 
 	// Find a class ID from the class module and name.
-	virtual bool FindClsid( Be::Clsid& clsid, const char* module, const char* name );
-	virtual const Be::Clsid* FindClsid( const char* name );
+	bool FindClsid( Be::Clsid& clsid, const char* module, const char* name ) override;
+	const Be::Clsid* FindClsid( const char* name ) override;
 
 	// Create an instance of the class from the class ID, cast to the given interface.
-	virtual bool CreateInstance( const Be::Clsid& clsid, const Be::IID& riid, void** ppv );
-	virtual bool CreateInstanceFromName( const char* className, const Be::IID& riid, void** ppv );
+	bool CreateInstance( const Be::Clsid& clsid, const Be::IID& riid, void** ppv ) override;
+	bool CreateInstanceFromName( const char* className, const Be::IID& riid, void** ppv ) override;
 
 	// Works like IUnknown::QueryInterface
-	virtual bool QueryThisInterface(
+	bool QueryThisInterface(
 		void* pThis,
 		const Be::IID& riid, 
 		void** ppv,
 		const Be::ClassInfo* type,
 		BLUEQIOPT options = BEQI_NONE
-		);
+		) override;
 
 	// Another convenience function
-	virtual const Be::VarEntry* FindVariable(
+	const Be::VarEntry* FindVariable(
 		const char* name, 
 		const Be::ClassInfo* type,
 		ptrdiff_t* xtraoffset
-		);
+		) override;
 
-	virtual void UpdateObjectCount( IRoot* obj, int inst, int lock );
+	void UpdateObjectCount( IRoot* obj, int inst, int lock ) override;
 
 	// Copies data from 'source' into '*dest'. If '*dest' is NULL, a new 
 	// instance of same class as 'source' is created. If '*dest' is valid,
 	// the data is copied into the object.
-	virtual bool CopyTo(
+	bool CopyTo(
 		IRoot* source,
 		IRoot** dest,
 		ICopier::CopyOverrideCallback copyOverride = nullptr,
 		void* overrideContext = nullptr,
 		ICopier::PostCopyCallback postCopy = nullptr,
 		void* postCopyContext = nullptr
-		);
+		) override;
 
 	// Same as CopyTo, except that it preserves topology of multiply instanced
 	// Child objects.  (CopyTo will resolve such multiple instances in the source
 	// object into separate copies in the destination)
-	virtual bool CloneTo(
+	bool CloneTo(
 		IRoot* source,
 		IRoot** dest
-		);
+		) override;
 
 	// Process pending deletes. This may be throttled back to limit the time spent
 	// in one call.
-	virtual void ProcessPendingDeletes();
+	void ProcessPendingDeletes() override;
 
 	// Process all pending deletes, without regard for the time taken.
-	virtual void ProcessAllPendingDeletes();
+	void ProcessAllPendingDeletes() override;
 
-	virtual void SetPendingDeletesEnabled( bool b );
-	virtual bool IsPendingDeletesEnabled() const;
+	void SetPendingDeletesEnabled( bool b ) override;
+	bool IsPendingDeletesEnabled() const override;
 
 	// Register a set of methods that are added to any object with the given interface
-	virtual void RegisterThunker(
+	void RegisterThunker(
 		const BlueMethodDefinition* defs,
 		const Be::IID& riid
-		);
+		) override;
 	
-	virtual IBlueRtti* GetRtti( const Be::ClassInfo *ci );
+	IBlueRtti* GetRtti( const Be::ClassInfo *ci ) override;
 	//
 	//////////////////////////////////////////////////////////////////////////
 

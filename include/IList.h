@@ -66,7 +66,7 @@ BLUE_INTERFACE(IListNotify) : public IRoot
 };
 
 
-BLUE_INTERFACE(IList) : public IRoot
+BLUE_INTERFACE_EXPORT(IList) : public IRoot
 {
 
 	//--------------------------------------------------------------------

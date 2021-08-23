@@ -8,7 +8,7 @@
 	\
 	IRoot* GetRawRoot() const { return reinterpret_cast<IRoot*>((uintptr_t)this + ClassType_()->mInterfaceTable->mOffset); } \
 	\
-	const Be::ClassInfo* ClassType() const { return ClassType_(); } \
+	const Be::ClassInfo* ClassType() const override { return ClassType_(); } \
 	\
 	static PyObject* PyNew( PyTypeObject* type, PyObject* args, PyObject* kwds ) \
 	{\
@@ -213,13 +213,19 @@ BLUEIMPORT PyObject* BlueCreateInstanceFromPython( const Be::Clsid& clsid, PyObj
  	s_attributes.push_back( d );\
 }
 
+#ifdef _WIN32
+#define BLUE_EXPORTED_INIT
+#else
+#define BLUE_EXPORTED_INIT __attribute__((visibility("default")))
+#endif
+
 // Use this macro to implement a standard module init function
 #define BLUE_STANDARD_MODULE_INIT( moduleName ) \
 	const char* g_moduleName = #moduleName; \
-	PyMODINIT_FUNC init ## moduleName() \
+	PyMODINIT_FUNC BLUE_EXPORTED_INIT CCP_CONCATENATE( init, CCP_CONCATENATE( moduleName, CCP_BUILD_FLAVOR ) )() \
 	{ \
 		BeClasses->RegisterClasses( BlueRegistration::GetClassRegs() ); \
-		PyObject* module = Py_InitModule( g_moduleName, NULL); \
+		PyObject* module = Py_InitModule( CCP_STRINGIZE( CCP_CONCATENATE( moduleName, CCP_BUILD_FLAVOR ) ), NULL ); \
 		BlueRegisterToModule( module, \
 			BlueRegistration::GetClassRegs(), \
 			BlueRegistration::GetFuncRegs(), \

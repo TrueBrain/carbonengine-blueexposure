@@ -45,10 +45,16 @@ namespace
 		"Returns a list of the enumeration names for this enum"
 		},
 		{"GetNameFromValue", (PyCFunction)PyGetNameFromValue, METH_VARARGS,
-		"Returns a string corresponding to the first value found that exactly matches the input"
+		"Returns a string corresponding to the first value found that exactly matches the input\n" 
+		":param value: enum value\n"
+		":type value: int\n"
+		":rtype: str"
 		},
 		{"GetNameFromBitmask", (PyCFunction)PyGetNameFromBitmask, METH_VARARGS,
-		"Attempts to match a value by treating it as a bitmask"
+		"Attempts to match a value by treating it as a bitmask\n"
+		":param values: bitmask of enum values\n"
+		":type values: int\n"
+		":rtype: str"
 		},
 		{NULL}
 	};

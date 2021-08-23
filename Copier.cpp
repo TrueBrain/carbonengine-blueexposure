@@ -88,7 +88,7 @@ bool Copier::CopyTo(IRoot* source, IRoot** _dest)
 		// must do this now, before recursing.
 		if (!mPointers.get()) 
 			//lazy generation of map
-			mPointers = std::auto_ptr<tMap>(CCP_NEW( "Copier/mPointers" ) tMap);
+			mPointers = std::unique_ptr<tMap>(CCP_NEW( "Copier/mPointers" ) tMap);
 		mPointers->insert( tPair(source, dest));
 
 	}

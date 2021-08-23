@@ -13,7 +13,7 @@
 #include <limits>
 
 #if BLUE_WITH_PYTHON
-static_assert( sizeof( wchar_t ) == sizeof( Py_UNICODE ), "Must be able to cast Py_UNICODE to wchar_t" );
+static_assert( sizeof( wchar_t ) >= sizeof( Py_UNICODE ), "Must be able to cast Py_UNICODE to wchar_t" );
 
 bool BlueExtractString( PyObject* obj, std::string& val )
 {
@@ -169,6 +169,10 @@ template<class T> bool BlueExtractVector( PyObject* sequence, T* elements, size_
 
 	return true;
 }
+// Explicit instantiations
+template bool BlueExtractVector( BlueScriptValue obj,    int* elements, size_t elementsCount );
+template bool BlueExtractVector( BlueScriptValue obj,  float* elements, size_t elementsCount );
+template bool BlueExtractVector( BlueScriptValue obj, double* elements, size_t elementsCount );
 
 
 bool BlueExtractVector( PyObject* sequence, float* elements, size_t elementsCount )
@@ -602,8 +606,6 @@ PyObject* ConvertMatrixToSequence( const Matrix* m )
 
 	return ret;
 }
-
-#elif BLUE_WITH_LUA
 
 #elif BLUE_NO_EXPOSURE
 

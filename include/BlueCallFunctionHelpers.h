@@ -11,7 +11,7 @@
 
 #if BLUE_WITH_PYTHON
 
-static bool CheckArgumentLength( BlueScriptArguments args, unsigned int length, unsigned int numOptional )
+static inline bool CheckArgumentLength( BlueScriptArguments args, unsigned int length, unsigned int numOptional )
 {
 	// We allow this to deal with how properties are called
 	if(args == NULL && length == 0)
@@ -74,75 +74,6 @@ template< typename FunctionType, typename ArgType >
 bool BlueExtractArgumentOrNullValue( FunctionType func, BlueScriptArguments args, unsigned int ix, ArgType& arg, std::false_type allowOptionalArg )
 {
 	if( !BlueExtractArgument( PyTuple_GetItem( args, ix-1 ), arg, ix-1 ) )
-	{
-		return false; /* Error set by BlueExtractArgument */ \
-	}
-
-	return true;
-}
-
-#elif BLUE_WITH_LUA
-
-static inline bool CheckArgumentLength( BlueScriptArguments args, unsigned int length, unsigned int numOptional )
-{
-	int minNumArgs = length - numOptional;
-	int argsOnStack = lua_gettop( args );
-
-	if( argsOnStack < minNumArgs )
-	{
-		if( length == 1 )
-		{
-			CCP_LOGERR( "Function expects 1 argument." );
-		}
-		else
-		{
-			CCP_LOGERR( "Function expects %i arguments.", length );
-		}
-
-		return false;
-	}
-
-	//if( argsOnStack > (int)length )
-	//{
-	//	if( length == 1 )
-	//	{
-	//		CCP_LOGERR( "Function expects 1 argument (%d optional).", numOptional );
-	//	}
-	//	else
-	//	{
-	//		CCP_LOGERR( "Function expects %i arguments (%d optional).", minNumArgs, numOptional );
-	//	}
-
-	//	return false;
-	//}
-
-	return true;
-}
-
-
-template< typename FunctionType, typename ArgType >
-bool BlueExtractArgumentOrNullValue( FunctionType func, BlueScriptArguments args, unsigned int ix, ArgType& arg, std::true_type allowOptionalArg )
-{
-	if( lua_gettop( args ) < (int)ix )
-	{
-		BlueGetNullValue( arg );
-		return true;
-	}
-
-	BlueScriptValue sv( args, ix  );
-	if( !BlueExtractArgument( sv, arg, ix-1 ) )
-	{
-		return false; /* Error set by BlueExtractArgument */ \
-	}
-
-	return true;
-}
-
-template< typename FunctionType, typename ArgType >
-bool BlueExtractArgumentOrNullValue( FunctionType func, BlueScriptArguments args, unsigned int ix, ArgType& arg, std::false_type allowOptionalArg )
-{
-	BlueScriptValue sv( args, ix );
-	if( !BlueExtractArgument( sv, arg, ix-1 ) )
 	{
 		return false; /* Error set by BlueExtractArgument */ \
 	}

@@ -99,9 +99,9 @@ extern BLUEIMPORT const Be::IID BlueColorIID;
 extern BLUEIMPORT const Be::IID BlueMatrixIID;
 extern BLUEIMPORT const Be::IID BlueTimeIID;
 
-BLUE_DECLARE_INTERFACE( IList );
-BLUE_DECLARE_INTERFACE( IBlueDict );
-BLUE_DECLARE_INTERFACE( IBlueStructureList );
+BLUE_DECLARE_INTERFACE_EXPORT( IList );
+BLUE_DECLARE_INTERFACE_EXPORT( IBlueDict );
+BLUE_DECLARE_INTERFACE_EXPORT( IBlueStructureList );
 
 //////////////////////////////////////////////////////////////////////////
 // Useful Type-traits

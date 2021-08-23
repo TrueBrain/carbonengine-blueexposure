@@ -41,14 +41,14 @@ public:
 
 	//Copy a structure, but doesn't preserve topology.  i.e. multiple
 	//shared children will become separate instances
-	bool CopyTo(IRoot *source, IRoot **dest);
+	bool CopyTo(IRoot *source, IRoot **dest) override;
 
 	//Copy a structure preserving topology by not creating redundant
 	//instances.
 	bool CloneTo(IRoot *source, IRoot **dest);
 
-	void SetCopyOverrideCallback( CopyOverrideCallback copyOverride, void* context );
-	void SetPostCopyCallback( PostCopyCallback postCopy, void* context );
+	void SetCopyOverrideCallback( CopyOverrideCallback copyOverride, void* context ) override;
+	void SetPostCopyCallback( PostCopyCallback postCopy, void* context ) override;
 private:
 
 	// Handle copying between existing classes

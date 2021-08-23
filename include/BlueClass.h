@@ -159,7 +159,7 @@ public:
 		BlueInternalFreeObject( this );
 	}
 
-	int mLockCount;
+	std::atomic<int> mLockCount;
 };
 
 

@@ -14,7 +14,7 @@
 
 #include <vector>
 
-BLUE_INTERFACE( IBlueClasses ) : public IRoot
+BLUE_INTERFACE_EXPORT( IBlueClasses ) : public IRoot
 {
 	// Register classes from a null-terminated vector of class registrations
 	virtual void RegisterClasses( const Be::ClassRegistration table[] ) = 0;

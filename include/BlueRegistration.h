@@ -54,8 +54,6 @@ typedef std::map<std::string, std::pair<uint32_t,GetEnumValuesFunctionTypePtr> >
 
 #if BLUE_WITH_PYTHON
 typedef PyObject* ( *ScriptExceptionGetter )();
-#elif BLUE_WITH_LUA
-typedef const char* ( *ScriptExceptionGetter )();
 #elif BLUE_NO_EXPOSURE
 typedef const char* ( *ScriptExceptionGetter )();
 #endif
@@ -78,12 +76,6 @@ extern BLUEIMPORT void BlueRegisterExceptionsToModule( PyObject* module, Excepti
 // For registration of standard module functions
 void BlueRegisterModuleThunkers( PyObject* module, const ClassRegsVector& classRegs );
 void BlueRegisterModuleThunkers( PyObject* module, const Be::ClassRegistration classRegs[], size_t size );
-
-#elif BLUE_WITH_LUA
-
-extern BLUEIMPORT void BlueRegisterFunctions( lua_State* ls, const char* moduleName, const FuncRegsVector& funcRegs );
-extern BLUEIMPORT void BlueRegisterClasses( lua_State* ls, const char* moduleName, const ClassRegsVector& classRegs );
-extern BLUEIMPORT void BlueRegisterObjectsToModule( lua_State* ls, const char* moduleName, ObjectRegsVector& objectRegs );
 
 #endif
 
@@ -197,10 +189,6 @@ public:
 
 #define BLUE_REGISTER_THUNKER( def, iid ) \
 	static ThunkerRegistrar CCP_CONCATENATE( s_thunker_, __COUNTER__ )( def, iid )
-
-#if BLUE_WITH_LUA
-BLUEIMPORT void BlueRegisterInterfaceMethods( lua_State* ls, const ThunkerRegsVector& thunkerRegs );
-#endif
 
 /////////////////
 // Function registration

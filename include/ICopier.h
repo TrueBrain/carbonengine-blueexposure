@@ -11,7 +11,7 @@
 
 #include "BlueTypes.h"
 
-BLUE_INTERFACE(ICopier) : public IRoot
+BLUE_INTERFACE_EXPORT( ICopier ) : public IRoot
 {
 	enum OverrideResult
 	{
@@ -33,7 +33,7 @@ BLUE_INTERFACE(ICopier) : public IRoot
 //    the built in Be::VarTypes. This is used for copying of Dicts, Lists, etc. as well
 //    as other information that is not intended to be persisted.
 // --------------------------------------------------------------------------------------
-BLUE_INTERFACE(ICopierCustomAssignment) : public IRoot
+BLUE_INTERFACE_EXPORT( ICopierCustomAssignment ) : public IRoot
 {
 	// Custom assignment function to a pre-created copy
 	// 'other' is guaranteed to be of the same type as your class

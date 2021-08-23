@@ -11,9 +11,9 @@
 
 #include "BlueTypes.h"
 
-BLUE_DECLARE_INTERFACE( IBlueDict );
+BLUE_DECLARE_INTERFACE_EXPORT( IBlueDict );
 
-BLUE_INTERFACE( IBlueDict ) : public IRoot
+BLUE_INTERFACE_EXPORT( IBlueDict ) : public IRoot
 {
 	virtual size_t GetLength() const = 0;
 	virtual IRoot* Subscript( const char* key ) const = 0;

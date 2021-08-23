@@ -222,10 +222,7 @@ void BlueScriptCallbackStatus::ReportException()
 }
 
 BLUEIMPORT BlueScriptCallback::BlueScriptCallback()
-#if BLUE_WITH_LUA
-	:m_callback( 0, 0 ),
-	m_refCount( nullptr )
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
 	:m_callback( nullptr )
 #endif
 {
@@ -234,13 +231,7 @@ BLUEIMPORT BlueScriptCallback::BlueScriptCallback()
 BLUEIMPORT BlueScriptCallback::BlueScriptCallback( const BlueScriptCallback& other )
 	:m_callback( other.m_callback )
 {
-#if BLUE_WITH_LUA
-	m_refCount = other.m_refCount;
-	if( m_refCount )
-	{
-		++m_refCount[0];
-	}
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
 	Py_XINCREF( m_callback );
 #endif
 }
@@ -252,12 +243,7 @@ BLUEIMPORT BlueScriptCallback::~BlueScriptCallback()
 
 BLUEIMPORT BlueScriptCallback& BlueScriptCallback::operator=( const BlueScriptCallback& other )
 {
-#if BLUE_WITH_LUA
-	if( m_refCount == other.m_refCount )
-	{
-		return *this;
-	}
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
 	if( m_callback == other.m_callback )
 	{
 		return *this;
@@ -265,13 +251,7 @@ BLUEIMPORT BlueScriptCallback& BlueScriptCallback::operator=( const BlueScriptCa
 #endif
 	Destroy();
 	m_callback = other.m_callback;
-#if BLUE_WITH_LUA
-	m_refCount = other.m_refCount;
-	if( m_refCount )
-	{
-		++m_refCount[0];
-	}
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
 	Py_XINCREF( m_callback );
 #endif
 	return *this;
@@ -279,9 +259,7 @@ BLUEIMPORT BlueScriptCallback& BlueScriptCallback::operator=( const BlueScriptCa
 
 BLUEIMPORT bool BlueScriptCallback::IsValid() const
 {
-#if BLUE_WITH_LUA
-	return m_refCount != nullptr;
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
 	return m_callback != nullptr;
 #elif BLUE_NO_EXPOSURE
 	return false;
@@ -290,19 +268,7 @@ BLUEIMPORT bool BlueScriptCallback::IsValid() const
 
 BLUEIMPORT void BlueScriptCallback::Destroy()
 {
-#if BLUE_WITH_LUA
-	if( IsValid() )
-	{
-		if( --m_refCount[0] == 0 )
-		{
-			luaL_unref( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-			CCP_DELETE m_refCount;
-		}
-		m_refCount = nullptr;
-		m_callback.ls = nullptr;
-		m_callback.ix = 0;
-	}
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
 	Py_XDECREF( m_callback );
 	m_callback = nullptr;
 #endif
@@ -315,23 +281,15 @@ BLUEIMPORT BlueScriptCallbackStatus BlueScriptCallback::CallVoid()
 		return BlueScriptCallbackStatus( BlueScriptCallbackStatus::CALL_ERROR );
 	}
 
-#if BLUE_WITH_LUA
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	if( lua_pcall( m_callback.ls, 0, 0, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
+
 	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, nullptr );
 	if( ret )
 	{
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus( BlueScriptCallbackStatus::OK );
-	}
-	else
-	{
-		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus( BlueScriptCallbackStatus::EXCEPTION );
 #elif BLUE_NO_EXPOSURE
@@ -341,18 +299,7 @@ BLUEIMPORT BlueScriptCallbackStatus BlueScriptCallback::CallVoid()
 
 BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const BlueScriptCallback& val )
 {
-#if BLUE_WITH_LUA
-	BlueScriptValue returnValue( args, 1 );
-	if( val.IsValid() )
-	{
-		lua_rawgeti( val.m_callback.ls, LUA_REGISTRYINDEX, val.m_callback.ix );
-	}
-	else
-	{
-		lua_pushnil( args );
-	}
-	return returnValue;
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
 	if( val.m_callback )
 	{
 		Py_INCREF( val.m_callback );
@@ -369,25 +316,7 @@ BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const BlueScr
 
 bool BlueExtractArgumentImpl( BlueScriptValue argument, BlueScriptCallback& result, unsigned int argID, std::false_type isBlueType )
 {
-#if BLUE_WITH_LUA
-	if( lua_isfunction( argument.ls, argument.ix ) || lua_isnil( argument.ls, argument.ix ) )
-	{
-		result.Destroy();
-		if( lua_isfunction( argument.ls, argument.ix ) )
-		{
-			result.m_callback.ls = argument.ls;
-			result.m_callback.ix = luaL_ref( argument.ls, LUA_REGISTRYINDEX );
-			result.m_refCount = CCP_NEW( "BlueScriptCallback::m_refCount" ) uint32_t;
-			result.m_refCount[0] = 1;
-		}
-		return true;
-	}
-	else
-	{
-		luaL_error( argument.ls, argumentTypeMismatchString, argID, "function" );
-		return false;
-	}
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
 	if( !PyCallable_Check( argument ) && argument != Py_None )
 	{
 		PyErr_Format( PyExc_TypeError, 

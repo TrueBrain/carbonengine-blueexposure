@@ -1,0 +1,7 @@
+get_filename_component(blueExposure_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+if(NOT TARGET ccp::blueExposure)
+  include("${core_CMAKE_DIR}/blueExposureTargets.cmake")
+endif()
+
+set(core_LIBRARIES ccp::blueExposure)

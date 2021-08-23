@@ -57,7 +57,7 @@ template<typename T> PyObject* BeGetException( const Be::Result<T>& result )
 	CCP_ASSERT_M( false, "Missing specialization for BeGetException" );
 	return nullptr;
 }
-#elif BLUE_WITH_LUA || BLUE_NO_EXPOSURE
+#elif BLUE_NO_EXPOSURE
 #define BLUE_DECLARE_GET_EXCEPTION( type ) template<> const char* BeGetException( const type& result );
 #define BLUE_BEGIN_GET_EXCEPTION( type ) template<> const char* BeGetException( const type& result ) {
 #define BLUE_BEGIN_GET_EXCEPTION_INLINE( type ) template<> inline const char* BeGetException( const type& result ) {
@@ -385,9 +385,6 @@ namespace Be
 
 #if BLUE_WITH_PYTHON
 		PyTypeObject*			mTypeObject;
-#elif BLUE_WITH_LUA
-		const char*				mMetatableName;
-		lua_CFunction			mCreateWrapper;
 #endif
 
 		mutable CcpAtomic<uint32_t>	mLiveCount;
@@ -454,6 +451,12 @@ template<typename T> const Be::IID& BlueInterfaceIID();
 	const Be::IID& Get##_interface##IID();													\
 	template<> const Be::IID& BlueInterfaceIID< _interface >()
 
+// Declare an interface without the smart pointer typedef
+// This is needed to declare IRoot so it can be used in further definitions.
+#define BLUE_DECLARE_INTERFACE_NO_PTR_EXPORT(_interface) \
+	BLUEIMPORT const Be::IID& Get##_interface##IID(); \
+	template<> BLUEIMPORT const Be::IID& BlueInterfaceIID<_interface>()
+
 enum BLUEQIOPT
 {
 	BEQI_NONE		= 0x0,
@@ -467,7 +470,7 @@ enum BLUERTFLAGS
 };
 
 struct IRoot;
-BLUE_DECLARE_INTERFACE_NO_PTR(IRoot);
+BLUE_DECLARE_INTERFACE_NO_PTR_EXPORT( IRoot );
 
 struct BLUE_NOVTABLE IRoot
 {
@@ -533,7 +536,7 @@ struct BLUE_NOVTABLE IWeakObject : public IRoot
 	virtual void WeakRefUnregister(IWeakRef *ref) = 0;
 };
 
-const Be::IID& GetIWeakObjectIID();
+BLUEIMPORT const Be::IID& GetIWeakObjectIID();
 
 
 // Forward declare a Blue interface
@@ -542,9 +545,20 @@ const Be::IID& GetIWeakObjectIID();
 	BLUE_DECLARE_INTERFACE_NO_PTR( _interface ); \
 	typedef BluePtr<struct _interface> _interface##Ptr
 
+// Forward declare a Blue interface
+#define BLUE_DECLARE_INTERFACE_EXPORT( _interface )     \
+	struct _interface;                           \
+	BLUE_DECLARE_INTERFACE_NO_PTR_EXPORT( _interface ); \
+	typedef BluePtr<struct _interface> _interface##Ptr
+
 // Define a Blue interface 
 #define BLUE_INTERFACE( _interface ) \
 	BLUE_DECLARE_INTERFACE( _interface ); \
+	struct BLUE_NOVTABLE _interface
+
+// Define a Blue interface 
+#define BLUE_INTERFACE_EXPORT( _interface ) \
+	BLUE_DECLARE_INTERFACE_EXPORT( _interface ); \
 	struct BLUE_NOVTABLE _interface
 
 // Forward declare a Blue class

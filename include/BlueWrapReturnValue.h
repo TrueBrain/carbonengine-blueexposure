@@ -13,8 +13,6 @@
 
 #if BLUE_WITH_PYTHON
 #include "BlueWrapReturnValuePython.h"
-#elif BLUE_WITH_LUA
-#include "BlueWrapReturnValueLua.h"
 #endif
 
 template< typename valueType>

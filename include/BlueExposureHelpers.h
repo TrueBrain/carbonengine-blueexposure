@@ -14,9 +14,7 @@
 #include "BlueExposureTypeSignature.h"
 #include "BlueExposureMacros.h"
 
-#if BLUE_WITH_LUA
-#include "BlueExposureHelpersLua.h"
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
 #include "BlueExposureHelpersPython.h"
 #elif BLUE_NO_EXPOSURE
 template< typename FnType, FnType fn >

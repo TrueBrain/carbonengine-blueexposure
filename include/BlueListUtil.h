@@ -276,13 +276,13 @@ public:
 	bool AssignTo(
 		ICopierCustomAssignment* other,
 		ICopier* copier
-		);
+		) override;
 
 	/////////////////////////////////////////
 	// IList interface
 	void GetInfo(
 		ListInfo* info
-		)
+		) override
 	{
 		info->mIID = &BlueInterfaceIID<T>();
 		info->mClsid = BlueListUtils::GetClassClsid<T>();
@@ -290,30 +290,30 @@ public:
         info->mNotify = mNotify;
 	}
 
-	ssize_t GetSize() const
+	ssize_t GetSize() const override
 	{
 		return size();
 	}
 
 
-	bool Insert( ssize_t key, IRoot* val );
+	bool Insert( ssize_t key, IRoot* val ) override;
 
-	bool Append( IRoot* val );
+	bool Append( IRoot* val ) override;
 
-	bool Remove(ssize_t key);
+	bool Remove(ssize_t key) override;
 	
-	IRoot* GetAt(ssize_t key) const;
+	IRoot* GetAt(ssize_t key) const override;
 
-	ssize_t FindKey(IRoot* value, ssize_t keyFrom = 0);
+	ssize_t FindKey(IRoot* value, ssize_t keyFrom = 0) override;
 
-	bool Swap(ssize_t key1, ssize_t key2);
+	bool Swap(ssize_t key1, ssize_t key2) override;
 	
-	void SetNotify(IListNotify* notify)
+	void SetNotify(IListNotify* notify) override
 	{		
 		mNotify = notify;
 	}
 
-	bool Move(ssize_t from, ssize_t to);
+	bool Move(ssize_t from, ssize_t to) override;
 
 	bool Clear();
 

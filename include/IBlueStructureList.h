@@ -121,7 +121,7 @@ struct BlueStructureDefinition
 	Be::VarChooser* m_chooser;
 };
 
-BLUE_DECLARE_INTERFACE( IBlueStructureList );
+BLUE_DECLARE_INTERFACE_EXPORT( IBlueStructureList );
 
 struct IBlueStructureListNotify
 {
@@ -137,7 +137,7 @@ struct IBlueStructureListNotify
 };
 
 
-BLUE_INTERFACE( IBlueStructureList ) : public IRoot
+BLUE_INTERFACE_EXPORT( IBlueStructureList ) : public IRoot
 {
 	virtual BlueStructureDefinition* GetStructureDefinition() = 0;
 	virtual size_t GetMemberCount() = 0;

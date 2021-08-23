@@ -381,7 +381,7 @@ BluePtr<T> CreateInstance()
 }
 
 
-BLUE_DECLARE_INTERFACE(IWeakObject);	//an object that can be weakrefed
+BLUE_DECLARE_INTERFACE_EXPORT(IWeakObject);	//an object that can be weakrefed
 
 class BlueWeakRefBase : public IWeakRef
 {

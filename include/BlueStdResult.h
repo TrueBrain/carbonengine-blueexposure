@@ -182,15 +182,6 @@ template <typename T1, typename T2> inline PyObject* BeGetException( const Be::R
 	}
 	return BeGetException( result.m_results.second );
 }
-#elif BLUE_WITH_LUA
-template <typename T1, typename T2> inline const char* BeGetException( const Be::Result<BeResultChoice<T1, T2>>& result ) 
-{
-	if( !BeIsSuccess( result.m_results.first ) )
-	{
-		return BeGetException( result.m_results.first );
-	}
-	return BeGetException( result.m_results.second );
-}
 #endif
 
 namespace Be

@@ -99,11 +99,6 @@ public:
 
 private:
 	BlueScriptValue m_callback;
-#if BLUE_WITH_LUA
-	// For Lua we need to keep reference count for callback index in metatable
-	// since BlueScriptCallback is copyable
-	uint32_t* m_refCount;
-#endif
 
 	friend BLUEIMPORT BlueScriptValue BlueWrapReturnValueImpl( 
 		BlueScriptArguments args, 
@@ -147,37 +142,20 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue )
 		return BlueScriptCallbackStatus::CALL_ERROR;
 	}
 
-#if BLUE_WITH_LUA
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	if( lua_pcall( m_callback.ls, 0, 1, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	BlueScriptValue ret( m_callback.ls, -1 );
-	if( !BlueExtractArgument( ret, returnValue, 0 ) )
-	{
-        lua_pop( m_callback.ls, 1 );
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	BlueScriptCallback::RefIRoot( returnValue );
-	lua_pop( m_callback.ls, 1 );
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
+
 	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, nullptr );
 	if( ret )
 	{
 		if( !BlueExtractArgument( ret, returnValue, 0 ) )
 		{
-			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
 		BlueScriptCallback::RefIRoot( returnValue );
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
-	}
-	else
-	{
-		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
 #elif BLUE_NO_EXPOSURE
@@ -194,17 +172,10 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0 )
 		return BlueScriptCallbackStatus::CALL_ERROR;
 	}
 
-#if BLUE_WITH_LUA
-	BlueScriptArguments args = m_callback.ls;
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
 
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	BlueWrapReturnValue( args, a0 );
-	if( lua_pcall( m_callback.ls, 1, 0, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
 
 	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
@@ -214,10 +185,6 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0 )
 	{
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
-	}
-	else
-	{
-		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
 #elif BLUE_NO_EXPOSURE
@@ -234,25 +201,10 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0 )
 		return BlueScriptCallbackStatus::CALL_ERROR;
 	}
 
-#if BLUE_WITH_LUA
-	BlueScriptArguments args = m_callback.ls;
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
 
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	BlueWrapReturnValue( args, a0 );
-	if( lua_pcall( m_callback.ls, 1, 1, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	BlueScriptValue ret( m_callback.ls, -1 );
-	if( !BlueExtractArgument( ret, returnValue, 0 ) )
-	{
-        lua_pop( m_callback.ls, 1 );
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	BlueScriptCallback::RefIRoot( returnValue );
-	lua_pop( m_callback.ls, 1 );
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
 
 	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
@@ -262,16 +214,11 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0 )
 	{
 		if( !BlueExtractArgument( ret, returnValue, 0 ) )
 		{
-			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
 		BlueScriptCallback::RefIRoot( returnValue );
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
-	}
-	else
-	{
-		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
 #elif BLUE_NO_EXPOSURE
@@ -288,18 +235,10 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1 )
 		return BlueScriptCallbackStatus::CALL_ERROR;
 	}
 
-#if BLUE_WITH_LUA
-	BlueScriptArguments args = m_callback.ls;
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
 
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	BlueWrapReturnValue( args, a0 );
-	BlueWrapReturnValue( args, a1 );
-	if( lua_pcall( m_callback.ls, 2, 0, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
 
 	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
@@ -311,10 +250,6 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1 )
 	{
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
-	}
-	else
-	{
-		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
 #elif BLUE_NO_EXPOSURE
@@ -328,29 +263,13 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 {
 	if( !IsValid() )
 	{
-		return BlueScriptCallbackStatus::EXCEPTION;
+		return BlueScriptCallbackStatus::CALL_ERROR;
 	}
 
-#if BLUE_WITH_LUA
-	BlueScriptArguments args = m_callback.ls;
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
 
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	BlueWrapReturnValue( args, a0 );
-	BlueWrapReturnValue( args, a1 );
-	if( lua_pcall( m_callback.ls, 2, 1, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	BlueScriptValue ret( m_callback.ls, -1 );
-	if( !BlueExtractArgument( ret, returnValue, 0 ) )
-	{
-        lua_pop( m_callback.ls, 1 );
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	BlueScriptCallback::RefIRoot( returnValue );
-	lua_pop( m_callback.ls, 1 );
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
 
 	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
@@ -362,16 +281,11 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 	{
 		if( !BlueExtractArgument( ret, returnValue, 0 ) )
 		{
-			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
 		BlueScriptCallback::RefIRoot( returnValue );
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
-	}
-	else
-	{
-		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
 #elif BLUE_NO_EXPOSURE
@@ -388,19 +302,10 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2 )
 		return BlueScriptCallbackStatus::CALL_ERROR;
 	}
 
-#if BLUE_WITH_LUA
-	BlueScriptArguments args = m_callback.ls;
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
 
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	BlueWrapReturnValue( args, a0 );
-	BlueWrapReturnValue( args, a1 );
-	BlueWrapReturnValue( args, a2 );
-	if( lua_pcall( m_callback.ls, 3, 0, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
 
 	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
@@ -414,10 +319,6 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2 )
 	{
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
-	}
-	else
-	{
-		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
 #elif BLUE_NO_EXPOSURE
@@ -431,30 +332,13 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 {
 	if( !IsValid() )
 	{
-		return BlueScriptCallbackStatus::EXCEPTION;
+		return BlueScriptCallbackStatus::CALL_ERROR;
 	}
 
-#if BLUE_WITH_LUA
-	BlueScriptArguments args = m_callback.ls;
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
 
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	BlueWrapReturnValue( args, a0 );
-	BlueWrapReturnValue( args, a1 );
-	BlueWrapReturnValue( args, a2 );
-	if( lua_pcall( m_callback.ls, 3, 1, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	BlueScriptValue ret( m_callback.ls, -1 );
-	if( !BlueExtractArgument( ret, returnValue, 0 ) )
-	{
-        lua_pop( m_callback.ls, 1 );
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	BlueScriptCallback::RefIRoot( returnValue );
-	lua_pop( m_callback.ls, 1 );
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
 
 	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
@@ -468,16 +352,11 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 	{
 		if( !BlueExtractArgument( ret, returnValue, 0 ) )
 		{
-			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
 		BlueScriptCallback::RefIRoot( returnValue );
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
-	}
-	else
-	{
-		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
 #elif BLUE_NO_EXPOSURE
@@ -494,20 +373,10 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2, A3 a
 		return BlueScriptCallbackStatus::CALL_ERROR;
 	}
 
-#if BLUE_WITH_LUA
-	BlueScriptArguments args = m_callback.ls;
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
 
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	BlueWrapReturnValue( args, a0 );
-	BlueWrapReturnValue( args, a1 );
-	BlueWrapReturnValue( args, a2 );
-	BlueWrapReturnValue( args, a3 );
-	if( lua_pcall( m_callback.ls, 4, 0, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
 
 	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
@@ -524,10 +393,6 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2, A3 a
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
 	}
-	else
-	{
-		PyErr_Clear();
-	}
 	return BlueScriptCallbackStatus::EXCEPTION;
 #elif BLUE_NO_EXPOSURE
 	return BlueScriptCallbackStatus::EXCEPTION;
@@ -540,31 +405,13 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 {
 	if( !IsValid() )
 	{
-		return BlueScriptCallbackStatus::EXCEPTION;
+		return BlueScriptCallbackStatus::CALL_ERROR;
 	}
 
-#if BLUE_WITH_LUA
-	BlueScriptArguments args = m_callback.ls;
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
 
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	BlueWrapReturnValue( args, a0 );
-	BlueWrapReturnValue( args, a1 );
-	BlueWrapReturnValue( args, a2 );
-	BlueWrapReturnValue( args, a3 );
-	if( lua_pcall( m_callback.ls, 4, 1, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	BlueScriptValue ret( m_callback.ls, -1 );
-	if( !BlueExtractArgument( ret, returnValue, 0 ) )
-	{
-        lua_pop( m_callback.ls, 1 );
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	BlueScriptCallback::RefIRoot( returnValue );
-	lua_pop( m_callback.ls, 1 );
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
 
 	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
@@ -580,16 +427,11 @@ BlueScriptCallbackStatus BlueScriptCallback::Call( Ret& returnValue, A0 a0, A1 a
 	{
 		if( !BlueExtractArgument( ret, returnValue, 0 ) )
 		{
-			PyErr_Clear();
 			return BlueScriptCallbackStatus::EXCEPTION;
 		}
 		BlueScriptCallback::RefIRoot( returnValue );
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
-	}
-	else
-	{
-		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
 #elif BLUE_NO_EXPOSURE
@@ -606,21 +448,10 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2, A3 a
 		return BlueScriptCallbackStatus::CALL_ERROR;
 	}
 
-#if BLUE_WITH_LUA
-	BlueScriptArguments args = m_callback.ls;
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
 
-	lua_rawgeti( m_callback.ls, LUA_REGISTRYINDEX, m_callback.ix );
-	BlueWrapReturnValue( args, a0 );
-	BlueWrapReturnValue( args, a1 );
-	BlueWrapReturnValue( args, a2 );
-	BlueWrapReturnValue( args, a3 );
-	BlueWrapReturnValue( args, a4 );
-	if( lua_pcall( m_callback.ls, 5, 0, 0 ) )
-	{
-		return BlueScriptCallbackStatus::EXCEPTION;
-	}
-	return BlueScriptCallbackStatus::OK;
-#elif BLUE_WITH_PYTHON
 	BlueScriptArguments args = 0;
 
 	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
@@ -638,10 +469,6 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2, A3 a
 	{
 		Py_DECREF( ret );
 		return BlueScriptCallbackStatus::OK;
-	}
-	else
-	{
-		PyErr_Clear();
 	}
 	return BlueScriptCallbackStatus::EXCEPTION;
 #elif BLUE_NO_EXPOSURE

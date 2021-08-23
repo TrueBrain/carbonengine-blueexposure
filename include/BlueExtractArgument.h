@@ -17,8 +17,6 @@
 
 #if BLUE_WITH_PYTHON
 #include "BlueExtractArgumentPython.h"
-#elif BLUE_WITH_LUA
-#include "BlueExtractArgumentLua.h"
 #endif
 
 template< class POINTER_TYPE > POINTER_TYPE BluePythonCast( BlueScriptValue self );

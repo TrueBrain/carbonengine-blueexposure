@@ -1,5 +1,5 @@
-#include "include/BlueExposureMacros.h"
-#include "include/BlueStdResult.h"
+#include "BlueExposureMacros.h"
+#include "BlueStdResult.h"
 
 #if BLUE_WITH_PYTHON
 
@@ -61,68 +61,6 @@ BLUEIMPORT PyObject* CCP_CONCATENATE( BlueGetException, BlueStdTypeError )()
 BLUEIMPORT PyObject* CCP_CONCATENATE( BlueGetException, BlueStdValueError )()
 {
 	return PyExc_ValueError;
-}
-
-#elif BLUE_WITH_LUA
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdIndexError )()
-{
-	return "IndexError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdKeyError )()
-{
-	return "KeyError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdAssertionError )()
-{
-	return "AssertionError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdAttributeError )()
-{
-	return "AttributeError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdEofError )()
-{
-	return "EOFError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdIOError )()
-{
-	return "IOError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdMemoryError )()
-{
-	return "MemoryError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdOSError )()
-{
-	return "OSError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdOverflowError )()
-{
-	return "OverflowError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdRuntimeError )()
-{
-	return "RuntimeError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdTypeError )()
-{
-	return "TypeError";
-}
-
-BLUEIMPORT const char* CCP_CONCATENATE( BlueGetException, BlueStdValueError )()
-{
-	return "ValueError";
 }
 
 #endif

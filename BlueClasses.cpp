@@ -121,7 +121,9 @@ namespace
 					}
 					tmp.push_back(tmp_t::value_type(entry->mName, val));
 					if (type->mInterfaceTable[0].mOffset)
+					{
 						CCP_ASSERT(0);
+					}
 				}
 			}
 

@@ -50,22 +50,6 @@ BLUEIMPORT Be::Var* BeMapMemberOffset(
 	BLUEMAPMEMBEROFFSET(_obj, _var, _typeinfo, 0)
 
 
-
-//--------------------------------------------------------------------
-// Performance timer / Timer helper routines
-//--------------------------------------------------------------------
-BLUEIMPORT long TimeInMs(Be::Time time);
-BLUEIMPORT double TimeAsDouble(Be::Time time);
-BLUEIMPORT float TimeAsFloat(Be::Time time);
-BLUEIMPORT bool TimeIsUTC(Be::Time time);
-BLUEIMPORT Be::Time TimeFromDouble(double time);
-BLUEIMPORT Be::Time TimeFromMS(long time);
-
-#ifdef _WIN32
-BLUEIMPORT bool WINAPI QueryPerformanceFrequencyCCP(LARGE_INTEGER *lpFrequency);
-BLUEIMPORT bool WINAPI QueryPerformanceCounterCCP(LARGE_INTEGER *lpFrequency);
-#endif
-
 class BLUEIMPORT BeTimer
 {
 public:
@@ -235,14 +219,5 @@ BLUEIMPORT void BlueInitializePyType( PyTypeObject* pyType, const Be::Clsid* cls
 
 // Helper function for looking at command line arguments
 std::vector<std::wstring> GetSplitCommandLine();
-
-BLUEIMPORT const char* GetPlatformToolset();
-
-
-#ifdef _WIN64
-#define PROCESS_BIT_COUNT 64
-#else
-#define PROCESS_BIT_COUNT 32
-#endif
 
 #endif

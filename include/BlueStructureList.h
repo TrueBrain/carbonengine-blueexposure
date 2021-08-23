@@ -95,37 +95,37 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	// IBlueStructureList methods
 	///
-	virtual BlueStructureDefinition* GetStructureDefinition() 
+	BlueStructureDefinition* GetStructureDefinition() override
 	{
 		return m_structureDefinition;
 	}
 
-	virtual size_t GetMemberCount()
+	size_t GetMemberCount() override
 	{
 		return m_memberCount;
 	}
 
-	virtual size_t GetStructureSize() 
+	size_t GetStructureSize() override
 	{
 		return sizeof( T );
 	}
 
-	virtual size_t GetSize() 
+	size_t GetSize() override
 	{
 		return m_items.size();
 	}
 
-	virtual const void* GetDefaultValue()
+	const void* GetDefaultValue() override
 	{
 		return m_defaultValue;
 	}
 
-	virtual void* GetAt( size_t ix ) 
+	void* GetAt( size_t ix ) override
 	{
 		return &m_items[ix];
 	}
 
-	virtual bool Append( const  void* val ) 
+	bool Append( const  void* val ) override
 	{
 		const T* p = static_cast<const T*>( val );
 		m_items.push_back( *p );
@@ -133,7 +133,7 @@ public:
 		return true;
 	}
 
-	virtual bool Insert( size_t ix, const void* val ) 
+	bool Insert( size_t ix, const void* val ) override
 	{
 		const T* p = static_cast<const T*>( val );
 		iterator it = m_items.begin() + ix;
@@ -142,7 +142,7 @@ public:
 		return true;
 	}
 
-	virtual bool Remove( size_t ix ) 
+	bool Remove( size_t ix ) override
 	{
 		iterator it = m_items.begin() + ix;
 		T item = m_items[ix];
@@ -151,23 +151,23 @@ public:
 		return true;
 	}
 
-	virtual void Clear() 
+	void Clear() override
 	{
 		m_items.clear();
 		Notify( IBlueStructureListNotify::BLUE_STRUCTURE_LIST_CLEARED, nullptr, 0 );
 	}
 
-	virtual void Resize( size_t numItems )
+	void Resize( size_t numItems ) override
 	{
 		m_items.resize( numItems );
 	}
 
-	virtual void ItemChanged( size_t ix )
+	void ItemChanged( size_t ix ) override
 	{
 		Notify( IBlueStructureListNotify::BLUE_STRUCTURE_LIST_ITEM_CHANGED, &m_items[ix], ix );
 	}
 
-	virtual IBlueStructureListNotify* SetNotify( IBlueStructureListNotify* notify )
+	IBlueStructureListNotify* SetNotify( IBlueStructureListNotify* notify ) override
 	{
 		auto old = m_notify;
 		m_notify = notify;
@@ -185,7 +185,7 @@ public:
 	bool AssignTo(
 		ICopierCustomAssignment* other,
 		ICopier* copier
-		)
+		) override
 	{
 		ClassDef* dest = static_cast<ClassDef*>( other );
 
