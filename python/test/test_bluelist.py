@@ -127,7 +127,7 @@ class TestBlueList(unittest.TestCase):
 		obj.myVector.append(childObj3)
 
 		childObj4 = BlueExposureTest.TestAttributes()
-		self.assertRaises(RuntimeError, obj.myVector.remove, childObj4)
+		self.assertRaises(ValueError, obj.myVector.remove, childObj4)
 
 		self.assertEqual(3, len(obj.myVector))
 
@@ -350,8 +350,7 @@ class TestBlueList(unittest.TestCase):
 
 		childObj4 = BlueExposureTest.TestAttributes()
 
-		ix = obj.myVector.index(childObj4)
-		self.assertEqual(ix, -1)
+		self.assertRaises(ValueError, obj.myVector.index, childObj4)
 
 
 	def testIndex_ItemNotIRoot(self):
@@ -376,8 +375,7 @@ class TestBlueList(unittest.TestCase):
 
 		childObj = BlueExposureTest.TestAttributes()
 
-		ix = obj.myVector.index(childObj)
-		self.assertEqual(ix, -1)
+		self.assertRaises(ValueError, obj.myVector.index, childObj)
 
 
 	def testCount(self):
@@ -540,4 +538,4 @@ class TestBlueList(unittest.TestCase):
 		obj.myVector.append(BlueExposureTest.TestAttributes())
 
 		lc = BlueExposureTest.classes.LiveCount()
-		self.assertEqual(2, lc["BlueExposureTest.TestAttributes"])
+		self.assertEqual(2, lc["_blueexposuretest.TestAttributes"])

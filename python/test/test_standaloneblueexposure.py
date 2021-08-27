@@ -323,7 +323,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         argsList = []
 
         lc = BlueExposureTest.classes.LiveCount()
-        self.assertEqual(lc["BlueExposureTest.TestMultipleInterfaces"], 0, "Initial live count of helper object is not 0")
+        self.assertEqual(lc["_blueexposuretest.TestMultipleInterfaces"], 0, "Initial live count of helper object is not 0")
 
         for i in xrange(9):
             x.returnError = False
@@ -342,12 +342,12 @@ class TestStandAloneBlueExposure(unittest.TestCase):
             argsList.append(42)
 
         lc = BlueExposureTest.classes.LiveCount()
-        self.assertEqual(lc["BlueExposureTest.TestMultipleInterfaces"], 0, "Live count of helper object is not 0 after testing factory functions")
+        self.assertEqual(lc["_blueexposuretest.TestMultipleInterfaces"], 0, "Live count of helper object is not 0 after testing factory functions")
 
 
     def testWeakReferences(self):
         lc = BlueExposureTest.classes.LiveCount()
-        self.assertEqual(lc["BlueExposureTest.TestReferences"], 0)
+        self.assertEqual(lc["_blueexposuretest.TestReferences"], 0)
 
         x = BlueExposureTest.TestReferences()
         y = BlueExposureTest.TestReferences()
@@ -366,7 +366,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         x.weakRef = x
         del x
         lc = BlueExposureTest.classes.LiveCount()
-        self.assertEqual(lc["BlueExposureTest.TestReferences"], 0)
+        self.assertEqual(lc["_blueexposuretest.TestReferences"], 0)
 
 
     def testMethodWithListOfIntParameter(self):
