@@ -88,6 +88,9 @@ std::string FormatExceptionFallback( PyObject *type, PyObject *val, PyObject *tb
 
 std::string FormatException( PyObject* type, PyObject* val, PyObject* tb )
 {
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
+
 	//import the traceback module
 	PyObject* module = PyImport_ImportModule( "traceback" );
 	if( !module )
