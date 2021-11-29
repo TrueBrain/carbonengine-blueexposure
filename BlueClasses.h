@@ -13,6 +13,11 @@
 #include "include/IBlueClasses.h"
 #include "include/BlueUtil.h"
 
+#ifndef NDEBUG
+// Keep track of all live instances of IRoot objects
+#define BLUE_LIVELIST_ENABLED 1
+#endif
+
 BLUE_DECLARE( BlueClasses );
 
 BLUE_CLASS( BlueClasses ) : public IBlueClasses
@@ -156,7 +161,10 @@ private:
 #if BLUE_WITH_PYTHON
 	static PyObject* PyCreateInstance( PyObject* self, PyObject* args );
 	static PyObject* PyGetClassTypes( PyObject* self, PyObject* args );
-	static PyObject* PyLiveCount( PyObject* self, PyObject* args );
+	static PyObject* PyLiveCount( PyObject * self, PyObject * args );
+	static PyObject* PyLockCount( PyObject * self, PyObject * args );
+	static PyObject* PyGetWrapperList( PyObject * self, PyObject * args );
+
 #endif
 
 	std::string GetPersistedClassesReport();

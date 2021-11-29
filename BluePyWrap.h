@@ -161,7 +161,7 @@ private:
 	typedef TrackableStdHashSet<PythonKlass **> DecoSet;
 	static DecoSet sDecos;
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 	// In debug mode, we keep count of TypeLocks and tracebacks
 	typedef TrackableStdMap<const Be::ClassInfo*, int> TypeLocks;
 	typedef TypeLocks::iterator TypeLocksIt;

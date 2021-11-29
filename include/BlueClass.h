@@ -114,7 +114,7 @@ public:
 			BeClasses->UpdateObjectCount( this->GetRootObject(), inc, 0 );
 		}
 	}
-#ifdef _DEBUG
+#ifndef NDEBUG
 	void LockIncrement( int inc )
 	{
 		if( BeClasses )

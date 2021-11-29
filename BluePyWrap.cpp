@@ -65,7 +65,7 @@ BlueWrapper::DecoSet BlueWrapper::sDecos( "BlueWrapper/sDecos" );
 //--------------------------------------------------------------------
 // The global of all deco objects
 //--------------------------------------------------------------------
-#ifdef _DEBUG
+#ifndef NDEBUG
 BlueWrapper::TypeLocks BlueWrapper::sTypeLocks("BlueWrapper/sTypeLocks");
 #endif
 
@@ -269,7 +269,7 @@ void BlueWrapper::Shutdown()
 	ReleaseAllDecos();
 	sWrappers.clear();
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 	sTypeLocks.clear();
 #endif
 }
@@ -288,7 +288,7 @@ void BlueWrapper::Shutdown()
 //--------------------------------------------------------------------
 BlueWrapper::BlueWrapper(IRoot* obj) : 
 	mWeakrefList( nullptr )
-#ifdef _DEBUG
+#ifndef NDEBUG
 	, mTracebacks( "BlueWrapper/mTracebacks" )
 #endif
 {
@@ -306,7 +306,7 @@ void BlueWrapper::Init(IRoot* obj)
 //--------------------------------------------------------------------
 BlueWrapper::BlueWrapper(const BlueWrapper& x) :
 	mWeakrefList( nullptr )
-#ifdef _DEBUG
+#ifndef NDEBUG
 	, mTracebacks( "BlueWrapper/mTracebacks" )
 #endif
 {
@@ -340,7 +340,7 @@ bool BlueWrapper::operator < (const BlueWrapper& y) const
 	return mObj < y.mObj;
 }
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 
 void BlueWrapper::IncType(const Be::ClassInfo* obj)
 {
@@ -433,7 +433,7 @@ Be::Var* BlueWrapper::MapMember(ssize_t fulloffset) const
 
 
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 
 void BlueWrapper::TraceBack()
 {
@@ -525,7 +525,7 @@ void BlueWrapper::PyDestroy()
 	if (methods)
 		methods->Destroy();
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 	for (unsigned i = 0; i < mTracebacks.size(); i++)
 		Py_XDECREF(mTracebacks[i]);
 	mTracebacks.clear();
@@ -615,7 +615,7 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 			//used by python's builtin dir() command
 			const char* defaults[] =
 			{
-#ifdef _DEBUG
+#ifndef NDEBUG
 				"__dotrace__",
 #endif
 				"__doc__",
@@ -658,7 +658,7 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 		}
 #endif
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 		else if (strcmp(name, "__dotrace__") == 0)
 		{
 			PyObject* file = PySys_GetObject((char*)"stderr");

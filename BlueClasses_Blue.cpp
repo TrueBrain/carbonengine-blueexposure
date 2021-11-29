@@ -12,6 +12,7 @@
 #if BLUE_WITH_PYTHON
 #include "include/BlueSmartPy.h"
 #include "include/BluePythonObject.h"
+#include "BluePyWrap.h"
 #include "Find.h"
 #include "TypeInfo.h"
 #endif
@@ -203,6 +204,40 @@ PyObject* BlueClasses::PyLiveCount( PyObject* self, PyObject* args )
 	return d.Detach();
 }
 
+PyObject* BlueClasses::PyLockCount( PyObject* self, PyObject* args )
+{
+	BlueClasses* pThis = BluePythonCast<BlueClasses*>( self );
+
+	if( !PyArg_ParseTuple( args, "" ) )
+	{
+		return NULL;
+	}
+
+	BluePyDict d( 0 );
+
+	for( auto& i : pThis->m_classes )
+	{
+		const Be::ClassRegistration* reg = i.second;
+		const Be::ClassInfo* clsInfo = reg->mType;
+		const Be::Clsid* clsid = clsInfo->mClassId;
+		int32_t count = clsInfo->mLockCount;
+
+		BluePyStr s = BluePyStr::Format( "%s.%s", clsid->GetModule(), clsid->GetName() );
+		d.Set( s, BluePyInt( count ) );
+	}
+
+	return d.Detach();
+}
+
+PyObject* BlueClasses::PyGetWrapperList( PyObject* self, PyObject* args )
+{
+	if( !PyArg_ParseTuple( args, "" ) )
+	{
+		return NULL;
+	}
+	return BlueWrapper::GetWrapperList();
+}
+
 
 PyObject* PyCopy( PyObject* self, PyObject* args )
 {
@@ -302,9 +337,21 @@ const Be::ClassInfo* BlueClasses::ExposeToBlue()
 		(
 			"LiveCount",
 			PyLiveCount,
-			"Returns a dict of blue objects alive.\n"
+			"Returns a number of live instances for each blue-exposed type in a dict with keys being type names.\n"
 			":rtype: dict[str, int]"
 		)
+
+		MAP_METHOD(
+			"LockCount",
+			PyLockCount,
+			"Returns a number of locks for each blue-exposed type in a dict with keys being type names. Only works in debug builds\n"
+			":rtype: dict[str, int]" )
+
+		MAP_METHOD(
+			"GetWrapperList",
+			PyGetWrapperList,
+			"Returns a list of all blue objects exposed to Python.\n"
+			":rtype: list[IRoot]" )
 
 #if BLUE_LIVELIST_ENABLED
 		MAP_METHOD
