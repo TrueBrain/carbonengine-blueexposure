@@ -67,10 +67,36 @@ BLUEIMPORT bool BlueExtractArgumentImpl(
 		unsigned int argID, 
 		std::false_type isBlueType );
 
+BLUEIMPORT BlueScriptValue BlueWrapReturnValueImpl(
+	BlueScriptArguments args,
+	const BlueSharedStringW& val );
+BLUEIMPORT bool BlueExtractArgumentImpl(
+	BlueScriptValue argument,
+	BlueSharedStringW& result,
+	unsigned int argID,
+	std::false_type isBlueType );
+
+template <typename T>
+struct BlueSharedStringDefaultValue
+{
+};
+
+template <>
+struct BlueSharedStringDefaultValue<char>
+{
+	static constexpr const char* VALUE = "";
+};
+
+template <>
+struct BlueSharedStringDefaultValue<wchar_t>
+{
+	static constexpr const wchar_t* VALUE = L"";
+};
+
 
 template <typename CharType>
-BlueSharedStringT<CharType>::BlueSharedStringT()
-	:m_string( BlueAllocateSharedStringFromPool( "" ) )
+BlueSharedStringT<CharType>::BlueSharedStringT() :
+	m_string( BlueAllocateSharedStringFromPool( BlueSharedStringDefaultValue<CharType>::VALUE ) )
 {
 }
 

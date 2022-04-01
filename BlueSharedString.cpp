@@ -150,3 +150,35 @@ bool BlueExtractArgumentImpl(
 
 	return true;
 }
+
+BlueScriptValue BlueWrapReturnValueImpl(
+	BlueScriptArguments args,
+	const BlueSharedStringW& val )
+{
+#if BLUE_WITH_PYTHON
+	return PyUnicode_FromUnicode( (const Py_UNICODE*)val.c_str(), wcslen( val.c_str() ) );
+#elif BLUE_NO_EXPOSURE
+	return nullptr;
+#endif
+}
+
+bool BlueExtractArgumentImpl(
+	BlueScriptValue argument,
+	BlueSharedStringW& result,
+	unsigned int argID,
+	std::false_type isBlueType )
+{
+	std::wstring str;
+	bool success = BlueExtractWString( argument, str );
+	if( !success )
+	{
+#if BLUE_NO_EXPOSURE
+#else
+		PyErr_Format( PyExc_TypeError, argumentTypeMismatchString, argID, "unicode" );
+#endif
+		return false;
+	}
+	result = BlueSharedStringW( str );
+
+	return true;
+}

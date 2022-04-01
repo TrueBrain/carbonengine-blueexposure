@@ -77,5 +77,10 @@ inline bool IsMatch( Be::Var* value, const BlueSharedString& t )
 	return (Be::Var*)&t == value;
 }
 
+inline bool IsMatch( Be::Var* value, const BlueSharedStringW& t )
+{
+	return (Be::Var*)&t == value;
+}
+
 
 #endif // INotify_h

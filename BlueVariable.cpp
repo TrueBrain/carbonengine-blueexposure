@@ -971,6 +971,43 @@ template<> bool Copy<Be::SHAREDSTRING>(const Be::VarEntry* entry, Be::Var* dst, 
 }
 
 
+
+template <>
+bool AreEqual<Be::SHAREDSTRINGW>( const Be::VarEntry* entry, const Be::Var* a, const Be::Var* b )
+{
+	const BlueSharedStringW& aStr = *reinterpret_cast<const BlueSharedStringW*>( a );
+	const BlueSharedStringW& bStr = *reinterpret_cast<const BlueSharedStringW*>( b );
+	return aStr == bStr;
+}
+
+#if BLUE_WITH_PYTHON
+template <>
+bool ConvertFromPython<Be::SHAREDSTRINGW>( const Be::VarEntry* var, Be::Var* value, PyObject* v )
+{
+	BlueSharedStringW& s = *reinterpret_cast<BlueSharedStringW*>( value );
+	std::wstring str;
+	bool ok = BlueExtractWString( v, str );
+	s = BlueSharedStringW( str );
+	return ok;
+}
+
+template <>
+void ConvertToPython<Be::SHAREDSTRINGW>( const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret )
+{
+	const BlueSharedStringW& s = *reinterpret_cast<const BlueSharedStringW*>( value );
+	ret = PyUnicode_FromUnicode( (Py_UNICODE*)s.c_str(), wcslen( s.c_str() ) );
+}
+#endif
+
+template <>
+bool Copy<Be::SHAREDSTRINGW>( const Be::VarEntry* entry, Be::Var* dst, Be::Var* src, Copier* copier )
+{
+	const BlueSharedStringW& srcString = *reinterpret_cast<const BlueSharedStringW*>( src );
+	BlueSharedStringW& dstString = *reinterpret_cast<BlueSharedStringW*>( dst );
+	dstString = srcString;
+	return true;
+}
+
 static BlueVariable* VAR_TO_BLUE_VARIABLE[Be::VARTYPE_MAX + 1] = {NULL};
 
 
@@ -1023,6 +1060,7 @@ void InitializeBlueVariables()
 	INIT_BLUE_VAR(Be::SHORT)
 	INIT_BLUE_VAR(Be::SCRIPTCALLBACK)
 	INIT_BLUE_VAR(Be::SHAREDSTRING)
+	INIT_BLUE_VAR(Be::SHAREDSTRINGW)
 }
 
 static bool initialized = false;

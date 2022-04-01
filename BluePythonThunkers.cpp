@@ -641,6 +641,11 @@ bool VarEquals( const Be::VarEntry* entry, const Be::Var* variable, const char* 
 		{
 			return true;
 		}
+	case Be::SHAREDSTRINGW:
+		if( wcscmp( reinterpret_cast<const BlueSharedStringW*>( variable )->c_str(), CA2W( value ) ) == 0 )
+		{
+			return true;
+		}
 	default:
 		break;
 	}
