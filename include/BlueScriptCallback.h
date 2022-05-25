@@ -97,6 +97,9 @@ public:
 	template <typename A0, typename A1, typename A2, typename A3, typename A4>
 	BlueScriptCallbackStatus CallVoid( A0 a0, A1 a1, A2 a2, A3 a3, A4 a4 );
 
+	template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+	BlueScriptCallbackStatus CallVoid( A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5);
+
 private:
 	BlueScriptValue m_callback;
 
@@ -465,6 +468,44 @@ BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2, A3 a
 	Py_DECREF( arg2 );
 	Py_DECREF( arg3 );
 	Py_DECREF( arg4 );
+	if( ret )
+	{
+		Py_DECREF( ret );
+		return BlueScriptCallbackStatus::OK;
+	}
+	return BlueScriptCallbackStatus::EXCEPTION;
+#elif BLUE_NO_EXPOSURE
+	return BlueScriptCallbackStatus::EXCEPTION;
+#endif
+}
+
+template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+BlueScriptCallbackStatus BlueScriptCallback::CallVoid( A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5 )
+{
+	if( !IsValid() )
+	{
+		return BlueScriptCallbackStatus::CALL_ERROR;
+	}
+
+#if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
+
+	BlueScriptArguments args = 0;
+
+	BlueScriptValue arg0 = BlueWrapReturnValue( args, a0 );
+	BlueScriptValue arg1 = BlueWrapReturnValue( args, a1 );
+	BlueScriptValue arg2 = BlueWrapReturnValue( args, a2 );
+	BlueScriptValue arg3 = BlueWrapReturnValue( args, a3 );
+	BlueScriptValue arg4 = BlueWrapReturnValue( args, a4 );
+	BlueScriptValue arg5 = BlueWrapReturnValue( args, a5 );
+	PyObject* ret = PyObject_CallFunctionObjArgs( m_callback, arg0, arg1, arg2, arg3, arg4, arg5, nullptr );
+	Py_DECREF( arg0 );
+	Py_DECREF( arg1 );
+	Py_DECREF( arg2 );
+	Py_DECREF( arg3 );
+	Py_DECREF( arg4 );
+	Py_DECREF( arg5 );
 	if( ret )
 	{
 		Py_DECREF( ret );
