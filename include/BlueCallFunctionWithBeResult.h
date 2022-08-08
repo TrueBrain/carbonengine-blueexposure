@@ -104,7 +104,7 @@ bool BlueCallFunctionWithBeResultReturningValue( fnType method, BlueScriptArgume
 		return false;
 	}
 
-	typename std::remove_pointer<A1>::type p;
+	typename std::remove_pointer<A1>::type p{nullptr};
 	result = method( &p );
 
 	returnValue = BlueGetWrappedObjectReturnValueIfSuccess( args, result, reinterpret_cast<IRoot*>( p ) );
@@ -196,7 +196,7 @@ bool BlueCallFunctionWithBeResultReturningValue( fnType method, BlueScriptArgume
 
 	EXTRACT_ARGUMENT_N( args, 1 );
 
-	typename std::remove_pointer<lastArgType>::type p;
+	typename std::remove_pointer<lastArgType>::type p{nullptr};
 	result = method( arg1, &p );
 
 	returnValue = BlueGetWrappedObjectReturnValueIfSuccess( args, result, reinterpret_cast<IRoot*>( p ) );
@@ -290,7 +290,7 @@ bool BlueCallFunctionWithBeResultReturningValue( fnType method, BlueScriptArgume
 	EXTRACT_ARGUMENT_N( args, 1 );
 	EXTRACT_ARGUMENT_N( args, 2 );
 
-	typename std::remove_pointer<lastArgType>::type p;
+	typename std::remove_pointer<lastArgType>::type p{nullptr};
 	result = method( arg1, arg2, &p );
 
 	returnValue = BlueGetWrappedObjectReturnValueIfSuccess( args, result, reinterpret_cast<IRoot*>( p ) );
@@ -386,7 +386,7 @@ bool BlueCallFunctionWithBeResultReturningValue( fnType method, BlueScriptArgume
 	EXTRACT_ARGUMENT_N( args, 2 );
 	EXTRACT_ARGUMENT_N( args, 3 );
 
-	typename std::remove_pointer<lastArgType>::type p;
+	typename std::remove_pointer<lastArgType>::type p{nullptr};
 	result = method( arg1, arg2, arg3, &p );
 
 	returnValue = BlueGetWrappedObjectReturnValueIfSuccess( args, result, reinterpret_cast<IRoot*>( p ) );
@@ -486,7 +486,7 @@ bool BlueCallFunctionWithBeResultReturningValue( fnType method, BlueScriptArgume
 	EXTRACT_ARGUMENT_N( args, 3 );
 	EXTRACT_ARGUMENT_N( args, 4 );
 
-	typename std::remove_pointer<lastArgType>::type p;
+	typename std::remove_pointer<lastArgType>::type p{nullptr};
 	result = method( arg1, arg2, arg3, arg4, &p );
 
 	returnValue = BlueGetWrappedObjectReturnValueIfSuccess( args, result, reinterpret_cast<IRoot*>( p ) );
@@ -589,7 +589,7 @@ bool BlueCallFunctionWithBeResultReturningValue( fnType method, BlueScriptArgume
 	EXTRACT_ARGUMENT_N( args, 4 );
 	EXTRACT_ARGUMENT_N( args, 5 );
 
-	typename std::remove_pointer<lastArgType>::type p;
+	typename std::remove_pointer<lastArgType>::type p{nullptr};
 	result = method( arg1, arg2, arg3, arg4, arg5, &p );
 
 	returnValue = BlueGetWrappedObjectReturnValueIfSuccess( args, result, reinterpret_cast<IRoot*>( p ) );
@@ -694,7 +694,7 @@ bool BlueCallFunctionWithBeResultReturningValue( fnType method, BlueScriptArgume
 	EXTRACT_ARGUMENT_N( args, 5 );
 	EXTRACT_ARGUMENT_N( args, 6 );
 
-	typename std::remove_pointer<lastArgType>::type p;
+	typename std::remove_pointer<lastArgType>::type p{nullptr};
 	result = method( arg1, arg2, arg3, arg4, arg5, arg6, &p );
 
 	returnValue = BlueGetWrappedObjectReturnValueIfSuccess( args, result, reinterpret_cast<IRoot*>( p ) );
@@ -802,7 +802,7 @@ bool BlueCallFunctionWithBeResultReturningValue( fnType method, BlueScriptArgume
 	EXTRACT_ARGUMENT_N( args, 6 );
 	EXTRACT_ARGUMENT_N( args, 7 );
 
-	typename std::remove_pointer<lastArgType>::type p;
+	typename std::remove_pointer<lastArgType>::type p{nullptr};
 	result = method( arg1, arg2, arg3, arg4, arg5, arg6, arg7, &p );
 
 	returnValue = BlueGetWrappedObjectReturnValueIfSuccess( args, result, reinterpret_cast<IRoot*>( p ) );
@@ -913,7 +913,7 @@ bool BlueCallFunctionWithBeResultReturningValue( fnType method, BlueScriptArgume
 	EXTRACT_ARGUMENT_N( args, 7 );
 	EXTRACT_ARGUMENT_N( args, 8 );
 
-	typename std::remove_pointer<lastArgType>::type p;
+	typename std::remove_pointer<lastArgType>::type p{nullptr};
 	result = method( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, &p );
 
 	returnValue = BlueGetWrappedObjectReturnValueIfSuccess( args, result, reinterpret_cast<IRoot*>( p ) );
