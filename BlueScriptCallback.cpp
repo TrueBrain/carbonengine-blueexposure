@@ -147,6 +147,8 @@ BlueScriptCallbackStatus::~BlueScriptCallbackStatus()
 {
 	ReportException();
 #if BLUE_WITH_PYTHON
+	auto gil = PyGILState_Ensure();
+	ON_BLOCK_EXIT( [&gil] { PyGILState_Release( gil ); } );
 	Py_XDECREF( m_type );
 	Py_XDECREF( m_value );
 	Py_XDECREF( m_traceback );
