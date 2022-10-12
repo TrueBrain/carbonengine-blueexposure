@@ -128,4 +128,62 @@ BlueLockData* BlueInternalHasLockData( IRoot* obj );
 
 extern BLUEIMPORT IBlueClasses* BeClasses;
 
+template <typename T>
+class BlueObjectHasGetRawRoot
+{
+	typedef char one;
+	struct two
+	{
+		char x[2];
+	};
+
+	template <typename C>
+	static one test( decltype( &C::GetRawRoot ) );
+	template <typename C>
+	static two test( ... );
+
+public:
+	enum
+	{
+		value = sizeof( test<T>( 0 ) ) == sizeof( char )
+	};
+};
+
+
+template <typename T>
+[[nodiscard]] inline IRootPtr BlueCopy( const T* source, ICopier::CopyOverrideCallback copyOverride = nullptr, void* overrideContext = nullptr, ICopier::PostCopyCallback postCopy = nullptr, void* postCopyContext = nullptr )
+{
+	IRootPtr dest;
+	IRoot* src;
+	if constexpr( BlueObjectHasGetRawRoot<T>::value )
+	{
+		src = source->GetRawRoot();
+	}
+	else
+	{
+		src = source->GetRootObject();
+	}
+	BeClasses->CopyTo( src, (IRoot**)&dest, copyOverride, overrideContext, postCopy, postCopyContext );
+
+	return dest;
+}
+
+template <typename T>
+[[nodiscard]] inline IRootPtr BlueCopy( const BlueBasicPtr<T>& source, ICopier::CopyOverrideCallback copyOverride = nullptr, void* overrideContext = nullptr, ICopier::PostCopyCallback postCopy = nullptr, void* postCopyContext = nullptr )
+{
+	IRootPtr dest;
+	IRoot* src;
+	if constexpr( BlueObjectHasGetRawRoot<T>::value )
+	{
+		src = source->GetRawRoot();
+	}
+	else
+	{
+		src = source->GetRootObject();
+	}
+	BeClasses->CopyTo( src, (IRoot**)&dest, copyOverride, overrideContext, postCopy, postCopyContext );
+
+	return dest;
+}
+
 #endif

@@ -231,7 +231,7 @@ typedef BlueBasicPtr<IRoot> IRootPtr;
 
 // A utility class used by BluePtr and BlueCastPtr. Do not use.
 template <typename T>
-class BlueCastPtrImpl
+class [[nodiscard]] BlueCastPtrImpl
 {
 	BlueCastPtrImpl( T* pointer )
 		:m_pointer( pointer )

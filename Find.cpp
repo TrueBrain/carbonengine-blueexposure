@@ -7,6 +7,7 @@
 
 #if BLUE_WITH_PYTHON
 
+#include "Find.h"
 #include "include/IList.h"
 #include "include/IBlueDict.h"
 #include "include/BlueSmartPy.h"
@@ -128,19 +129,15 @@ PyObject *FindSingle(IRoot *obj, const idvector_t &ids, int maxLevel, bool prune
 	return result;
 }
 
-
-PyObject *FindInterface( IRoot *obj, const char* iidName )
+std::vector<IRoot*> FindInterface( IRoot *obj, const char* iidName )
 {
 	Be::IID iid( iidName );
 
 	objectstack_t stack;
 	rootset_t seen;
 
-	PyObject *result = PyList_New( 0 );
-	if( !result )
-	{
-		return 0;
-	}
+	std::vector<IRoot*> result;
+	
 	if( !obj )
 	{
 		return result;
@@ -165,14 +162,7 @@ PyObject *FindInterface( IRoot *obj, const char* iidName )
 		// do we have a winner here?  See if the class matches what we are looking for.
 		if( IsMatch( obj, iid ) )
 		{
-			PyObject *item = BlueWrapObjectForPython( obj );
-			if( !item || PyList_Append( result, item ) )
-			{
-				Py_XDECREF( item );
-				Py_DECREF( result );
-				return 0;
-			}
-			Py_DECREF( item );
+			result.push_back( obj );
 		}
 
 		PushChildren( obj, e.level, stack, 0 );
@@ -195,8 +185,25 @@ PyObject* PyFindInterface( PyObject* pThis, PyObject* args )
 		PyErr_Format( PyExc_TypeError, "Argument 'obj' is not of type IRoot." );
 		return NULL;
 	}
-	
-	return FindInterface( obj, iidName );
+
+	PyObject* result = PyList_New( 0 );
+	if( !result )
+	{
+		return 0;
+	}
+	auto interfaces = FindInterface( obj, iidName );
+	for( auto it = begin( interfaces ); it != end( interfaces ); ++it )
+	{
+		PyObject* item = BlueWrapObjectForPython( *it );
+		if( !item || PyList_Append( result, item ) )
+		{
+			Py_XDECREF( item );
+			Py_DECREF( result );
+			return 0;
+		}
+		Py_DECREF( item );
+	}
+	return result;
 }
 
 // A stack class to manage the recursion data in the PyFindMultiple
@@ -449,6 +456,26 @@ public:
 		}
 	}
 
+	RouteStep GetRouteStep()
+	{
+		if( m_dictIndex >= 0 )
+		{
+			RouteStep::StepValue value = { std::string( m_dict->GetKey( m_dictIndex ) ), 0, RouteStep::AttributeRef() };
+			return RouteStep(RouteStep::StepType::KEY, value, m_parent);
+		}
+		else if( m_listIndex >= 0 )
+		{
+			RouteStep::StepValue value = { std::string(), m_listIndex, RouteStep::AttributeRef() };
+			return RouteStep(RouteStep::StepType::INDEX, value, m_parent);
+		}
+		else
+		{
+			RouteStep::AttributeRef attrRef = { m_type, m_entry, m_offset };
+			RouteStep::StepValue value = { std::string(), 0, attrRef };
+			return RouteStep( RouteStep::StepType::ATTRIBUTE, value, m_parent );
+		}
+	}
+
 	bool Next()
 	{
 		m_value = nullptr;
@@ -553,6 +580,149 @@ private:
 
 }
 
+RouteStep::RouteStep() :
+	m_stepType( StepType::INDEX ),
+	m_value(),
+	m_obj( nullptr )
+{
+}
+
+RouteStep::RouteStep( StepType stepType, const StepValue& value, IRoot* root ) :
+	m_stepType( stepType ),
+	m_obj( root )
+{
+	switch( stepType )
+	{
+	case RouteStep::StepType::ATTRIBUTE: 
+		m_value.attribute = value.attribute;
+		break;
+	case RouteStep::StepType::INDEX: 
+		m_value.index = value.index;
+		break;
+	case RouteStep::StepType::KEY: 
+		m_value.key = value.key;
+		break;
+	default:
+		break;
+	}
+}
+
+
+RouteStep::RouteStep( const RouteStep& ref ) :
+	RouteStep( ref.m_stepType, ref.m_value, ref.m_obj )
+{
+}
+
+RouteStep::~RouteStep()
+{
+}
+
+IRoot* RouteStep::GetNextObject( IRoot* parent )
+{
+	if( !parent )
+	{
+		parent = m_obj;
+	}
+	switch( m_stepType )
+	{
+	case StepType::ATTRIBUTE:
+		{
+			const Be::ClassInfo* type = parent->ClassType();
+			for( const Be::ClassInfo* current = type; current; current = current->mParentClassInfo )
+			{
+				if( current == m_value.attribute.type )
+				{
+					Be::Var* var = BLUEMAPMEMBEROFFSET( parent, m_value.attribute.entry, m_value.attribute.type, m_value.attribute.offset );
+					if( m_value.attribute.entry->mType == Be::IROOTPTR )
+					{
+						return var->mIRootPtr;
+					}
+					else
+					{
+						return reinterpret_cast<IRoot*>( var );
+					}
+					break;
+				}
+			}
+		}
+		break;
+	case StepType::INDEX:
+		{
+			IListPtr list( BlueCastPtr( parent ) );
+			if( list && list->GetSize() > m_value.index )
+			{
+				return list->GetAt( m_value.index );
+			}
+		}
+		break;
+	case StepType::KEY:
+		{	
+			IBlueDictPtr dict( BlueCastPtr( parent ) );
+			if( dict && dict.p )
+			{
+				return dict.p->Subscript( m_value.key.c_str() );
+			}
+		}
+		break;
+	default:
+		break;
+	}
+	return nullptr;
+}
+
+bool FindFirstRoute( IRoot* from, IRoot* to, std::vector<RouteStep>* result )
+{
+	if( !from || !to )
+	{
+		return false;
+	}
+
+	from = from->GetRootObject();
+	to = to->GetRootObject();
+	if( from == to )
+	{
+		return true;
+	}
+
+	std::vector<RouteItem> stack;
+	std::unordered_set<IRoot*> visited;
+
+	stack.push_back( RouteItem( from ) );
+
+	while( !stack.empty() )
+	{
+		RouteItem& item = stack.back();
+		if( !item.Next() )
+		{
+			stack.pop_back();
+			continue;
+		}
+
+		auto value = item.Value();
+
+		if( value == to )
+		{
+			if( result != nullptr )
+			{
+				for( auto it = begin( stack ); it != end( stack ); ++it )
+				{
+					result->push_back( it->GetRouteStep() );
+				}
+			}
+			return true;
+		}
+		else
+		{
+			auto inserted = visited.insert( value );
+			if( inserted.second )
+			{
+				stack.push_back( RouteItem( value ) );
+			}
+		}
+	}
+	return false;
+}
+
 PyObject* FindRoute( IRoot* from, IRoot* to )
 {
 	if( !from || !to )
@@ -627,6 +797,47 @@ PyObject* PyFindRoute( PyObject* pThis, PyObject* args )
 	}
 	
 	return FindRoute( from, to );
+}
+
+bool FindReference( IRoot* from, IRoot* to )
+{
+	if( from == to )
+	{
+		return true;
+	}
+	if( !from || !to )
+	{
+		return false;
+	}
+
+	objectstack_t stack;
+	rootset_t seen;
+
+	//Prime the stack and start
+	stack.push_back( StackEntry( from, 0, true ) ); // 'true' since we must assume it's not an autovar.
+	while( !stack.empty() )
+	{
+		StackEntry e = stack.back();
+		stack.pop_back();
+
+		from = e.obj;
+		if( e.check )
+		{
+			// We need to check this, if we've seen it before
+			std::pair<rootset_t::iterator, bool> res = seen.insert( from );
+			if( !res.second )
+				continue;
+		}
+
+		// do we have a winner here?  See if the class matches what we are looking for.
+		if( from == to )
+		{
+			return true;
+		}
+
+		PushChildren( from, e.level, stack, 0 );
+	}
+	return false;
 }
 
 #endif
