@@ -840,4 +840,55 @@ bool FindReference( IRoot* from, IRoot* to )
 	return false;
 }
 
+
+PyObject* FindAllReferences( IRoot* root )
+{
+	PyObject* result = PyDict_New();
+
+	root = root->GetRootObject();
+	if( !root || !result )
+	{
+		return result;
+	}
+
+
+	std::vector<IRoot*> stack;
+	rootset_t seen;
+
+	//Prime the stack and start
+	stack.push_back( root ); // 'true' since we must assume it's not an autovar.
+	while( !stack.empty() )
+	{
+		auto obj = stack.back();
+		stack.pop_back();
+
+		if( !seen.insert( obj ).second )
+			continue;
+
+		RouteItem ri( obj );
+		while( ri.Next() )
+		{
+			auto child = ri.Value()->GetRootObject();
+			auto record = ri.GetPathItem();
+
+			auto pyParent = BlueWrapObjectForPython( obj );
+			auto pyChild = BlueWrapObjectForPython( child );
+			auto found = PyDict_GetItem( result, pyChild );
+			if( !found )
+			{
+				found = PyList_New( 0 );
+				PyDict_SetItem( result, pyChild, found );
+				Py_DECREF( found );
+			}
+			PyList_Append( found, record );
+			Py_DECREF( record );
+			Py_DECREF( pyChild );
+			Py_DECREF( pyParent );
+
+			stack.push_back( child );
+		}
+	}
+	return result;
+}
+
 #endif
