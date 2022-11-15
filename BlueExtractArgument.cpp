@@ -9,7 +9,7 @@
 
 #include "include/BlueExposureMacros.h"
 #include "include/BlueVectorTypes.h"
-#include "CcpCore/include/StringConversions.h"
+#include <StringConversions.h>
 #include <limits>
 
 #if BLUE_WITH_PYTHON
@@ -615,4 +615,3 @@ bool BlueExtractString( BlueScriptValue, std::string& )
 }
 
 #endif
-

@@ -9,7 +9,7 @@
 #ifndef BlueTypes_h
 #define BlueTypes_h
 
-#include "CcpCore/include/CcpCore.h"
+#include <CcpCore.h>
 #include "BlueScriptValue.h"
 
 #if !BLUE_WITH_PYTHON

@@ -7,7 +7,7 @@
 #include "include/PythonKlass.h"
 #endif
 #include "BlueVariable.h"
-#include "CcpCore/include/CCPLog.h"
+#include <CCPLog.h>
 
 Copier::Copier()
 :	m_override( nullptr ),

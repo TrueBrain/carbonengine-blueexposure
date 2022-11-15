@@ -12,7 +12,7 @@
 #include "include/IPythonMethods.h"
 #include "include/BlueScriptCallback.h"
 #include "include/BlueSharedString.h"
-#include "CcpCore/include/CCPLog.h"
+#include <CCPLog.h>
 
 #include "BlueClasses.h"
 #include "BlueVariable.h"

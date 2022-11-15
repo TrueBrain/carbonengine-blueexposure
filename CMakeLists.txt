@@ -102,7 +102,4 @@ target_include_directories(BlueExposure
     PUBLIC
         $<INSTALL_INTERFACE:include/eve/BlueExposure>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/..
 )

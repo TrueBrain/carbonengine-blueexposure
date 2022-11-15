@@ -12,8 +12,8 @@
 #ifndef _BLUESMARTPTR_H_
 #define _BLUESMARTPTR_H_
 
-#include "CcpCore/include/CcpMacros.h"
-#include "CcpCore/include/CCPAssert.h"
+#include <CcpMacros.h>
+#include <CCPAssert.h>
 #include "BlueScriptValue.h"
 
 //Utility functions defined in blueutil.cpp.  Fixed functions like these reduce code.

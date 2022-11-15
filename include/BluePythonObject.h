@@ -9,7 +9,7 @@
 #ifndef BluePythonObject_h
 #define BluePythonObject_h
 
-#include "CcpCore/include/CcpMacros.h"
+#include <CcpMacros.h>
 
 struct IRoot;
 namespace Be

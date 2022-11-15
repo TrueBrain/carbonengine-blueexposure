@@ -10,7 +10,7 @@
 #define BluePooledString_H
 
 #include "BlueTypes.h"
-#include "CcpCore/include/CcpMacros.h"
+#include <CcpMacros.h>
 #include <string>
 
 // --------------------------------------------------------------------------------------

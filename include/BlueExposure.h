@@ -44,6 +44,6 @@
 #include "StringBeResult.h"
 #include "BlueScriptCallback.h"
 #include "BlueSharedString.h"
-#include "CcpCore/include/CcpCore.h"
+#include <CcpCore.h>
 
 #endif // BlueExposure_h

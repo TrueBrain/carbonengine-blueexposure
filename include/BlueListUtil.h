@@ -30,7 +30,7 @@
 #include "ICopier.h"
 #include "BlueExposureMacros.h"
 #include "BlueUtil.h"
-#include "CcpCore/include/CcpCore.h"
+#include <CcpCore.h>
 
 #include <vector>
 #include <algorithm>

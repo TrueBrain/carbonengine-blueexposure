@@ -2,7 +2,7 @@
 #ifndef BlueStringTable_H
 #define BlueStringTable_H
 
-#include "CcpCore/include/CcpCore.h"
+#include <CcpCore.h>
 
 // --------------------------------------------------------------------------------------
 // Description:
