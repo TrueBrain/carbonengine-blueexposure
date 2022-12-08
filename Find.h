@@ -53,6 +53,8 @@ PyObject* PyFindImpl( IRoot* pThis, PyObject* args );
 
 PyObject* PyFindRoute( PyObject* pThis, PyObject* args );
 
+PyObject* PyFindFirstRoute( PyObject* pThis, PyObject* args );
+
 PyObject* PyFindInterface( PyObject* pThis, PyObject* args );
 
 bool FindReference( IRoot* from, IRoot* to );

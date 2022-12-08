@@ -670,7 +670,8 @@ IRoot* RouteStep::GetNextObject( IRoot* parent )
 	return nullptr;
 }
 
-bool FindFirstRoute( IRoot* from, IRoot* to, std::vector<RouteStep>* result )
+
+bool _FindFirstRoute( IRoot* from, IRoot* to, std::vector<RouteItem>& result )
 {
 	if( !from || !to )
 	{
@@ -684,17 +685,16 @@ bool FindFirstRoute( IRoot* from, IRoot* to, std::vector<RouteStep>* result )
 		return true;
 	}
 
-	std::vector<RouteItem> stack;
 	std::unordered_set<IRoot*> visited;
 
-	stack.push_back( RouteItem( from ) );
+	result.push_back( RouteItem( from ) );
 
-	while( !stack.empty() )
+	while( !result.empty() )
 	{
-		RouteItem& item = stack.back();
+		RouteItem& item = result.back();
 		if( !item.Next() )
 		{
-			stack.pop_back();
+			result.pop_back();
 			continue;
 		}
 
@@ -702,13 +702,7 @@ bool FindFirstRoute( IRoot* from, IRoot* to, std::vector<RouteStep>* result )
 
 		if( value == to )
 		{
-			if( result != nullptr )
-			{
-				for( auto it = begin( stack ); it != end( stack ); ++it )
-				{
-					result->push_back( it->GetRouteStep() );
-				}
-			}
+
 			return true;
 		}
 		else
@@ -716,18 +710,36 @@ bool FindFirstRoute( IRoot* from, IRoot* to, std::vector<RouteStep>* result )
 			auto inserted = visited.insert( value );
 			if( inserted.second )
 			{
-				stack.push_back( RouteItem( value ) );
+				result.push_back( RouteItem( value ) );
 			}
 		}
 	}
 	return false;
 }
 
+
+bool FindFirstRoute( IRoot* from, IRoot* to, std::vector<RouteStep>* result )
+{
+	std::vector<RouteItem> stack;
+
+	bool route_found = _FindFirstRoute( from, to, stack );
+
+	if (route_found && result != nullptr)
+	{
+		for( auto it = begin( stack ); it != end( stack ); ++it )
+		{
+			result->push_back( it->GetRouteStep() );
+		}
+	}
+	return route_found;
+}
+
+
 PyObject* FindRoute( IRoot* from, IRoot* to )
 {
 	if( !from || !to )
 	{
-		return PyErr_SetString( PyExc_ValueError, "both from and to parameters cannot be None" ), nullptr;
+		return PyErr_SetString( PyExc_ValueError, "neither from nor to parameter can be None" ), nullptr;
 	}
 
 	PyObject* result = PyList_New( 0 );
@@ -780,6 +792,7 @@ PyObject* FindRoute( IRoot* from, IRoot* to )
 	return result;
 }
 
+
 PyObject* PyFindRoute( PyObject* pThis, PyObject* args )
 {
 	PyObject *pFrom, *pTo;
@@ -798,6 +811,54 @@ PyObject* PyFindRoute( PyObject* pThis, PyObject* args )
 	
 	return FindRoute( from, to );
 }
+
+
+PyObject* _PyFindFirstRoute( IRoot* from, IRoot* to )
+{
+	from = from->GetRootObject();
+	to = to->GetRootObject();
+	if( from == to )
+	{
+		PyObject* path = PyList_New( 0 );
+		return path;
+	}
+
+	std::vector<RouteItem> stack;
+
+	if( _FindFirstRoute( from, to, stack ) )
+	{
+		PyObject* path = PyList_New( Py_ssize_t( stack.size() ) );
+		for( size_t i = 0; i < stack.size(); ++i )
+		{
+			PyList_SET_ITEM( path, i, stack[i].GetPathItem() );
+		}
+		return path;
+	}
+
+	PyErr_Format( PyExc_ValueError, "No valid route found." );
+	return NULL;
+}
+
+
+PyObject* PyFindFirstRoute( PyObject* pThis, PyObject* args )
+{
+	PyObject *pFrom, *pTo;
+	if( !PyArg_ParseTuple( args, "OO", &pFrom, &pTo ) )
+	{
+		return NULL;
+	}
+
+	IRoot* from = BlueUnwrapObjectFromPython( pFrom );
+	IRoot* to = BlueUnwrapObjectFromPython( pTo );
+	if( !from || !to )
+	{
+		PyErr_Format( PyExc_TypeError, "Argument 'from' or 'to' are not of type IRoot." );
+		return NULL;
+	}
+
+	return _PyFindFirstRoute( from, to );
+}
+
 
 bool FindReference( IRoot* from, IRoot* to )
 {
