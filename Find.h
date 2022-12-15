@@ -59,5 +59,6 @@ PyObject* PyFindInterface( PyObject* pThis, PyObject* args );
 
 bool FindReference( IRoot* from, IRoot* to );
 PyObject* FindAllReferences( IRoot* root );
+PyObject* PyFindAllReferences( PyObject* pThis, PyObject* args );
 
 #endif

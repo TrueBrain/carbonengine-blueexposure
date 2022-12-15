@@ -952,4 +952,22 @@ PyObject* FindAllReferences( IRoot* root )
 	return result;
 }
 
+PyObject* PyFindAllReferences( PyObject* pThis, PyObject* args )
+{
+	PyObject* pRoot;
+	if( !PyArg_ParseTuple( args, "O", &pRoot ) )
+	{
+		return NULL;
+	}
+
+	IRoot* root = BlueUnwrapObjectFromPython( pRoot );
+	if( !root )
+	{
+		PyErr_Format( PyExc_TypeError, "Argument 'root' is not of type IRoot." );
+		return NULL;
+	}
+	 
+	return FindAllReferences( root );
+}
+
 #endif
