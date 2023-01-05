@@ -315,6 +315,8 @@ public:
 
 	bool Move(ssize_t from, ssize_t to) override;
 
+	std::pair<IRoot* const*, ssize_t> GetAllItems() const override;
+
 	bool Clear();
 
 	//utility function. explicit assignment function
@@ -671,6 +673,14 @@ template <class T, long ops>
 bool BlueList_Impl<T, ops>::Clear()
 {
 	return Remove( -1 );
+}
+
+template <class T, long ops>
+std::pair<IRoot* const*, ssize_t> BlueList_Impl<T, ops>::GetAllItems() const
+{
+	return {
+		reinterpret_cast<IRoot* const*>( TrackableStdVector<T*>::data() ), ssize_t( TrackableStdVector<T*>::size() )
+	};
 }
 
 #endif

@@ -158,6 +158,10 @@ BLUE_INTERFACE_EXPORT(IList) : public IRoot
 		ssize_t from,
 		ssize_t to
 		) = 0;
+
+	// Returns a pointer to the first element and list size. Implementations
+	// that don't use continious memory for storing items may return (nullptr, size).
+	virtual std::pair<IRoot* const*, ssize_t> GetAllItems() const = 0;
 };
 
 

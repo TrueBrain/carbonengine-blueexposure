@@ -10,6 +10,7 @@
 #define Find_h
 
 #include "BlueTypes.h"
+#include "BlueSmartPy.h"
 
 class RouteStep
 {
@@ -39,6 +40,7 @@ public:
 	~RouteStep();
 	
 	IRoot* GetNextObject( IRoot* parent=nullptr );
+	IRoot* GetStepObject() const;
 
 private:
 	StepType m_stepType;
@@ -47,18 +49,14 @@ private:
 };
 
 bool FindFirstRoute( IRoot* from, IRoot* to, std::vector<RouteStep>* result );
-std::vector<IRoot*> FindInterface( IRoot* obj, const char* iidName );
+BluePy PyFindFirstRoute( IRoot* from, IRoot* to );
+
+std::vector<IRootPtr> FindInterface( IRoot* obj, const char* iidName );
 
 PyObject* PyFindImpl( IRoot* pThis, PyObject* args );
 
-PyObject* PyFindRoute( PyObject* pThis, PyObject* args );
-
-PyObject* PyFindFirstRoute( PyObject* pThis, PyObject* args );
-
-PyObject* PyFindInterface( PyObject* pThis, PyObject* args );
-
+BluePy FindRoute( IRoot* from, IRoot* to );
 bool FindReference( IRoot* from, IRoot* to );
-PyObject* FindAllReferences( IRoot* root );
-PyObject* PyFindAllReferences( PyObject* pThis, PyObject* args );
+BluePy FindAllReferences( IRoot* root );
 
 #endif
