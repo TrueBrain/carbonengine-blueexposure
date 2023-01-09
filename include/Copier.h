@@ -25,9 +25,9 @@
 #ifndef _COPIER_H_
 #define _COPIER_H_
 
-#include "include/BlueExposureMacros.h"
-#include "include/ICopier.h"
-#include "include/BlueUtil.h"
+#include "BlueExposureMacros.h"
+#include "ICopier.h"
+#include "BlueUtil.h"
 #include <memory>
 
 BLUE_DECLARE( Copier );

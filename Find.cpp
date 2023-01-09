@@ -444,7 +444,7 @@ std::vector<IRootPtr> FindInterface( IRoot *obj, const char* iidName )
 	SeenObjectSet seen;
 
 	std::vector<IRootPtr> result;
-	
+
 	if( !obj )
 	{
 		return result;
@@ -699,13 +699,13 @@ RouteStep::RouteStep( StepType stepType, const StepValue& value, IRoot* root ) :
 {
 	switch( stepType )
 	{
-	case RouteStep::StepType::ATTRIBUTE: 
+	case RouteStep::StepType::ATTRIBUTE:
 		m_value.attribute = value.attribute;
 		break;
-	case RouteStep::StepType::INDEX: 
+	case RouteStep::StepType::INDEX:
 		m_value.index = value.index;
 		break;
-	case RouteStep::StepType::KEY: 
+	case RouteStep::StepType::KEY:
 		m_value.key = value.key;
 		break;
 	default:
@@ -762,7 +762,7 @@ IRoot* RouteStep::GetNextObject( IRoot* parent )
 		}
 		break;
 	case StepType::KEY:
-		{	
+		{
 			IBlueDictPtr dict( BlueCastPtr( parent ) );
 			if( dict && dict.p )
 			{

@@ -1,0 +1,28 @@
+if(NOT TARGET BlueExposure)
+  list(APPEND LINK_LIBRARIES "CcpCore")
+  list(APPEND LINK_LIBRARIES "Python")
+  set(_IMPORT_PREFIX ${CMAKE_CURRENT_LIST_DIR})
+  add_library(BlueExposure STATIC IMPORTED)
+  set_target_properties(BlueExposure PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
+    INTERFACE_LINK_LIBRARIES "${LINK_LIBRARIES}"
+    IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
+    INTERFACE_COMPILE_DEFINITIONS "BLUE_WITH_PYTHON=1"
+  )
+  set_property(TARGET BlueExposure APPEND PROPERTY IMPORTED_CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES})
+  foreach(CCT ${CMAKE_CONFIGURATION_TYPES})
+    string(TOLOWER ${CCT} _LCCT)
+    string(TOUPPER ${CCT} _UCCT)
+    set(_IMP_LOC_PROP IMPORTED_LOCATION_${_UCCT})
+    if(${_LCCT} STREQUAL "release")
+    set(_IMP_LOC_VAL ${_IMPORT_PREFIX}/${CCP_VENDOR_LIB_PATH}/${CMAKE_STATIC_LIBRARY_PREFIX}BlueExposure${CMAKE_STATIC_LIBRARY_SUFFIX})
+    else()
+    set(_IMP_LOC_VAL ${_IMPORT_PREFIX}/${CCP_VENDOR_LIB_PATH}/${CMAKE_STATIC_LIBRARY_PREFIX}BlueExposure_${_LCCT}${CMAKE_STATIC_LIBRARY_SUFFIX})
+    endif()
+    if(NOT EXISTS ${_IMP_LOC_VAL})
+    message(FATAL_ERROR "Missing BlueExposure library ${_IMP_LOC_VAL}, is a build and perforce publish for the '${CCT}' configuration missing?")
+    endif()
+    message(DEBUG "Setting BlueExposure property ${_IMP_LOC_PROP} to ${_IMP_LOC_VAL}")
+    set_target_properties(BlueExposure PROPERTIES ${_IMP_LOC_PROP} ${_IMP_LOC_VAL})
+  endforeach()
+endif()

@@ -2,6 +2,25 @@ cmake_minimum_required(VERSION 3.16)
 
 project(BlueExposure VERSION 1.0.0)
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake)
+if(NOT DEFINED ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
+    message(FATAL_ERROR "Missing required environment variable CCP_EVE_PERFORCE_BRANCH_PATH")
+elseif(NOT IS_ABSOLUTE $ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
+    message(FATAL_ERROR "CCP_EVE_PERFORCE_BRANCH_PATH needs to be an absolute path")
+elseif(NOT EXISTS $ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
+    message(FATAL_ERROR "CCP_EVE_PERFORCE_BRANCH_PATH is pointing at a non-existing location $ENV{CCP_EVE_PERFORCE_BRANCH_PATH}")
+elseif(NOT IS_DIRECTORY $ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
+    message(FATAL_ERROR "CCP_EVE_PERFORCE_BRANCH_PATH needs to be a directory")
+else()
+    message(STATUS "Using CCP_EVE_PERFORCE_BRANCH_PATH located at $ENV{CCP_EVE_PERFORCE_BRANCH_PATH}")
+endif()
+
+file(TO_CMAKE_PATH "$ENV{CCP_EVE_PERFORCE_BRANCH_PATH}" BRANCH_ROOT_DIR)
+list(INSERT CMAKE_MODULE_PATH 0 ${BRANCH_ROOT_DIR}/cmake)
+include(CcpGlobalSettings)
+
+find_package(CcpCore REQUIRED NO_CMAKE_PATH)
+find_package(RadGameToolsTelemetry REQUIRED)
+find_package(Python REQUIRED NO_CMAKE_PATH)
 
 add_library(BlueExposure STATIC
     BlueClasses.cpp
@@ -19,23 +38,21 @@ add_library(BlueExposure STATIC
     BlueRegistrationPython.cpp
     BlueScriptCallback.cpp
     BlueSharedString.cpp
-    include/BlueStdResult.cpp
+    BlueStdResult.cpp
     BlueStructureList.cpp
     BlueTypes.cpp
     BlueUtil.cpp
     BlueVariable.cpp
-    BlueVariable.h
     Copier.cpp
-    Copier.h
     Copier_Blue.cpp
     Find.cpp
-    Find.h
     InterfaceDefinitions.cpp
     PythonKlass.cpp
     TypeInfo.cpp
     TypeInfo.h
 )
-target_sources(BlueExposure PRIVATE
+
+set(PUBLIC_HEADER_FILES
     include/BlueCallFunction.h
     include/BlueCallFunctionHelpers.h
     include/BlueCallFunctionWithBeResult.h
@@ -62,17 +79,19 @@ target_sources(BlueExposure PRIVATE
     include/BlueSharedString.h
     include/BlueSmartPtr.h
     include/BlueSmartPy.h
-    include/BlueStdResult.cpp
     include/BlueStdResult.h
     include/BlueStringTable.h
     include/BlueStructureList.h
     include/BlueTypes.h
     include/BlueTypeTraits.h
     include/BlueUtil.h
+    include/BlueVariable.h
     include/BlueVectorTypes.h
     include/BlueWeakRef.h
     include/BlueWrapReturnValue.h
     include/BlueWrapReturnValuePython.h
+    include/Copier.h
+    include/Find.h
     include/IBlueClasses.h
     include/IBlueDict.h
     include/IBlueRtti.h
@@ -88,6 +107,7 @@ target_sources(BlueExposure PRIVATE
     include/StringBeResult.h
 )
 
+target_sources(BlueExposure PRIVATE ${PUBLIC_HEADER_FILES})
 
 target_compile_definitions(BlueExposure
     PUBLIC
@@ -103,3 +123,32 @@ target_include_directories(BlueExposure
         $<INSTALL_INTERFACE:include/eve/BlueExposure>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
+
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    option(BUILD_TESTING "Build tests. Enabled by default." ON)
+    include(CTest)
+    if(BUILD_TESTING)
+	    add_subdirectory(tests)
+    endif()
+endif()
+
+# Provide an install target iff this is the top level project only
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    # Install rule to ensure that our runtime and linker files are in the expected, platform-specific folders
+    install(
+        TARGETS BlueExposure
+        EXPORT BlueExposureTargets
+        CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
+        ARCHIVE DESTINATION lib/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
+        RUNTIME DESTINATION bin/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
+    )
+    # Install rule for available public headers
+    install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include)
+
+    # The config file is heavily inspired by files generated from CMake's `install(EXPORT ...)` command.
+    # However, because that command creates build environment specific files - f.e. it resolves above vendor variables
+    # and writes the resolved value into the *Target.cmake files - then we ended up writing one by hand.
+    # That said, at some point in the future we should go ahead and template the config file created here to be a
+    # parametrized function call that writes it out during the build, similar to `install(EXPORT ...)`.
+    install(FILES cmake/BlueExposureConfig.cmake DESTINATION .)
+endif()

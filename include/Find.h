@@ -15,37 +15,37 @@
 class RouteStep
 {
 public:
-	enum StepType
-	{
-		ATTRIBUTE,
-		INDEX,
-		KEY
-	};
-	struct AttributeRef
-	{
-		const Be::ClassInfo* type;
-		const Be::VarEntry* entry;
-		ptrdiff_t offset;
-	};
-	struct StepValue
-	{
-		std::string key;
-		ssize_t index;
-		AttributeRef attribute;
-	};
+    enum StepType
+    {
+        ATTRIBUTE,
+        INDEX,
+        KEY
+    };
+    struct AttributeRef
+    {
+        const Be::ClassInfo* type;
+        const Be::VarEntry* entry;
+        ptrdiff_t offset;
+    };
+    struct StepValue
+    {
+        std::string key;
+        ssize_t index;
+        AttributeRef attribute;
+    };
 
-	RouteStep();
-	RouteStep( StepType stepType, const StepValue& value, IRoot* root );
-	RouteStep( const RouteStep& ref );
-	~RouteStep();
-	
-	IRoot* GetNextObject( IRoot* parent=nullptr );
-	IRoot* GetStepObject() const;
+    RouteStep();
+    RouteStep( StepType stepType, const StepValue& value, IRoot* root );
+    RouteStep( const RouteStep& ref );
+    ~RouteStep();
+
+    IRoot* GetNextObject( IRoot* parent=nullptr );
+    IRoot* GetStepObject() const;
 
 private:
-	StepType m_stepType;
-	StepValue m_value;
-	IRoot* m_obj;
+    StepType m_stepType;
+    StepValue m_value;
+    IRoot* m_obj;
 };
 
 bool FindFirstRoute( IRoot* from, IRoot* to, std::vector<RouteStep>* result );

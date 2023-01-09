@@ -2,15 +2,15 @@
 #ifndef _BLUEVARIABLE_H_
 #define _BLUEVARIABLE_H_
 
-#include "include/BlueTypes.h"
-#include "include/BlueExtractArgument.h"
-#include "include/IList.h"
-#include "include/IBlueDict.h"
-#include "include/IBlueStructureList.h"
+#include "BlueTypes.h"
+#include "BlueExtractArgument.h"
+#include "IList.h"
+#include "IBlueDict.h"
+#include "IBlueStructureList.h"
 #if BLUE_WITH_PYTHON
-#include "include/BluePythonObject.h"
+#include "BluePythonObject.h"
 #endif
-#include "include/BlueScriptCallback.h"
+#include "BlueScriptCallback.h"
 
 #include "Copier.h"
 
