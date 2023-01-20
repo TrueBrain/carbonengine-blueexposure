@@ -19,7 +19,6 @@ list(INSERT CMAKE_MODULE_PATH 0 ${BRANCH_ROOT_DIR}/cmake)
 include(CcpGlobalSettings)
 
 find_package(CcpCore REQUIRED NO_CMAKE_PATH)
-find_package(RadGameToolsTelemetry REQUIRED)
 find_package(Python REQUIRED NO_CMAKE_PATH)
 
 add_library(BlueExposure STATIC
