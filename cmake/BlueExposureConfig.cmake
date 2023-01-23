@@ -1,4 +1,6 @@
 if(NOT TARGET BlueExposure)
+  find_package(CcpCore REQUIRED NO_CMAKE_PATH)
+  find_package(Python REQUIRED NO_CMAKE_PATH)
   set(_IMPORT_PREFIX ${CMAKE_CURRENT_LIST_DIR})
   add_library(BlueExposure STATIC IMPORTED)
   set_target_properties(BlueExposure PROPERTIES
