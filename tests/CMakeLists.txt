@@ -47,12 +47,8 @@ target_link_libraries(BlueExposureTest
 )
 
 target_include_directories(BlueExposureTest
-    PUBLIC
-        $<INSTALL_INTERFACE:include/eve/BlueExposureTest>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/..
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include
 )
 
 set_target_properties(BlueExposureTest PROPERTIES

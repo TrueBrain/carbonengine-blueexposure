@@ -17,6 +17,7 @@ endif()
 file(TO_CMAKE_PATH "$ENV{CCP_EVE_PERFORCE_BRANCH_PATH}" BRANCH_ROOT_DIR)
 list(INSERT CMAKE_MODULE_PATH 0 ${BRANCH_ROOT_DIR}/cmake)
 include(CcpGlobalSettings)
+include(CcpPackageConfigHelpers)
 
 find_package(CcpCore REQUIRED NO_CMAKE_PATH)
 find_package(Python REQUIRED NO_CMAKE_PATH)
@@ -119,8 +120,7 @@ target_link_libraries(BlueExposure PUBLIC CcpCore Python)
 
 target_include_directories(BlueExposure
     PUBLIC
-        $<INSTALL_INTERFACE:include/eve/BlueExposure>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
@@ -144,10 +144,10 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     # Install rule for available public headers
     install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include)
 
-    # The config file is heavily inspired by files generated from CMake's `install(EXPORT ...)` command.
-    # However, because that command creates build environment specific files - f.e. it resolves above vendor variables
-    # and writes the resolved value into the *Target.cmake files - then we ended up writing one by hand.
-    # That said, at some point in the future we should go ahead and template the config file created here to be a
-    # parametrized function call that writes it out during the build, similar to `install(EXPORT ...)`.
-    install(FILES cmake/BlueExposureConfig.cmake DESTINATION .)
+    configure_ccp_vendor_config_file(
+        TARGET BlueExposure
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake"
+        DEPENDENCIES "CcpCore;Python"
+    )
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake DESTINATION .)
 endif()
