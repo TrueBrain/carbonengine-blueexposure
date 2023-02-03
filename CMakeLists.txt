@@ -22,7 +22,7 @@ include(CcpPackageConfigHelpers)
 find_package(CcpCore REQUIRED NO_CMAKE_PATH)
 find_package(Python REQUIRED NO_CMAKE_PATH)
 
-add_library(BlueExposure STATIC
+ccp_add_library(BlueExposure STATIC
     BlueClasses.cpp
     BlueClasses.h
     BlueClasses_Blue.cpp
