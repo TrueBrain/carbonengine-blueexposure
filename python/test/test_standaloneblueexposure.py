@@ -222,7 +222,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         for each in successValues:
             orgVal = each
             val = x.MethodReturningWString(orgVal)
-            self.assertEqual(type(val), unicode)
+            self.assertEqual(type(val), str)
             self.assertEqual(val, orgVal, msg="Failed with parameter %s" % each)
 
         for each in typeErrorValues:
@@ -244,7 +244,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         for each in successValues:
             orgVal = each
             val = x.MethodReturningConstWChar(orgVal)
-            self.assertEqual(type(val), unicode)
+            self.assertEqual(type(val), str)
             self.assertEqual(val, orgVal, msg="Failed with parameter %s" % each)
 
         for each in typeErrorValues:
@@ -256,7 +256,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
 
         argsList = []
 
-        for i in xrange(10):
+        for i in range(10):
             method = getattr(x, "VoidArity%d" % i)
             args = tuple(argsList)
             
@@ -270,7 +270,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
 
         argsList = []
 
-        for i in xrange(10):
+        for i in range(10):
             method = getattr(x, "IntArity%d" % i)
             args = tuple(argsList)
             
@@ -284,7 +284,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
 
         argsList = []
 
-        for i in xrange(10):
+        for i in range(10):
             x.returnError = False
 
             method = getattr(x, "BeResultArity%d" % i)
@@ -303,7 +303,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
 
         argsList = []
 
-        for i in xrange(9):
+        for i in range(9):
             x.returnError = False
 
             method = getattr(x, "BeResultArity%dWithRef" % (i+1))
@@ -325,7 +325,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         lc = BlueExposureTest.classes.LiveCount()
         self.assertEqual(lc["_blueexposuretest.TestMultipleInterfaces"], 0, "Initial live count of helper object is not 0")
 
-        for i in xrange(9):
+        for i in range(9):
             x.returnError = False
 
             method = getattr(x, "SafeFactoryFunction%d" % i)
@@ -467,4 +467,3 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         self.assertEqual(x.ConvertStringToSharedString("abc"), "abc")
         #raw_input()
         self.assertEqual(x.ConvertSharedStringToString("def"), "def")
-        

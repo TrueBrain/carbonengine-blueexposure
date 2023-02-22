@@ -230,7 +230,7 @@ class TestFunctions(unittest.TestCase):
         for each in successValues:
             orgVal = each
             val = BlueExposureTest.FunctionReturningWString(orgVal)
-            self.assertEqual(type(val), unicode)
+            self.assertEqual(type(val), str)
             self.assertEqual(val, orgVal, msg="Failed with parameter %s" % each)
 
         for each in typeErrorValues:
@@ -250,7 +250,7 @@ class TestFunctions(unittest.TestCase):
         for each in successValues:
             orgVal = each
             val = BlueExposureTest.FunctionReturningConstWChar(orgVal)
-            self.assertEqual(type(val), unicode)
+            self.assertEqual(type(val), str)
             self.assertEqual(val, orgVal, msg="Failed with parameter %s" % each)
 
         for each in typeErrorValues:
@@ -260,7 +260,7 @@ class TestFunctions(unittest.TestCase):
     def testVoidArityFunctions(self):
         argsList = []
 
-        for i in xrange(10):
+        for i in range(10):
             method = getattr(BlueExposureTest, "VoidArity%d" % i)
             args = tuple(argsList)
             
@@ -272,7 +272,7 @@ class TestFunctions(unittest.TestCase):
     def testIntArityFunctions(self):
         argsList = []
 
-        for i in xrange(10):
+        for i in range(10):
             method = getattr(BlueExposureTest, "IntArity%d" % i)
             args = tuple(argsList)
             
@@ -284,7 +284,7 @@ class TestFunctions(unittest.TestCase):
     def testBeResultArityFunctions(self):
         argsList = []
 
-        for i in xrange(10):
+        for i in range(10):
             BlueExposureTest.SetReturnError(False)
 
             method = getattr(BlueExposureTest, "BeResultArity%d" % i)
@@ -301,7 +301,7 @@ class TestFunctions(unittest.TestCase):
     def testBeResultArityWithRefFunctions(self):
         argsList = []
 
-        for i in xrange(9):
+        for i in range(9):
             BlueExposureTest.SetReturnError(False)
 
             method = getattr(BlueExposureTest, "BeResultArity%dWithRef" % (i+1))
@@ -313,6 +313,3 @@ class TestFunctions(unittest.TestCase):
             self.assertRaises(RuntimeError, method, *args)
             
             argsList.append(42)
-
-
-

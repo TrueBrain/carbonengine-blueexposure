@@ -54,7 +54,9 @@ class TestProperties(unittest.TestCase):
         self.assertRaises(TypeError, AssignString_ErrorExpected)
 
 
-    def _IntAssignment(self, x):
+    def _IntAssignment(self, x, expected_exc):
+        # need to pass the expected exception type at the moment because it is a different
+        # exception based upon whether we're assigning a property or an attribute
 
         values = [0, 63, -1, 0x7fffffff, -0x7fffffff-1, True, False]
 
@@ -63,9 +65,9 @@ class TestProperties(unittest.TestCase):
             self.assertEqual(x.myInt, each, "Failed to assign %d" % each)
 
         def AssignLong_ErrorExpected():
-            x.myInt = sys.maxint+1
+            x.myInt = 2147483648
         
-        self.assertRaises(TypeError, AssignLong_ErrorExpected)
+        self.assertRaises(expected_exc, AssignLong_ErrorExpected)
 
         def AssignFloat_ErrorExpected():
             x.myInt = 3.14
@@ -80,7 +82,7 @@ class TestProperties(unittest.TestCase):
 
     def _Int64Assignment(self, x):
         
-        values = [0, 63, -1, 0x7fffffff, -0x7fffffff-1, 3L, 0x7fffffff*2, -0x7fffffff*2]
+        values = [0, 63, -1, 0x7fffffff, -0x7fffffff-1, 3, 0x7fffffff*2, -0x7fffffff*2]
 
         for each in values:
             x.myInt64 = each
@@ -198,7 +200,7 @@ class TestProperties(unittest.TestCase):
     def testIntAttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
 
-        self._IntAssignment(x)
+        self._IntAssignment(x, OverflowError)
 
 
     def testInt64AttributeAssignment(self):
@@ -228,7 +230,7 @@ class TestProperties(unittest.TestCase):
     def testIntPropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
 
-        self._IntAssignment(x)
+        self._IntAssignment(x, TypeError)
 
 
     def testInt64PropertyAssignment(self):
@@ -300,5 +302,3 @@ class TestProperties(unittest.TestCase):
         x = BlueExposureTest.TestProperties()
 
         self._verifyDir(x)
-
-

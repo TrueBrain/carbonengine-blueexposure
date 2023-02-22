@@ -1,7 +1,5 @@
 import unittest
-import blue
 import BlueExposureTest
-import sys
 
 def VoidCallback():
     pass
@@ -90,4 +88,3 @@ class TestCallbacks(unittest.TestCase):
         x = BlueExposureTest.TestCallbacks()
         x.callbackAttribute = VoidCallback
         self.assertEqual(x.callbackAttribute, VoidCallback)
-        
