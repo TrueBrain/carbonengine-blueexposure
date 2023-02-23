@@ -1,8 +1,3 @@
-cmake_minimum_required(VERSION 3.16)
-
-project(BlueExposureTest VERSION 1.0.0)
-list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake)
-
 add_library(BlueExposureTest SHARED
     BlueExposureTest.cpp
     TestAttributes.cpp
@@ -33,8 +28,6 @@ target_sources(BlueExposureTest PRIVATE
     TestReferences.h
 )
 
-target_precompile_headers(BlueExposureTest PRIVATE StdAfx.h)
-
 if(APPLE)
     target_link_libraries(BlueExposureTest PRIVATE "-framework Foundation")
 endif()
@@ -44,11 +37,6 @@ target_compile_definitions(BlueExposureTest PUBLIC BLUEBUILD BLUE_WITH_PYTHON)
 target_link_libraries(BlueExposureTest
     PRIVATE BlueExposure
     PUBLIC Python
-)
-
-target_include_directories(BlueExposureTest
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../include
 )
 
 set_target_properties(BlueExposureTest PROPERTIES
@@ -65,18 +53,14 @@ if(APPLE)
             PREFIX ""
             SUFFIX ".so"
     )
-    install(
-        TARGETS BlueExposureTest
-        EXPORT BlueExposureTestTargets
-        CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
-        LIBRARY DESTINATION test/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
-    )
 endif()
 if(WIN32)
-    install(
-        TARGETS BlueExposureTest
-        EXPORT BlueExposureTestTargets
-        CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
-        RUNTIME DESTINATION test/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
-    )
+    set_target_properties(BlueExposureTest PROPERTIES SUFFIX ".pyd")
 endif()
+
+set(PYTHON_EXECUTABLE "${BRANCH_ROOT_DIR}/vendor/python/3.8.1+ccp-stackless/bin/Windows/x64/v141/python.exe")
+add_test(NAME python-tests
+    COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -v
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python
+)
+set_tests_properties(python-tests PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}")
