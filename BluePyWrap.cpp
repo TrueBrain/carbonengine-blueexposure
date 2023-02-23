@@ -1329,6 +1329,61 @@ PyObject* BlueWrapper::PyseqSlice_(PyObject* self, Py_ssize_t low, Py_ssize_t hi
 	return Create(other);
 }
 
+int BlueWrapper::PySeqAssignSubscript_( PyObject* self, PyObject* key, PyObject* value )
+{
+	if ( PyIndex_Check( key ) ) {
+		Py_ssize_t index;
+		index = PyNumber_AsSsize_t( key, PyExc_IndexError );
+		if ( index == -1 && PyErr_Occurred() ) {
+			return -1;
+		}
+		return PyseqAssignItem_( self, index, value );
+	} else if ( PySlice_Check( key ) ) {
+		Py_ssize_t start, stop, step;
+
+		if ( PySlice_Unpack( key, &start, &stop, &step ) ) {
+			return -1;
+		}
+
+		if (step != 1) {
+			PyErr_SetString( PyExc_NotImplementedError, "Supported for slices with a step size other than 1 is not implemented." );
+			return -1;
+		}
+
+		return PyseqAssignSlice_( self, start, stop, value );
+	}
+
+	PyErr_Format( PyExc_TypeError, "list indices must be integers or slices, not %.200s", Py_TYPE(key)->tp_name );
+	return -1;
+}
+
+PyObject* BlueWrapper::PySeqSubscript_( PyObject* self, PyObject* key )
+{
+	if ( PyIndex_Check( key ) ) {
+		Py_ssize_t index;
+		index = PyNumber_AsSsize_t( key, PyExc_IndexError );
+		if ( index == -1 && PyErr_Occurred() ) {
+			return nullptr;
+		}
+		return PyseqGetItem_( self, index );
+	} else if ( PySlice_Check( key ) ) {
+		Py_ssize_t start, stop, step;
+
+		if ( PySlice_Unpack( key, &start, &stop, &step ) ) {
+			return nullptr;
+		}
+
+		if (step != 1) {
+			PyErr_SetString( PyExc_NotImplementedError, "Supported for slices with a step size other than 1 is not implemented." );
+			return nullptr;
+		}
+
+		return PyseqSlice_( self, start, stop );
+	}
+
+	PyErr_Format( PyExc_TypeError, "list indices must be integers or slices, not %.200s", Py_TYPE(key)->tp_name );
+	return nullptr;
+}
 
 
 int BlueWrapper::PyseqAssignItem_(PyObject* self, Py_ssize_t key, PyObject* value)
@@ -1738,39 +1793,39 @@ void BlueWrapper::InitializeNumericTypeObject( PyTypeObject* pyType, const char*
 			PyNumeric_Add_,		// binaryfunc nb_add;
 			PyNumeric_Sub_,		// binaryfunc nb_subtract;
 			PyNumeric_Mul_,		// binaryfunc nb_multiply;
-			nullptr,				// binaryfunc nb_remainder;
-			nullptr,				// binaryfunc nb_divmod;
-			nullptr,				// ternaryfunc nb_power;
+			nullptr,			// binaryfunc nb_remainder;
+			nullptr,			// binaryfunc nb_divmod;
+			nullptr,			// ternaryfunc nb_power;
 			PyNumeric_Neg_,		// unaryfunc nb_negative;
-			nullptr,				// unaryfunc nb_positive;
-			nullptr,				// unaryfunc nb_absolute;
+			nullptr,			// unaryfunc nb_positive;
+			nullptr,			// unaryfunc nb_absolute;
 			PyNumeric_NonZero_,	// inquiry nb_bool;
-			nullptr,				// unaryfunc nb_invert;
-			nullptr,				// binaryfunc nb_lshift;
-			nullptr,				// binaryfunc nb_rshift;
-			nullptr,				// binaryfunc nb_and;
-			nullptr,				// binaryfunc nb_xor;
-			nullptr,				// binaryfunc nb_or;
-			nullptr,				// unaryfunc nb_int;
-			nullptr,				// void* nb_reserved;
-			nullptr,				// unaryfunc nb_float;
-			nullptr,				// binaryfunc nb_inplace_add;
-			nullptr,				// binaryfunc nb_inplace_subtract;
-			nullptr,				// binaryfunc nb_inplace_multiply;
-			nullptr,				// binaryfunc nb_inplace_remainder;
-			nullptr,				// ternaryfunc nb_inplace_power;
-			nullptr,				// binaryfunc nb_inplace_lshift;
-			nullptr,				// binaryfunc nb_inplace_rshift;
-			nullptr,				// binaryfunc nb_inplace_and
-			nullptr,				// binaryfunc nb_inplace_xor
-			nullptr,				// binaryfunc nb_inplace_or
-			PyNumeric_Div_,			// binaryfunc nb_floor_divide;
-			nullptr,				// binaryfunc nb_true_divide;
-			nullptr,				// binaryfunc nb_inplace_floor_divide;
-			nullptr,				// binaryfunc nb_inplace_true_divide;
-			nullptr,				// unaryfunc nb_index;
-			nullptr,				// binaryfunc nb_matrix_multiply;
-			nullptr,				// binaryfunc nb_inplace_matrix_multiply;
+			nullptr,			// unaryfunc nb_invert;
+			nullptr,			// binaryfunc nb_lshift;
+			nullptr,			// binaryfunc nb_rshift;
+			nullptr,			// binaryfunc nb_and;
+			nullptr,			// binaryfunc nb_xor;
+			nullptr,			// binaryfunc nb_or;
+			nullptr,			// unaryfunc nb_int;
+			nullptr,			// void* nb_reserved;
+			nullptr,			// unaryfunc nb_float;
+			nullptr,			// binaryfunc nb_inplace_add;
+			nullptr,			// binaryfunc nb_inplace_subtract;
+			nullptr,			// binaryfunc nb_inplace_multiply;
+			nullptr,			// binaryfunc nb_inplace_remainder;
+			nullptr,			// ternaryfunc nb_inplace_power;
+			nullptr,			// binaryfunc nb_inplace_lshift;
+			nullptr,			// binaryfunc nb_inplace_rshift;
+			nullptr,			// binaryfunc nb_inplace_and
+			nullptr,			// binaryfunc nb_inplace_xor
+			nullptr,			// binaryfunc nb_inplace_or
+			PyNumeric_Div_,		// binaryfunc nb_floor_divide;
+			nullptr,			// binaryfunc nb_true_divide;
+			nullptr,			// binaryfunc nb_inplace_floor_divide;
+			nullptr,			// binaryfunc nb_inplace_true_divide;
+			nullptr,			// unaryfunc nb_index;
+			nullptr,			// binaryfunc nb_matrix_multiply;
+			nullptr,			// binaryfunc nb_inplace_matrix_multiply;
 	};
 
 	pyType->tp_as_number = &s_numberMethods;
@@ -1790,14 +1845,14 @@ void BlueWrapper::InitializeDictTypeObject( PyTypeObject* pyType, const char* na
 
 	static PySequenceMethods s_dictSequenceMethods =
 	{
-		NULL,					// lenfunc sq_length;
-		NULL,					// binaryfunc sq_concat;
-		NULL,					// ssizeargfunc sq_repeat;
+		nullptr,				// lenfunc sq_length;
+		nullptr,				// binaryfunc sq_concat;
+		nullptr,				// ssizeargfunc sq_repeat;
 		PyseqDictGetItem_,		// ssizeargfunc sq_item;
-		NULL,					// ssizessizeargfunc sq_slice;
-		NULL,					// ssizeobjargproc sq_ass_item;
-		NULL,					// ssizessizeobjargproc sq_ass_slice;
-		NULL,					// objobjproc sq_contains;
+		nullptr,				// [[unused]] void* sq_slice;
+		nullptr,				// ssizeobjargproc sq_ass_item;
+		nullptr,				// [[unused]] void* sq_ass_slice;
+		nullptr,				// objobjproc sq_contains;
 	};
 	pyType->tp_as_mapping = &s_dictMappingMethods;
 	pyType->tp_as_sequence = &s_dictSequenceMethods;
@@ -1808,18 +1863,26 @@ void BlueWrapper::InitializeListTypeObject( PyTypeObject* pyType, const char* na
 {
 	InitializeTypeObjectCommon( pyType, name );
 
+	static PyMappingMethods s_seqMappingMethods =
+	{
+		nullptr,				// lenfunc mp_length;
+		PySeqSubscript_,		// binaryfunc mp_subscript;
+		PySeqAssignSubscript_,	// objobjargproc mp_ass_subscript;
+	};
+
 	static PySequenceMethods s_sequenceMethods =
 	{
 		PyseqLength_,		// lenfunc sq_length;
-		NULL,				// binaryfunc sq_concat;
-		NULL,				// ssizeargfunc sq_repeat;
+		nullptr,			// binaryfunc sq_concat;
+		nullptr,			// ssizeargfunc sq_repeat;
 		PyseqGetItem_,		// ssizeargfunc sq_item;
-		PyseqSlice_,		// ssizessizeargfunc sq_slice;
+		nullptr,			// [[unused]] void* sq_slice;
 		PyseqAssignItem_,	// ssizeobjargproc sq_ass_item;
-		PyseqAssignSlice_,	// ssizessizeobjargproc sq_ass_slice;
+		nullptr,			// [[unused]] void* sq_ass_slice;
 		PyseqContains_,		// objobjproc sq_contains;
 	};
 
+	pyType->tp_as_mapping = &s_seqMappingMethods;
 	pyType->tp_as_sequence = &s_sequenceMethods;
 	Py_INCREF( pyType );
 }
@@ -1831,13 +1894,13 @@ void BlueWrapper::InitializeStructureListTypeObject( PyTypeObject* pyType, const
 	static PySequenceMethods s_sequenceMethods =
 	{
 		PyStructureListLength_,		// lenfunc sq_length;
-		NULL,						// binaryfunc sq_concat;
-		NULL,						// ssizeargfunc sq_repeat;
+		nullptr,					// binaryfunc sq_concat;
+		nullptr,					// ssizeargfunc sq_repeat;
 		PyStructureListGetItem_,	// ssizeargfunc sq_item;
-		NULL,						// ssizessizeargfunc sq_slice;
+		nullptr,					// [[unused]] void* sq_slice;
 		PyStructureListAssignItem_,	// ssizeobjargproc sq_ass_item;
-		NULL,						// ssizessizeobjargproc sq_ass_slice;
-		NULL,						// objobjproc sq_contains;
+		nullptr,					// [[unused]] void* sq_ass_slice;
+		nullptr,					// objobjproc sq_contains;
 	};
 
 	pyType->tp_as_sequence = &s_sequenceMethods;

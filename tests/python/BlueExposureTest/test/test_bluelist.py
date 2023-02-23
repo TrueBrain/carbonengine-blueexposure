@@ -499,6 +499,19 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj2, sliceFromBlueList[0])
 		self.assertEqual(childObj3, sliceFromBlueList[1])
 
+		obj.myVector[1:3] = [childObj3, childObj2, childObj1]
+		self.assertEqual(6, len(obj.myVector))
+		self.assertEqual(obj.myVector[1], childObj3)
+		self.assertEqual(obj.myVector[2], childObj2)
+		self.assertEqual(obj.myVector[3], childObj1)
+
+		# slice assignment and slice access shall only support int and slice objects as keys
+		with self.assertRaises(TypeError):
+			obj.myVector["1:3"] = [1, 2]
+
+		with self.assertRaises(TypeError):
+			_ = obj.myVector[None]
+
 
 	def testAssign(self):
 		obj = BlueExposureTest.TestAttributes()

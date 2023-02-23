@@ -199,6 +199,8 @@ private:
 	PyObject* PyseqRepeat(int n);
 	static PyObject* PyseqGetItem_(PyObject* self, Py_ssize_t index);
 	PyObject* PyseqGetItem(int index);
+	static PyObject* PySeqSubscript_( PyObject* self, PyObject* key );
+	static int PySeqAssignSubscript_( PyObject* self, PyObject* key, PyObject* value );
 	static PyObject* PyseqSlice_(PyObject* self, Py_ssize_t low, Py_ssize_t high);
 	PyObject* PyseqSlice(Py_ssize_t low, Py_ssize_t high);
 	static int PyseqAssignItem_(PyObject* self, Py_ssize_t index, PyObject* object);
