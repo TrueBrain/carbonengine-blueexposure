@@ -19,8 +19,8 @@ list(INSERT CMAKE_MODULE_PATH 0 ${BRANCH_ROOT_DIR}/cmake)
 include(CcpGlobalSettings)
 include(CcpPackageConfigHelpers)
 
-find_package(CcpCore REQUIRED NO_CMAKE_PATH)
-find_package(Python REQUIRED NO_CMAKE_PATH)
+find_package(CcpCore CONFIG REQUIRED NO_CMAKE_PATH)
+find_package(Python CONFIG REQUIRED NO_CMAKE_PATH)
 
 ccp_add_library(BlueExposure STATIC
     BlueClasses.cpp
