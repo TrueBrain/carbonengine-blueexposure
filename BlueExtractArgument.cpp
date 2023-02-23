@@ -21,20 +21,10 @@ bool BlueExtractString( PyObject* obj, std::string& val )
 
 	Py_ssize_t length = 0;
 
-	if ((ok = PyString_Check(obj)) == true)
+	if ((ok = PyUnicode_Check(obj)) == true)
 	{
-		char* buffer = nullptr; // Do not deallocate this, it's the internal buffer
-		PyString_AsStringAndSize( obj, &buffer, &length );
+		const char* buffer = PyUnicode_AsUTF8AndSize( obj, &length );
 		val.assign( buffer, length );
-		ok = true;
-	}
-	else if ((ok = PyUnicode_Check(obj)) == true)
-	{
-		val = CW2A( (wchar_t*)PyUnicode_AS_UNICODE( obj ) );
-
-		// The earlier string check left the error flag enabled
-		PyErr_Clear();
-
 		ok = true;
 	}
 
@@ -45,12 +35,7 @@ bool BlueExtractWString( PyObject* obj, std::wstring& val )
 {
 	bool ok = false;
 
-	if ((ok = PyString_Check(obj)) == true)
-	{
-		val = CA2W( PyString_AsString( obj ) );
-		ok = true;
-	}
-	else if ((ok = PyUnicode_Check(obj)) == true)
+	if ((ok = PyUnicode_Check(obj)) == true)
 	{
 		val = (const wchar_t*)PyUnicode_AS_UNICODE( obj );
 
@@ -65,9 +50,9 @@ bool BlueExtractWString( PyObject* obj, std::wstring& val )
 
 bool BlueExtractBool( PyObject* obj, bool& value )
 {
-	if( PyInt_Check( obj ) )
+	if( PyLong_Check( obj ) )
 	{
-		value = PyInt_AS_LONG( obj ) ? true : false;
+		value = PyLong_AS_LONG( obj ) ? true : false;
 	}
 	else
 	{
@@ -79,9 +64,13 @@ bool BlueExtractBool( PyObject* obj, bool& value )
 
 bool BlueExtractInt( PyObject* obj, int& value )
 {
-	if( PyInt_Check( obj ) )
+	if( PyLong_Check( obj ) )
 	{
-		value = (int)PyInt_AsLong( obj );
+		value = (int)PyLong_AsLong( obj );
+		if (value == -1 && PyErr_Occurred())
+		{
+			return false;
+		}
 	}
 	else
 	{
@@ -97,9 +86,9 @@ bool BlueExtractDouble( PyObject* obj, double& value )
 	{
 		value = PyFloat_AS_DOUBLE( obj );
 	}
-	else if( PyInt_CheckExact( obj ) )
+	else if( PyLong_CheckExact( obj ) )
 	{
-		value = (double)PyInt_AS_LONG( obj );
+		value = (double)PyLong_AS_LONG( obj );
 	}
 	else
 	{
@@ -115,9 +104,9 @@ bool BlueExtractFloat( PyObject* obj, float& value )
 	{
 		value = (float)PyFloat_AS_DOUBLE( obj );
 	}
-	else if( PyInt_CheckExact( obj ) )
+	else if( PyLong_CheckExact( obj ) )
 	{
-		value = (float)PyInt_AS_LONG( obj );
+		value = (float)PyLong_AS_LONG( obj );
 	}
 	else
 	{
@@ -269,15 +258,7 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, int32_t& result, un
 
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint32_t& result, unsigned int argID, std::false_type isBlueType )
 {
-	// Note: An unsigned long is 32 bits in C++ and the largest number stored is thus 2^32-1.
-	// However, Python is clever and when you assign a number that fits within 32 bits with sign
-	// it will give it a PyInt type.  However, once you go beyond that it will make it a PyLong.
-	// So, to support the full range of C++ 32bit unsigned we need to expect both PyInt and PyLong.
-	if( PyInt_Check(argument) )
-	{
-		result = (unsigned int)PyInt_AsLong( argument );
-	}
-	else if( PyLong_Check(argument) )
+	if( PyLong_Check(argument) )
 	{
 		result = (unsigned int)PyLong_AsUnsignedLong( argument );
 	}
@@ -292,9 +273,9 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint32_t& result, u
 
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint8_t& result, unsigned int argID, std::false_type isBlueType )
 {
-	if( PyInt_Check(argument) )
+	if( PyLong_Check(argument) )
 	{
-		uint32_t tmpResult = uint32_t( PyInt_AsLong( argument ) );
+		uint32_t tmpResult = uint32_t( PyLong_AsLong( argument ) );
 		if( tmpResult > std::numeric_limits<uint8_t>::max() )
 		{
 			PyErr_Format( PyExc_OverflowError, argumentTypeMismatchString, argID, "uint8_t" );
@@ -313,9 +294,9 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint8_t& result, un
 
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint16_t& result, unsigned int argID, std::false_type isBlueType )
 {
-	if( PyInt_Check(argument) )
+	if( PyLong_Check(argument) )
 	{
-		uint32_t tmpResult = uint32_t( PyInt_AsLong( argument ) );
+		uint32_t tmpResult = PyLong_AsUnsignedLong( argument );
 		if( tmpResult > std::numeric_limits<uint16_t>::max() )
 		{
 			PyErr_Format( PyExc_OverflowError, argumentTypeMismatchString, argID, "uint16_t" );
@@ -348,11 +329,7 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, bool& result, unsig
 // Overload for signed int64 argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, int64_t& result, unsigned int argID, std::false_type isBlueType )
 {
-	if( PyInt_Check(argument) )
-	{
-		result = (int64_t)PyInt_AsLong( argument );
-	}
-	else if( PyLong_Check(argument) )
+	if( PyLong_Check(argument) )
 	{
 		result = PyLong_AsLongLong( argument );
 	}
@@ -370,11 +347,7 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, int64_t& result, un
 // Overload for unsigned int64 argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint64_t& result, unsigned int argID, std::false_type isBlueType )
 {
-	if( PyInt_Check(argument) )
-	{
-		result = (uint64_t)PyInt_AsLong( argument );
-	}
-	else if( PyLong_Check(argument) )
+	if( PyLong_Check(argument) )
 	{
 		result = PyLong_AsUnsignedLongLong( argument );
 	}
@@ -394,13 +367,9 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint64_t& result, u
 // Overload for unsigned size_t argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, size_t& result, unsigned int argID, std::false_type isBlueType )
 {
-	if( PyInt_Check(argument) )
+	if( PyLong_Check(argument) )
 	{
-		result = (size_t)PyInt_AsSsize_t( argument );
-	}
-	else if( PyLong_Check(argument) )
-	{
-		result = (size_t)PyLong_AsUnsignedLongLong( argument );
+		result = PyLong_AsSize_t( argument );
 	}
 	else
 	{
@@ -416,17 +385,12 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, size_t& result, uns
 #ifdef _MSC_VER
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, unsigned long& result, unsigned int argID, std::false_type isBlueType )
 {
-	// Note: An unsigned long is 32 bits in C++ and the largest number stored is thus 2^32-1.
-	// However, Python is clever and when you assign a number that fits within 32 bits with sign
-	// it will give it a PyInt type.  However, once you go beyond that it will make it a PyLong.
-	// So, to support the full range of C++ 32bit unsigned we need to expect both PyInt and PyLong.
-	if( PyInt_Check(argument) )
+	if( PyLong_Check(argument) )
 	{
-		result = (unsigned int)PyInt_AsLong( argument );
-	}
-	else if( PyLong_Check(argument) )
-	{
-		result = (unsigned int)PyLong_AsUnsignedLong( argument );
+		result = (unsigned long)PyLong_AsUnsignedLong( argument );
+		if ( (unsigned long)-1 && PyErr_Occurred() ) {
+			return false;
+		}
 	}
 	else
 	{
@@ -439,13 +403,9 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, unsigned long& resu
 #else
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, long& result, unsigned int argID, std::false_type isBlueType )
 {
-    if( PyInt_Check(argument) )
+    if( PyLong_Check(argument) )
     {
-        result = (long)PyInt_AsLong( argument );
-    }
-    else if( PyLong_Check(argument) )
-    {
-        result = (long)PyLong_AsLongLong( argument );
+        result = PyLong_AsLong( argument );
     }
     else
     {
@@ -473,13 +433,13 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, std::string& result
 
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, const char*& result, unsigned int argID, std::false_type isBlueType )
 {
-	if( !PyString_Check(argument) )
+	if( !PyUnicode_Check(argument) )
 	{
 		PyErr_Format( PyExc_TypeError, argumentTypeMismatchString, argID, "string" );
 		return false;
 	}
 
-	result = PyString_AsString( argument );
+	result = PyUnicode_AsUTF8AndSize( argument, nullptr );
 	return true;
 }
 

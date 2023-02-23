@@ -226,7 +226,7 @@ public:
 			PyObject* obj = BlueWrapObjectForPython( p );
 
 			PyObject* tuple = PyTuple_New( 2 );
-			PyTuple_SET_ITEM( tuple, 0, PyString_FromString( key ) );
+			PyTuple_SET_ITEM( tuple, 0, PyUnicode_FromString( key ) );
 			PyTuple_SET_ITEM( tuple, 1, obj );
 
 			PyList_SET_ITEM( returnValue, i, tuple );
@@ -247,7 +247,7 @@ public:
 			const char* key = pThis->GetKey( i );
 			CCP_ASSERT( key );
 
-			PyList_SET_ITEM( returnValue, i, PyString_FromString( key ) );
+			PyList_SET_ITEM( returnValue, i, PyUnicode_FromString( key ) );
 		}
 
 		return returnValue;

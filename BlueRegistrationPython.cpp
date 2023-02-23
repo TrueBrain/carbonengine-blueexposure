@@ -76,15 +76,18 @@ namespace
 		{
 			if( strcmp(enumIt->mKey, attr_name) == 0 )
 			{
-				return PyInt_FromLong(enumIt->mValue.mLong);
+				return PyLong_FromLong(enumIt->mValue.mLong);
 			}
 		}
 
 		// Or we're looking for one of the utility methods
-		PyObject* meth = Py_FindMethod( PyBlueEnumObjectType_methods, o, attr_name );
-		if( meth )
+		auto ml = PyBlueEnumObjectType_methods;
+		for(; ml->ml_name != nullptr; ml++)
 		{
-			return meth;
+			if (attr_name[0] == ml->ml_name[0] && strcmp(attr_name+1, ml->ml_name+1) == 0)
+			{
+				return PyCFunction_New(ml, o);
+			}
 		}
 
 		PyErr_SetString( PyExc_AttributeError, "Enum value / function does not exist" );
@@ -110,14 +113,14 @@ namespace
 		size_t i = 0;
 		for( auto enumIt = e->enumValues->begin(); enumIt != e->enumValues->end(); ++enumIt, ++i )
 		{
-			PyList_SET_ITEM( l, i, PyString_FromString( enumIt->mKey ) );
+			PyList_SET_ITEM( l, i, PyUnicode_FromString( enumIt->mKey ) );
 		}
 
-		// Expose the built in methods from the methods struct array
+		// Expose the built-in methods from the methods struct array
 		PyMethodDef* iter = PyBlueEnumObjectType_methods;
 		while( iter->ml_meth )
 		{
-			PyObject* o = PyString_FromString( iter->ml_name );
+			PyObject* o = PyUnicode_FromString( iter->ml_name );
 			PyList_Append( l, o );
 			Py_DECREF( o );
 			++iter;
@@ -154,7 +157,7 @@ namespace
 		bool found = GetEnumValueName_Impl( *(e->enumValues), (uint32_t)val, result );
 		if( found )
 		{
-			return PyString_FromStringAndSize( result.c_str(), result.size());
+			return PyUnicode_FromStringAndSize( result.c_str(), result.size());
 		}
 		else
 		{
@@ -188,7 +191,7 @@ namespace
 		bool found = GetEnumValuesAsBitMask_Impl( *(e->enumValues), (uint32_t)val, result );
 		if( found )
 		{
-			return PyString_FromStringAndSize( result.c_str(), result.size());
+			return PyUnicode_FromStringAndSize( result.c_str(), result.size());
 		}
 		else
 		{
@@ -202,8 +205,7 @@ namespace
 	//   The standard python type object
 	// --------------------------------------------------------------------------------------
 	static PyTypeObject PyBlueEnumObjectType = {
-		PyObject_HEAD_INIT(NULL)
-		0,
+		PyVarObject_HEAD_INIT(nullptr, 0)
 		"blue.BlueEnum",
 		sizeof(PyBlueEnumObject),
 		0,
@@ -260,7 +262,7 @@ BLUEIMPORT void BlueRegisterToModule(
 {
 	if( !PyExc_BlueError )
 	{
-		PyExc_BlueError = PyErr_NewException( const_cast<char*>("blue.error"), PyExc_StandardError, NULL);
+		PyExc_BlueError = PyErr_NewException( const_cast<char*>("blue.error"), PyExc_Exception, NULL);
 	}
 
 	PyObject* dict = PyModule_GetDict( module );
@@ -350,18 +352,18 @@ BLUEIMPORT void BlueRegisterToModule(
 		{
 			PyObject* signature = PyDict_New();
 			PyObject* tmp;
-			tmp = PyString_FromString( it->second.returnType );
+			tmp = PyUnicode_FromString( it->second.returnType );
 			PyDict_SetItemString( signature, "rtype", tmp );
 			Py_DECREF( tmp );
 			PyObject* args = PyTuple_New( it->second.argumentCount );
 			for( uint32_t j = 0; j < it->second.argumentCount; ++j )
 			{
-				PyTuple_SET_ITEM( args, j, PyString_FromString( it->second.argumentTypes[j] ) );
+				PyTuple_SET_ITEM( args, j, PyUnicode_FromString( it->second.argumentTypes[j] ) );
 			}
 			PyDict_SetItemString( signature, "parameters", args );
 			Py_DECREF( args );
 
-			PyObject* count = PyInt_FromLong( it->second.optionalCount );
+			PyObject* count = PyLong_FromUnsignedLong( it->second.optionalCount );
 			PyDict_SetItemString( signature, "optionalCount", count );
 			Py_DECREF( count );
 

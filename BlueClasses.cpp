@@ -200,7 +200,7 @@ namespace
 				{
 					continue;
 				}
-				PyObject *name = PyString_FromString( i->second.mPyMethod->ml_name );
+				PyObject *name = PyUnicode_FromString( i->second.mPyMethod->ml_name );
 				PyList_Append(list, name);
 				Py_DECREF(name);
 			}

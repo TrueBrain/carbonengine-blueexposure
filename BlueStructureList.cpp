@@ -212,7 +212,7 @@ PyObject* GetStructureElement( const uint8_t* item, const BlueStructureDefinitio
 		break;
 
 	case Be::DT_SHAREDSTRING:
-		returnValue = GetStructureElement<BlueSharedString, decltype( PyString_FromString )>( member, size, &PyString_FromString );
+		returnValue = GetStructureElement<BlueSharedString, decltype( PyUnicode_FromString )>( member, size, &PyUnicode_FromString );
 		break;
 	}
 	return returnValue;
@@ -263,7 +263,7 @@ void SafeCastToType( float& dest, Src src )
 	dest = static_cast<float>( src );
 }
 
-void SafeCastToType( BlueSharedString& dest, char* src )
+void SafeCastToType( BlueSharedString& dest, const char* src )
 {
 	dest = BlueSharedString( src );
 }
@@ -479,7 +479,7 @@ BLUEIMPORT void BlueStructureList_PyObjectToStructure( IBlueStructureList* struc
 			ExtractItem<float, decltype( PyFloat_AsDouble )>( memberObject, member, size, &PyFloat_AsDouble );
 			break;
 		case Be::DT_SHAREDSTRING:
-			ExtractItem<BlueSharedString, decltype( PyString_AsString )>( memberObject, member, size, &PyString_AsString );
+			ExtractItem<BlueSharedString, decltype( PyUnicode_AsUTF8 )>( memberObject, member, size, &PyUnicode_AsUTF8 );
 			break;
 		case Be::DT_FLOAT32x4:
 			ExtractItem<Vector4, decltype( PyTuple_AsVector4 )>( memberObject, member, size, &PyTuple_AsVector4 );
@@ -506,7 +506,7 @@ BLUEIMPORT PyObject* BlueStructureList_PyGetStructureDefinition( IBlueStructureL
 	for( size_t i = 0; i < memberCount; i++ )
 	{
 		PyObject* item = PyTuple_New( 4 );
-		PyTuple_SET_ITEM( item, 0, PyString_FromString( memberDef[i].m_name ) );
+		PyTuple_SET_ITEM( item, 0, PyUnicode_FromString( memberDef[i].m_name ) );
 		PyTuple_SET_ITEM( item, 1, PyLong_FromLong( memberDef[i].m_dataType ) );
 		PyTuple_SET_ITEM( item, 2, PyLong_FromLong( memberDef[i].m_offset ) );
 		if( memberDef[i].m_chooser )

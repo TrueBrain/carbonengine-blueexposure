@@ -157,7 +157,7 @@ template<> bool ConvertFromPython<Be::LONG>(const Be::VarEntry* var, Be::Var* va
 
 template<> void ConvertToPython<Be::LONG>(const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret)
 {
-	ret = PyInt_FromLong(value->mLong);
+	ret = PyLong_FromLong(value->mLong);
 }
 #endif
 
@@ -418,12 +418,12 @@ template<> bool AreEqual<Be::CHARARRAY>(const Be::VarEntry* entry, const Be::Var
 #if BLUE_WITH_PYTHON
 template<> bool ConvertFromPython<Be::CHARARRAY>(const Be::VarEntry* var, Be::Var* value, PyObject* v)
 {
-	if (PyString_Check(v) == true)
+	if (PyBytes_Check(v) == true)
 	{
-		if (PyString_GET_SIZE(v) >= (Py_ssize_t)var->mSize)
+		if (PyBytes_GET_SIZE(v) >= (Py_ssize_t)var->mSize)
 			PyErr_SetString(PyExc_OverflowError, "String is too large");
 		else
-			strcpy_s((char*)value, var->mSize, PyString_AS_STRING(v));
+			strcpy_s((char*)value, var->mSize, PyBytes_AS_STRING(v));
 		return true;
 	}
 	return false;
@@ -431,7 +431,7 @@ template<> bool ConvertFromPython<Be::CHARARRAY>(const Be::VarEntry* var, Be::Va
 
 template<> void ConvertToPython<Be::CHARARRAY>(const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret)
 {
-	ret = PyString_FromString((const char*)value);
+	ret = PyBytes_FromString((const char*)value);
 }
 #endif
 
@@ -450,18 +450,18 @@ template<> bool AreEqual<Be::CSTRING>(const Be::VarEntry* entry, const Be::Var* 
 #if BLUE_WITH_PYTHON
 template<> bool ConvertFromPython<Be::CSTRING>(const Be::VarEntry* var, Be::Var* value, PyObject* v)
 {
-	if (!PyString_Check(v))
+	if (!PyUnicode_Check(v))
 	{
 		return false;
 	}
 	CCP_FREE(value->mWCharPtr);
-	value->mCharPtr = CCP_STRDUP( __FUNCTION__, PyString_AS_STRING(v) );
+	value->mCharPtr = CCP_STRDUP( __FUNCTION__, PyUnicode_AsUTF8(v) );
 	return true;
 }
 
 template<> void ConvertToPython<Be::CSTRING>(const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret)
 {
-	ret = PyString_FromString(value->mCharPtr ? value->mCharPtr : "");
+	ret = PyUnicode_FromString(value->mCharPtr ? value->mCharPtr : "");
 }
 #endif
 
@@ -486,10 +486,6 @@ template<> bool ConvertFromPython<Be::INT64>(const Be::VarEntry* var, Be::Var* v
 	{
 		t = PyLong_AsLongLong(v);
 	} 
-	else if (PyInt_Check(v))
-	{
-        t = PyInt_AsLong(v);
-	}
     else
     {
         return false;
@@ -569,12 +565,12 @@ template<> bool AreEqual<Be::REFERENCE>(const Be::VarEntry* entry, const Be::Var
 #if BLUE_WITH_PYTHON
 template<> bool ConvertFromPython<Be::REFERENCE>(const Be::VarEntry* var, Be::Var* value, PyObject* v)
 {
-	if (!PyString_Check(v))
+	if (!PyUnicode_Check(v))
 	{
 		return false;
 	}
 	CCP_FREE(value->mWCharPtr);
-	value->mCharPtr = CCP_STRDUP( __FUNCTION__, PyString_AS_STRING(v) );
+	value->mCharPtr = CCP_STRDUP( __FUNCTION__, PyUnicode_AsUTF8(v) );
 	return true;
 }
 
@@ -822,7 +818,7 @@ template<> bool ConvertFromPython<Be::STDSTRING>(const Be::VarEntry* var, Be::Va
 template<> void ConvertToPython<Be::STDSTRING>(const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret)
 {
 	const std::string &s = *reinterpret_cast<const std::string*>(value);
-	ret = PyString_FromStringAndSize( s.c_str(), s.size() );
+	ret = PyUnicode_FromStringAndSize( s.c_str(), s.size() );
 }
 #endif
 
@@ -873,17 +869,17 @@ template<> bool AreEqual<Be::BYTE>(const Be::VarEntry* entry, const Be::Var* a, 
 #if BLUE_WITH_PYTHON
 template<> bool ConvertFromPython<Be::BYTE>(const Be::VarEntry* var, Be::Var* value, PyObject* v)
 {
-	if (!PyInt_Check(v))
+	if (!PyLong_Check(v))
 	{
 		return false;
 	}
-	value->mByte = (char)PyInt_AS_LONG(v);
+	value->mByte = (char)PyLong_AS_LONG(v);
 	return true;
 }
 
 template<> void ConvertToPython<Be::BYTE>(const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret)
 {
-	ret = PyInt_FromLong(value->mByte);
+	ret = PyLong_FromLong(value->mByte);
 }
 #endif
 
@@ -902,17 +898,17 @@ template<> bool AreEqual<Be::SHORT>(const Be::VarEntry* entry, const Be::Var* a,
 #if BLUE_WITH_PYTHON
 template<> bool ConvertFromPython<Be::SHORT>(const Be::VarEntry* var, Be::Var* value, PyObject* v)
 {
-	if (!PyInt_Check(v))
+	if (!PyLong_Check(v))
 	{
 		return false;
 	}
-	value->mShort = (short)PyInt_AS_LONG(v);
+	value->mShort = (short)PyLong_AS_LONG(v);
 	return true;
 }
 
 template<> void ConvertToPython<Be::SHORT>(const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret)
 {
-	ret = PyInt_FromLong(value->mShort);
+	ret = PyLong_FromUnsignedLong(value->mShort);
 }
 #endif
 
@@ -958,7 +954,7 @@ template<> bool ConvertFromPython<Be::SHAREDSTRING>(const Be::VarEntry* var, Be:
 template<> void ConvertToPython<Be::SHAREDSTRING>(const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret)
 {
 	const BlueSharedString &s = *reinterpret_cast<const BlueSharedString*>( value );
-	ret = PyString_FromString( s.c_str() );
+	ret = PyUnicode_FromString( s.c_str() );
 }
 #endif
 

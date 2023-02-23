@@ -111,7 +111,7 @@ BlueScriptValue BlueWrapReturnValueImpl(
 		const BlueSharedString& val )
 {
 #if BLUE_WITH_PYTHON
-	return PyString_FromString( val.c_str() );
+	return PyUnicode_FromString( val.c_str() );
 #elif BLUE_NO_EXPOSURE
 	return nullptr;
 #endif

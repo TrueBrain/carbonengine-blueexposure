@@ -494,15 +494,15 @@ int BlueWrapper::PySetAttr_(PyObject* self, char *name, PyObject* v)
 {
 	return static_cast<_Class*>(self)->PySetAttr(name, v);
 }
-int BlueWrapper::PyCompare_(PyObject* self, PyObject* other)
+PyObject* BlueWrapper::PyCompare_(PyObject* self, PyObject* other, int op)
 {
-	return static_cast<_Class*>(self)->PyCompare(other);
+	return static_cast<_Class*>(self)->PyCompare(other, op);
 }
 PyObject* BlueWrapper::PyRepr_(PyObject* self)
 {
 	return static_cast<_Class*>(self)->PyRepr();
 }
-long BlueWrapper::PyHash_(PyObject* self)
+Py_hash_t BlueWrapper::PyHash_(PyObject* self)
 {
 	return static_cast<_Class*>(self)->PyHash();
 }
@@ -595,15 +595,15 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 		// special underscore members
 		if (strcmp(name, "__doc__") == 0)
 		{
-			return PyString_FromString(Type()->mDescription ? Type()->mDescription : "");
+			return PyUnicode_FromString(Type()->mDescription ? Type()->mDescription : "");
 		}
 		else if (strcmp(name, "__typename__") == 0)
 		{
-			return PyString_FromString(Type()->mClassId->GetName());
+			return PyUnicode_FromString(Type()->mClassId->GetName());
 		}
 		else if (strcmp(name, "__bluetype__") == 0) //better, gives full name
 		{
-			return PyString_FromFormat("%s.%s", Type()->mClassId->GetModule(), Type()->mClassId->GetName());
+			return PyUnicode_FromFormat("%s.%s", Type()->mClassId->GetModule(), Type()->mClassId->GetName());
 		}
 		else if (strcmp(name, "__klass__") == 0)
 		{
@@ -630,7 +630,7 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 			int n = sizeof defaults / sizeof defaults[0];
 			PyObject* list = PyList_New(n);
 			for (int i = 0; i<n; i++)
-				PyList_SET_ITEM(list, i, PyString_FromString(defaults[i]));
+				PyList_SET_ITEM(list, i, PyUnicode_FromString(defaults[i]));
 			if (ld && ld->mPythonKlass)
 				PyList_Append(list, BluePyStr("__klass__"));
 				
@@ -639,7 +639,7 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 				for (const Be::VarEntry* entry = type->mMemberTable; entry->mName; entry++) {
 					if (entry->mEditFlags & Be::HIDDEN)
 						continue;
-					PyObject *pyName = PyString_FromString(entry->mName);
+					PyObject *pyName = PyUnicode_FromString(entry->mName);
 					PyList_Append( list, pyName );
 					Py_DECREF( pyName );
 				}
@@ -722,7 +722,7 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 		CCP_ASSERT(val->mType == BlueRttiValue::pymethod);
 
 		auto args = PyTuple_New( 1 );
-		PyTuple_SET_ITEM( args, 0, PyString_FromString( name ) );
+		PyTuple_SET_ITEM( args, 0, PyUnicode_FromString( name ) );
 		auto result = ( *val->mPyMethod->ml_meth )( (PyObject *)this, args );
 		Py_DECREF( args );
 		return result;
@@ -868,7 +868,7 @@ int BlueWrapper::PySetAttr(const char* name, PyObject* v)
 					CCP_ASSERT(val->mType == BlueRttiValue::pymethod);
 
 					auto args = PyTuple_New( 2 );
-					PyTuple_SET_ITEM( args, 0, PyString_FromString( name ) );
+					PyTuple_SET_ITEM( args, 0, PyUnicode_FromString( name ) );
 					PyTuple_SET_ITEM( args, 1, v );
 					Py_INCREF( v );
 					auto result = ( *val->mPyMethod->ml_meth )( (PyObject *)this, args );
@@ -886,7 +886,7 @@ int BlueWrapper::PySetAttr(const char* name, PyObject* v)
 					CCP_ASSERT(val->mType == BlueRttiValue::pymethod);
 
 					auto args = PyTuple_New( 1 );
-					PyTuple_SET_ITEM( args, 0, PyString_FromString( name ) );
+					PyTuple_SET_ITEM( args, 0, PyUnicode_FromString( name ) );
 					auto result = ( *val->mPyMethod->ml_meth )( (PyObject *)this, args );
 					bool success = result != nullptr;
 					Py_DECREF( args );
@@ -972,12 +972,27 @@ int BlueWrapper::PySetAttr(const char* name, PyObject* v)
 }
 
 
-int BlueWrapper::PyCompare(PyObject* other)
+PyObject* BlueWrapper::PyCompare(PyObject* other, int op)
 {
 	IRoot *ptr = GetIRoot(other);
 	if (!ptr)
-		return -1;
-	return (Object() == ptr) ? 0 : -1;
+	{
+		PyErr_BadArgument();
+		return nullptr;
+	}
+	switch(op)
+	{
+	case Py_EQ:
+		if ( Object() == ptr ) {
+			Py_RETURN_TRUE;
+		} else {
+			Py_RETURN_FALSE;
+		}
+		break;
+	default:
+		PyErr_SetNone(PyExc_NotImplementedError);
+		return nullptr;
+	}
 }
 		
 
@@ -1012,12 +1027,12 @@ PyObject* BlueWrapper::PyRepr()
 		result += app;
 	}
 	if (result)
-		result += ">";
+		result += BluePyStr(">");
 	return result.Detach();
 }
 
 
-long BlueWrapper::PyHash()
+Py_hash_t BlueWrapper::PyHash()
 {
 	long long o = reinterpret_cast<long long>( Object() );  //note we are just hashing
 	return (o & 0xffffffff) ^ (o >> 32);
@@ -1074,51 +1089,50 @@ PyTypeObject* BlueWrapper::InitPyType()
 	}
 	
 	static PyTypeObject sPyType = 
-	{
-		PyObject_HEAD_INIT(&PyType_Type)
-		0,					/*					ob_size*/
-		0,					/*					tp_name*/
-		sizeof(BlueWrapper),/*					tp_basicsize*/
-		0,					/*					tp_itemsize*/
+		{
+			PyObject_HEAD_INIT(&PyType_Type)
+				0,					/*					tp_name*/
+			sizeof(BlueWrapper),/*					tp_basicsize*/
+			0,					/*					tp_itemsize*/
 
-		PyDestroy_,			/*destructor		tp_dealloc*/
-		0,					/*printfunc			tp_print*/
-		PyGetAttr_,			/*getattrfunc		tp_getattr*/
-		PySetAttr_,			/*setattrfunc		tp_setattr*/
-		PyCompare_,			/*cmpfunc			tp_compare*/
-		PyRepr_,			/*reprfunc			tp_repr*/
-		0,					/*PyNumberMethods	*tp_as_number*/
-		0,					/*PySequenceMethods *tp_as_sequence*/
-		0,					/*PyMappingMethods	*tp_as_mapping*/
-		PyHash_,			/*hashfunc			tp_hash*/
-		0,					/*ternaryfunc		tp_call*/
-		PyStr_,				/*reprfunc			tp_str*/
-		0,					/*getattrofunc		tp_getattro*/
-		0,					/*setattrofunc		tp_setattro*/
-		0,					/*PyBufferProcs		*tp_as_buffer*/
-		Py_TPFLAGS_HAVE_WEAKREFS ,	/*long				tp_flags*/
-		0,					/*char				*tp_doc*/
-		0,					/*tp_traverse*/ //for GC
-		0,					/*tp_clear*/	//for GC
-		0,					/*tp_richcompare*/
-		BLUE_MEMBEROFFSET(BlueWrapper, mWeakrefList), /* tp_weaklistoffset */
-		0,					/*tp_iter*/
-		0,					/*tp_iternext*/
-		0,					/*tp_methods*/
-		0,					/*tp_members*/
-		0,					/*tp_getset*/
-		0,					/*tp_base*/
-		0,					/*tp_dict*/
-		0,					/*tp_descr_get*/
-		0,					/*tp_descr_set*/
-		0,					/*tp_dictoffset*/
-		0,					/*tp_init*/
-		0,					/*tp_alloc*/
-		0,					/*tp_new*/
-		0,					/*tp_free*/
-		0,					/*tp_is_gc*/
+			PyDestroy_,			/*destructor		tp_dealloc*/
+			0,					/*printfunc			tp_print*/
+			PyGetAttr_,			/*getattrfunc		tp_getattr*/
+			PySetAttr_,			/*setattrfunc		tp_setattr*/
+			0,			/*as_async			tp_as_async*/
+			PyRepr_,			/*reprfunc			tp_repr*/
+			0,					/*PyNumberMethods	*tp_as_number*/
+			0,					/*PySequenceMethods *tp_as_sequence*/
+			0,					/*PyMappingMethods	*tp_as_mapping*/
+			PyHash_,			/*hashfunc			tp_hash*/
+			0,					/*ternaryfunc		tp_call*/
+			PyStr_,				/*reprfunc			tp_str*/
+			0,					/*getattrofunc		tp_getattro*/
+			0,					/*setattrofunc		tp_setattro*/
+			0,					/*PyBufferProcs		*tp_as_buffer*/
+			0 ,	/*long				tp_flags*/
+			0,					/*char				*tp_doc*/
+			0,					/*tp_traverse*/ //for GC
+			0,					/*tp_clear*/	//for GC
+			PyCompare_,					/*tp_richcompare*/
+			BLUE_MEMBEROFFSET(BlueWrapper, mWeakrefList), /* tp_weaklistoffset */
+			0,					/*tp_iter*/
+			0,					/*tp_iternext*/
+			0,					/*tp_methods*/
+			0,					/*tp_members*/
+			0,					/*tp_getset*/
+			0,					/*tp_base*/
+			0,					/*tp_dict*/
+			0,					/*tp_descr_get*/
+			0,					/*tp_descr_set*/
+			0,					/*tp_dictoffset*/
+			0,					/*tp_init*/
+			0,					/*tp_alloc*/
+			0,					/*tp_new*/
+			0,					/*tp_free*/
+			0,					/*tp_is_gc*/
 
-	};
+		};
 
 	std::string name = g_moduleName;
 	name += ".";
@@ -1561,7 +1575,7 @@ PyObject* BlueWrapper::PyDictSubscript( PyObject* key )
 	IBlueDictPtr dict( BlueCastPtr( mObj ) );
 	CCP_ASSERT( dict );
 
-	const char* keyString = PyString_AsString( key );
+	const char* keyString = PyUnicode_AsUTF8( key );
 	if( keyString )
 	{
 		IRoot* value = dict->Subscript( keyString );
@@ -1571,7 +1585,7 @@ PyObject* BlueWrapper::PyDictSubscript( PyObject* key )
 		}
 	}
 	PyObject* reprObj = PyObject_Repr(key);
-	PyErr_Format( PyExc_KeyError, "Key value %s not in dictionary", PyString_AsString(reprObj) );
+	PyErr_Format( PyExc_KeyError, "Key value %s not in dictionary", PyUnicode_AsUTF8(reprObj) );
 	Py_XDECREF( reprObj );
 	return NULL;
 }
@@ -1586,7 +1600,7 @@ int BlueWrapper::PyDictAssignSubscript( PyObject* key, PyObject* value )
 	IBlueDictPtr dict( BlueCastPtr( mObj ) );
 	CCP_ASSERT( dict );
 
-	const char* keyString = PyString_AsString( key );
+	const char* keyString = PyUnicode_AsUTF8( key );
 
 	IRoot* obj = NULL;
 	if( value )
@@ -1621,7 +1635,7 @@ PyObject* BlueWrapper::PyseqDictGetItem( Py_ssize_t index )
 	const char* key = dict->GetKey( (size_t)index );
 	if( key )
 	{
-		return PyString_FromString( key );
+		return PyUnicode_FromString( key );
 	}
 
 	return NULL;
@@ -1721,29 +1735,42 @@ void BlueWrapper::InitializeNumericTypeObject( PyTypeObject* pyType, const char*
 	InitializeTypeObjectCommon( pyType, name );
 	static PyNumberMethods s_numberMethods =
 	{
-		PyNumeric_Add_,		// binaryfunc nb_add;
-		PyNumeric_Sub_,		// binaryfunc nb_subtract;
-		PyNumeric_Mul_,		// binaryfunc nb_multiply;
-		PyNumeric_Div_,		// binaryfunc nb_divide;
-		NULL,				// binaryfunc nb_remainder;
-		NULL,				// binaryfunc nb_divmod;
-		NULL,				// ternaryfunc nb_power;
-		PyNumeric_Neg_,		// unaryfunc nb_negative;
-		NULL,				// unaryfunc nb_positive;
-		NULL,				// unaryfunc nb_absolute;
-		PyNumeric_NonZero_,	// inquiry nb_nonzero;
-		NULL,				// unaryfunc nb_invert;
-		NULL,				// binaryfunc nb_lshift;
-		NULL,				// binaryfunc nb_rshift;
-		NULL,				// binaryfunc nb_and;
-		NULL,				// binaryfunc nb_xor;
-		NULL,				// binaryfunc nb_or;
-		PyNumeric_Coerce_,	// coercion nb_coerce;
-		NULL,				// unaryfunc nb_int;
-		NULL,				// unaryfunc nb_long;
-		NULL,				// unaryfunc nb_float;
-		NULL,				// unaryfunc nb_oct;
-		NULL,				// unaryfunc nb_hex;
+			PyNumeric_Add_,		// binaryfunc nb_add;
+			PyNumeric_Sub_,		// binaryfunc nb_subtract;
+			PyNumeric_Mul_,		// binaryfunc nb_multiply;
+			nullptr,				// binaryfunc nb_remainder;
+			nullptr,				// binaryfunc nb_divmod;
+			nullptr,				// ternaryfunc nb_power;
+			PyNumeric_Neg_,		// unaryfunc nb_negative;
+			nullptr,				// unaryfunc nb_positive;
+			nullptr,				// unaryfunc nb_absolute;
+			PyNumeric_NonZero_,	// inquiry nb_bool;
+			nullptr,				// unaryfunc nb_invert;
+			nullptr,				// binaryfunc nb_lshift;
+			nullptr,				// binaryfunc nb_rshift;
+			nullptr,				// binaryfunc nb_and;
+			nullptr,				// binaryfunc nb_xor;
+			nullptr,				// binaryfunc nb_or;
+			nullptr,				// unaryfunc nb_int;
+			nullptr,				// void* nb_reserved;
+			nullptr,				// unaryfunc nb_float;
+			nullptr,				// binaryfunc nb_inplace_add;
+			nullptr,				// binaryfunc nb_inplace_subtract;
+			nullptr,				// binaryfunc nb_inplace_multiply;
+			nullptr,				// binaryfunc nb_inplace_remainder;
+			nullptr,				// ternaryfunc nb_inplace_power;
+			nullptr,				// binaryfunc nb_inplace_lshift;
+			nullptr,				// binaryfunc nb_inplace_rshift;
+			nullptr,				// binaryfunc nb_inplace_and
+			nullptr,				// binaryfunc nb_inplace_xor
+			nullptr,				// binaryfunc nb_inplace_or
+			PyNumeric_Div_,			// binaryfunc nb_floor_divide;
+			nullptr,				// binaryfunc nb_true_divide;
+			nullptr,				// binaryfunc nb_inplace_floor_divide;
+			nullptr,				// binaryfunc nb_inplace_true_divide;
+			nullptr,				// unaryfunc nb_index;
+			nullptr,				// binaryfunc nb_matrix_multiply;
+			nullptr,				// binaryfunc nb_inplace_matrix_multiply;
 	};
 
 	pyType->tp_as_number = &s_numberMethods;
@@ -1820,11 +1847,10 @@ void BlueWrapper::InitializeStructureListTypeObject( PyTypeObject* pyType, const
 void BlueWrapper::InitializeTypeObjectCommon( PyTypeObject* pyType, const char* name )
 {
 	memset( pyType, 0, sizeof( PyTypeObject ) );
-	pyType->ob_refcnt = 1;
+	pyType->ob_base.ob_base.ob_refcnt = 1;
 	pyType->tp_base = InitPyType();
 	pyType->tp_basicsize = sizeof( BlueWrapper );
 	pyType->tp_name = CCP_STRDUP( "PyTypeObject/tp_name", name );
-	pyType->tp_flags = Py_TPFLAGS_HAVE_RICHCOMPARE | Py_TPFLAGS_HAVE_WEAKREFS | Py_TPFLAGS_HAVE_CLASS;
 	pyType->tp_hash = PyHash_;
 }
 
@@ -1857,7 +1883,7 @@ static PyObject* PyGetID( PyObject* module, PyObject* args )
 	}
 
 	ssize_t ptrVal = (ssize_t)(irootObject);;
-	return PyInt_FromSize_t( ptrVal );
+	return PyLong_FromSize_t( ptrVal );
 }
 
 MAP_FUNCTION( 

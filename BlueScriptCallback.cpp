@@ -27,7 +27,7 @@ std::string FormatTraceback( PyObject *tb )
 				PyObject* fname = PyObject_GetAttrString( code, "co_filename" );
 				if( fname )
 				{
-					filename = std::string( PyString_AsString( fname ) );
+					filename = std::string( PyUnicode_AsUTF8( fname ) );
 					Py_DECREF( fname );
 				}
 				Py_DECREF( code );
@@ -39,7 +39,7 @@ std::string FormatTraceback( PyObject *tb )
 		PyObject* lineno = PyObject_GetAttrString( t, "tb_lineno" );
 		if( lineno )
 		{
-			line = int( PyInt_AsLong( lineno ) );
+			line = int( PyLong_AsLong( lineno ) );
 			Py_DECREF( lineno );
 		}
 		PyErr_Clear();
@@ -64,7 +64,7 @@ std::string FormatExceptionFallback( PyObject *type, PyObject *val, PyObject *tb
 	PyObject* s = PyObject_Repr( type );
 	if( s )
 	{
-		result += std::string( "Type: " ) + PyString_AsString( s ) + "\n";
+		result += std::string( "Type: " ) + PyUnicode_AsUTF8( s ) + "\n";
 		Py_DECREF( s );
 	}
 	if( val ) 
@@ -72,7 +72,7 @@ std::string FormatExceptionFallback( PyObject *type, PyObject *val, PyObject *tb
 		s = PyObject_Repr( val );
 		if( s )
 		{
-			result += std::string( "Value: " ) + PyString_AsString( s ) + "\n";
+			result += std::string( "Value: " ) + PyUnicode_AsUTF8( s ) + "\n";
 			Py_DECREF( s );
 		}
 	}
@@ -103,7 +103,7 @@ std::string FormatException( PyObject* type, PyObject* val, PyObject* tb )
 	{
 		return FormatExceptionFallback( type, val, tb );
 	}
-	PyObject* str = PyString_FromString( "" );
+	PyObject* str = PyUnicode_FromString( "" );
 	if( !str )
 	{
 		Py_DECREF( lines );
@@ -116,7 +116,7 @@ std::string FormatException( PyObject* type, PyObject* val, PyObject* tb )
 	{
 		return FormatExceptionFallback( type, val, tb );
 	}
-	std::string result = PyString_AsString( linesJoined );
+	std::string result = PyUnicode_AsUTF8( linesJoined );
 	Py_DECREF( linesJoined );
 	PyErr_Clear();
 	return result;
@@ -302,7 +302,7 @@ BLUEIMPORT BlueScriptCallbackStatus BlueScriptCallback::CallVoid()
 #endif
 }
 
-BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const BlueScriptCallback& val )
+BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments, const BlueScriptCallback& val )
 {
 #if BLUE_WITH_PYTHON
 	if( val.m_callback )
@@ -319,7 +319,7 @@ BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const BlueScr
 #endif
 }
 
-bool BlueExtractArgumentImpl( BlueScriptValue argument, BlueScriptCallback& result, unsigned int argID, std::false_type isBlueType )
+bool BlueExtractArgumentImpl( BlueScriptValue argument, BlueScriptCallback& result, unsigned int argID, std::false_type )
 {
 #if BLUE_WITH_PYTHON
 	if( !PyCallable_Check( argument ) && argument != Py_None )
