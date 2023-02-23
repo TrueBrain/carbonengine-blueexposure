@@ -5,8 +5,6 @@
 // Copyright:	CCP 2013
 //
 
-#include "StdAfx.h"
-
 // A flag to control whether functions returning a Be::Result should return
 // errors or not. Used by unit testing to test error handling.
 static bool s_returnError = false;

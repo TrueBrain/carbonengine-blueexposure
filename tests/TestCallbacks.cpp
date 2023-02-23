@@ -5,7 +5,6 @@
 //    Copyright: CCP 2013
 //
 
-#include "StdAfx.h"
 #include "TestCallbacks.h"
 
 TestCallbacks::TestCallbacks( IRoot* lockobj )

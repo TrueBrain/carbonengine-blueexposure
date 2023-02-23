@@ -5,7 +5,6 @@
 // Copyright:	CCP 2013
 //
 
-#include "StdAfx.h"
 #include "TestProperties.h"
 
 TestProperties::TestProperties( IRoot* lockobj ) :

@@ -5,5 +5,4 @@
 // Copyright:	CCP 2013
 //
 
-#include "StdAfx.h"
 #include "TestReferences.h"

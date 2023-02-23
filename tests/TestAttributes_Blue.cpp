@@ -5,7 +5,6 @@
 // Copyright:	CCP 2013
 //
 
-#include "StdAfx.h"
 #include "TestAttributes.h"
 
 BLUE_DEFINE( TestAttributes );
@@ -105,4 +104,3 @@ const Be::ClassInfo* TestAttributes::ExposeToBlue()
 		)
 	EXPOSURE_END()
 }
-

@@ -16,9 +16,13 @@ add_library(BlueExposureTest SHARED
     TestReferences.cpp
     TestReferences_Blue.cpp
 )
+target_precompile_headers(BlueExposureTest
+    PRIVATE
+        <BlueExposure.h>
+        "BoolBeResult.h"
+)
 target_sources(BlueExposureTest PRIVATE
     BoolBeResult.h
-    StdAfx.h
     TestAttributes.h
     TestCallbacks.h
     TestMethods.h
