@@ -222,10 +222,24 @@ BLUEIMPORT PyObject* BlueCreateInstanceFromPython( const Be::Clsid& clsid, PyObj
 // Use this macro to implement a standard module init function
 #define BLUE_STANDARD_MODULE_INIT( moduleName ) \
 	const char* g_moduleName = #moduleName; \
-	PyMODINIT_FUNC BLUE_EXPORTED_INIT CCP_CONCATENATE( init, CCP_CONCATENATE( moduleName, CCP_BUILD_FLAVOR ) )() \
+	PyMODINIT_FUNC BLUE_EXPORTED_INIT CCP_CONCATENATE( PyInit_, CCP_CONCATENATE( moduleName, CCP_BUILD_FLAVOR ) )() \
 	{ \
 		BeClasses->RegisterClasses( BlueRegistration::GetClassRegs() ); \
-		PyObject* module = Py_InitModule( CCP_STRINGIZE( CCP_CONCATENATE( moduleName, CCP_BUILD_FLAVOR ) ), NULL ); \
+		static struct PyModuleDef moduledef = { \
+			PyModuleDef_HEAD_INIT,                       \
+			CCP_STRINGIZE( CCP_CONCATENATE( moduleName, CCP_BUILD_FLAVOR ) ),                                             \
+			"", \
+			-1, \
+			nullptr, \
+			nullptr, \
+			nullptr, \
+			nullptr, \
+			nullptr, \
+		}; \
+		PyObject* module = PyModule_Create( &moduledef ); \
+		if ( !module ) { \
+			return nullptr; \
+		} \
 		BlueRegisterToModule( module, \
 			BlueRegistration::GetClassRegs(), \
 			BlueRegistration::GetFuncRegs(), \
@@ -236,6 +250,7 @@ BLUEIMPORT PyObject* BlueCreateInstanceFromPython( const Be::Clsid& clsid, PyObj
 		BlueRegisterObjectsToModule( module, BlueRegistration::GetObjectRegs() ); \
 		BlueRegisterExceptionsToModule( module, BlueRegistration::GetExceptionRegs() ); \
 		PyModule_AddObject( module, "BlueWrapper", (PyObject*)BePyTypePtr ); \
+		return module; \
 	}
 
 #define BLUE_DECLARE_EXCEPTION_EX( name, ... ) __VA_ARGS__ PyObject* CCP_CONCATENATE( BlueGetException, name )();
