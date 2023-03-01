@@ -1,4 +1,4 @@
-add_library(BlueExposureTest SHARED
+ccp_add_library(BlueExposureTest SHARED
     BlueExposureTest.cpp
     TestAttributes.cpp
     TestAttributes_Blue.cpp
@@ -48,16 +48,6 @@ set_target_properties(BlueExposureTest PROPERTIES
     OUTPUT_NAME "_blueexposuretest"
 )
 
-set(TEST_DESTINATION test/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/)
-
-if(APPLE)
-    # on macOS we like to still use the .so naming convention, without a prefix
-    set_target_properties(BlueExposureTest
-        PROPERTIES
-            PREFIX ""
-            SUFFIX ".so"
-    )
-endif()
 if(WIN32)
     set_target_properties(BlueExposureTest PROPERTIES SUFFIX ".pyd")
 endif()
