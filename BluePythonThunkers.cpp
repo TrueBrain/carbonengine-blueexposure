@@ -548,19 +548,22 @@ PyObject* IList_Thunk::Pycount(PyObject* args)
 	PyObject* pyobj;
 
 	if (!PyArg_ParseTuple(args, "O", &pyobj))
-		return NULL;
+		return nullptr;
 	IRoot* value = BlueUnwrapObjectFromPython(pyobj);
 	if (!value)
 	{
 		PyErr_SetString( PyExc_TypeError, "Blue item required");
-		return NULL;
+		return nullptr;
 	}
 
 	int count = 0;
-	ssize_t key = -1;
-	
-	while ((key = FindKey(BlueUnwrapObjectFromPython(pyobj), key+1)) >= 0)
-		count++;
+	auto startAndSize = GetAllItems();
+	auto iter = startAndSize.first;
+	for( auto key = 0; key < startAndSize.second; ++key, ++iter )
+	{
+		if ( value == *iter )
+			count++;
+	}
 
 	return PyLong_FromLong(count);
 }
