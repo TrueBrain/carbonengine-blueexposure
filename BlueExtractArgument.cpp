@@ -246,8 +246,14 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, PyObject*& result, 
 // Overload for Int argument extraction
 bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, int32_t& result, unsigned int argID, std::false_type isBlueType )
 {
-	bool success = BlueExtractInt( argument, result );
-	if( !success )
+	if( PyLong_Check(argument) )
+	{
+		result = (int32_t)PyLong_AsLong( argument );
+		if (result == -1 && PyErr_Occurred()) {
+			return false;
+		}
+	}
+	else
 	{
 		PyErr_Format( PyExc_TypeError, argumentTypeMismatchString, argID, "int" );
 		return false;

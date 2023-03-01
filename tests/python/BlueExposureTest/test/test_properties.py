@@ -54,7 +54,7 @@ class TestProperties(unittest.TestCase):
         self.assertRaises(TypeError, AssignString_ErrorExpected)
 
 
-    def _IntAssignment(self, x, expected_exc):
+    def _IntAssignment(self, x):
         # need to pass the expected exception type at the moment because it is a different
         # exception based upon whether we're assigning a property or an attribute
 
@@ -67,7 +67,7 @@ class TestProperties(unittest.TestCase):
         def AssignLong_ErrorExpected():
             x.myInt = 2147483648
         
-        self.assertRaises(expected_exc, AssignLong_ErrorExpected)
+        self.assertRaises(OverflowError, AssignLong_ErrorExpected)
 
         def AssignFloat_ErrorExpected():
             x.myInt = 3.14
@@ -200,7 +200,7 @@ class TestProperties(unittest.TestCase):
     def testIntAttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
 
-        self._IntAssignment(x, OverflowError)
+        self._IntAssignment(x)
 
 
     def testInt64AttributeAssignment(self):
@@ -230,7 +230,7 @@ class TestProperties(unittest.TestCase):
     def testIntPropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
 
-        self._IntAssignment(x, TypeError)
+        self._IntAssignment(x)
 
 
     def testInt64PropertyAssignment(self):
