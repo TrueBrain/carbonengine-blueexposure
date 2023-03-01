@@ -601,6 +601,10 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 		{
 			return PyUnicode_FromString(Type()->mClassId->GetName());
 		}
+		else if (strcmp(name, "__class__") == 0)
+		{
+			return PyObject_Type(this);
+		}
 		else if (strcmp(name, "__bluetype__") == 0) //better, gives full name
 		{
 			return PyUnicode_FromFormat("%s.%s", Type()->mClassId->GetModule(), Type()->mClassId->GetName());
@@ -610,53 +614,57 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 			if (ld && ld->mPythonKlass)
 				return ld->mPythonKlass->GetKlass();
 		}
-		else if (strcmp(name, "__members__") == 0)
+		else if (strcmp(name, "__dict__") == 0)
 		{
 			//used by python's builtin dir() command
 			const char* defaults[] =
 			{
 #ifndef NDEBUG
-				"__dotrace__",
+				"__dotrace__", // Py_None
 #endif
-				"__doc__",
-				"__typename__",
-				"__bluetype__",
-				"__members__",
-				"__methods__"
-#if PY_VERSION_HEX >= 0x02070000
-				, "__iroot__"
-#endif
+				"__doc__", // Py_Unicode
+				"__typename__", // Py_Unicode
+				"__bluetype__", // Py_Unicode
+				"__iroot__" // Py_Capsule
 			};
 			int n = sizeof defaults / sizeof defaults[0];
-			PyObject* list = PyList_New(n);
+			PyObject* dict = PyDict_New();
 			for (int i = 0; i<n; i++)
-				PyList_SET_ITEM(list, i, PyUnicode_FromString(defaults[i]));
+			{
+				if ( PyDict_SetItemString( dict, defaults[i], Py_None ) )
+				{
+					Py_XDECREF(dict);
+					return nullptr;
+				}
+				Py_INCREF( Py_None );
+			}
 			if (ld && ld->mPythonKlass)
-				PyList_Append(list, BluePyStr("__klass__"));
-				
+			{
+				if( PyDict_SetItemString( dict, "__klass__", ld->mPythonKlass->GetKlass() ) )
+				{
+					Py_XDECREF( dict );
+					return nullptr;
+				}
+			}
+
 			//now loop over all variables
 			for(const Be::ClassInfo* type = Type(); type; type = type->mParentClassInfo)
 				for (const Be::VarEntry* entry = type->mMemberTable; entry->mName; entry++) {
 					if (entry->mEditFlags & Be::HIDDEN)
 						continue;
-					PyObject *pyName = PyUnicode_FromString(entry->mName);
-					PyList_Append( list, pyName );
-					Py_DECREF( pyName );
+					if ( PyDict_SetItemString( dict, entry->mName, Py_None ) )
+					{
+						Py_XDECREF( dict );
+						return nullptr;
+					}
+					Py_INCREF( Py_None );
 				}
-			return list;
+			return dict;
 		}
-		else if (strcmp(name, "__methods__") == 0)
-		{
-			//used by python's builtin dir() command
-			PyObject *list = BeClasses->GetRtti(Type())->GetMethodsAsList();
-			return list;
-		}
-#if PY_VERSION_HEX >= 0x02070000
 		else if (strcmp(name, "__iroot__") == 0)
 		{
-			return PyCapsule_New(Object(), "__iroot__", NULL);
+			return PyCapsule_New(Object(), "__iroot__", nullptr);
 		}
-#endif
 
 #ifndef NDEBUG
 		else if (strcmp(name, "__dotrace__") == 0)
@@ -990,7 +998,7 @@ PyObject* BlueWrapper::PyCompare(PyObject* other, int op)
 		}
 		break;
 	default:
-		PyErr_SetNone(PyExc_NotImplementedError);
+		PyErr_Format(PyExc_NotImplementedError, "%d comparison operator not implement for object of type %.200s", op, Py_TYPE(other)->tp_name);
 		return nullptr;
 	}
 }
@@ -1091,7 +1099,7 @@ PyTypeObject* BlueWrapper::InitPyType()
 	static PyTypeObject sPyType = 
 		{
 			PyObject_HEAD_INIT(&PyType_Type)
-				0,					/*					tp_name*/
+			0,					/*					tp_name*/
 			sizeof(BlueWrapper),/*					tp_basicsize*/
 			0,					/*					tp_itemsize*/
 
