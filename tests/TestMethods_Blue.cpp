@@ -27,6 +27,25 @@ PyObject* TestMethods::PyMethodReturningBoolOrError( PyObject* args )
 
 	Py_RETURN_TRUE;
 }
+
+PyObject* TestMethods::PyMethodAcceptingKeywordArguments( PyObject* args, PyObject* kwargs )
+{
+	int a = 0;
+	int b = 0;
+	int c = 0;
+
+	static const char* keywords[4] = {
+		"a",
+		"b",
+		"c",
+		nullptr
+	};
+
+	if( !PyArg_ParseTupleAndKeywords( args, kwargs, "i|ii", const_cast<char**>(keywords), &a, &b, &c ) )
+		return nullptr;
+	long result = a + b + c;
+	return PyLong_FromLong(result);
+}
 #endif
 
 
@@ -229,6 +248,13 @@ const Be::ClassInfo* TestMethods::ExposeToBlue()
 			"MethodReturningBoolOrError",
 			PyMethodReturningBoolOrError,
 			""
+		)
+
+		MAP_METHOD_WITH_KEYWORD_ARGUMENTS
+		(
+			"MethodAcceptingKeywordArguments",
+			PyMethodAcceptingKeywordArguments,
+			"Returns a + b + c"
 		)
 
 		MAP_METHOD_AND_WRAP

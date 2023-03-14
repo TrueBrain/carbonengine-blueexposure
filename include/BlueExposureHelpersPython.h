@@ -82,6 +82,22 @@ PyObject* BlueMethodAsMethodHelper( PyObject* self, PyObject* args )
 	return result;
 }
 
+template <typename memFnType, memFnType memFn>
+PyObject* BlueMethodWithKeywordArgumentsHelper( PyObject* self, PyObject* args, PyObject* kwargs )
+{
+	typedef typename function_traits<memFnType>::class_type class_type;
+
+	// Extract the class pointer
+	class_type* pThis = BluePythonCast<class_type*>( self );
+
+	PyObject* result = ( pThis->*memFn )( args, kwargs );
+	if( !result )
+	{
+		result = PyThunkLeave( result );
+	}
+	return result;
+}
+
 // Wrapper for a property setter function
 template< typename Class, typename setterFnType, setterFnType setterFn >
 PyObject* BluePropertySetter( PyObject* self, PyObject* args )

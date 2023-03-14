@@ -79,6 +79,7 @@ public:
 
 #if BLUE_WITH_PYTHON
 	PyObject* PyMethodReturningBoolOrError( PyObject* args );
+	PyObject* PyMethodAcceptingKeywordArguments( PyObject * args, PyObject * kwargs );
 #endif
 
 	BlueSharedString ConvertStringToSharedString( const char* string );

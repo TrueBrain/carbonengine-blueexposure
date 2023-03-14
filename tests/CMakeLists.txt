@@ -80,3 +80,25 @@ if(WIN32)
         RUNTIME DESTINATION test/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
     )
 endif()
+if(WIN32)
+    # Discover Python tests. This may be a little bit brittle since at this point we are missing missing the `_blueexposuretest`
+    # binary. As in, test discovery happens during the configure stage at which the binary does not exist yet.
+    set(PYTHON_EXECUTABLE "${BRANCH_ROOT_DIR}/vendor/python/2.7.1+ccp-stackless/bin/Windows/x64/v141/python.exe")
+    set(ENV{PYTHONPATH} "${BRANCH_ROOT_DIR}/carbon/common/stdlib")
+    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import ctesthelper;ctesthelper.discover_tests()"
+        OUTPUT_VARIABLE PYTHON_TESTS_STR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_STRIP_TRAILING_WHITESPACE
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python
+    )
+    separate_arguments(PYTHON_TESTS UNIX_COMMAND ${PYTHON_TESTS_STR})
+    foreach(PYTHON_TEST ${PYTHON_TESTS})
+        add_test(NAME ${PYTHON_TEST}
+            COMMAND ${PYTHON_EXECUTABLE} -m unittest -v ${PYTHON_TEST}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python
+        )
+        set_tests_properties(${PYTHON_TEST} PROPERTIES
+            ENVIRONMENT "PYTHONPATH=${BRANCH_ROOT_DIR}/carbon/common/stdlib\\\;$<TARGET_FILE_DIR:BlueExposureTest>"
+        )
+    endforeach()
+endif()
