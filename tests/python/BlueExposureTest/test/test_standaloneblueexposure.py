@@ -453,27 +453,27 @@ class TestStandAloneBlueExposure(unittest.TestCase):
     def testPassArgumentsWithoutKeywords(self):
         x = BlueExposureTest.TestMethods()
         result = x.MethodAcceptingKeywordArguments(1, 2, 3)
-        self.assertEqual(6L, result)
+        self.assertEqual(6, result)
 
     def testPassAllArgumentsWithKeywords(self):
         x = BlueExposureTest.TestMethods()
         result = x.MethodAcceptingKeywordArguments(a=1, b=2, c=3)
-        self.assertEqual(6L, result)
+        self.assertEqual(6, result)
 
     def testPassKeywordArgumentsWithKeywords(self):
         x = BlueExposureTest.TestMethods()
         result = x.MethodAcceptingKeywordArguments(1, b=2, c=3)
-        self.assertEqual(6L, result)
+        self.assertEqual(6, result)
 
     def testPassOneKeywordArgument(self):
         x = BlueExposureTest.TestMethods()
         result = x.MethodAcceptingKeywordArguments(1, b=2)
-        self.assertEqual(3L, result)
+        self.assertEqual(3, result)
 
     def testPassNoKeywordArgument(self):
         x = BlueExposureTest.TestMethods()
         result = x.MethodAcceptingKeywordArguments(1)
-        self.assertEqual(1L, result)
+        self.assertEqual(1, result)
 
     def testMissingRequiredArgument(self):
         x = BlueExposureTest.TestMethods()
