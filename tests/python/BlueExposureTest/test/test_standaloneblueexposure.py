@@ -1,6 +1,6 @@
 import unittest
 import BlueExposureTest
-import sys
+
 
 class TestStandAloneBlueExposure(unittest.TestCase):
     """
@@ -79,7 +79,6 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         val = x.MethodWithEnumParam(orgVal)
         self.assertEqual(val, orgVal)
 
-
     def testBoolMethod(self):
         """
         bool parameters should accept True, False and ints.
@@ -101,13 +100,11 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         self.assertRaises(TypeError, x.MethodReturningBool, "True")
         self.assertRaises(TypeError, x.MethodReturningBool, (1, 2))
 
-
     def testIntMethod(self):
         """
         int parameters should accept ints, True and False
         Anything else should raise a type error.
         """
-        
         x = BlueExposureTest.TestMethods()
 
         successValues = [0, 63, -1, 0x7fffffff, -0x7fffffff-1, True, False]
@@ -122,13 +119,11 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         for each in typeErrorValues:
             self.assertRaises(TypeError, x.MethodReturningInt, each)
 
-
     def testFloatMethod(self):
         """
         float parameters should accept floats and ints
         Anything else should raise a type error.
         """
-        
         x = BlueExposureTest.TestMethods()
 
         successValues = [0.0, 3.14, -2.77, 0, 42, -3, 2.71828182845904523536]
@@ -143,17 +138,16 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         for each in typeErrorValues:
             self.assertRaises(TypeError, x.MethodReturningFloat, each)
 
-
     def testDoubleMethod(self):
         """
         double parameters should accept floats and ints
         Anything else should raise a type error.
         """
-        
+
         x = BlueExposureTest.TestMethods()
 
         successValues = [0.0, 3.14, -2.77, 0, 42, -3, 2.71828182845904523536]
-        typeErrorValues = ["this is not a number", "42", (1, 2), [1, 2] ]
+        typeErrorValues = ["this is not a number", "42", (1, 2), [1, 2]]
 
         for each in successValues:
             orgVal = each
@@ -164,17 +158,15 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         for each in typeErrorValues:
             self.assertRaises(TypeError, x.MethodReturningDouble, each)
 
-
     def testStringMethod(self):
         """
         string parameters should accept strings and unicode
         Anything else should raise a type error.
         """
-        
         x = BlueExposureTest.TestMethods()
 
         successValues = ["this is a string", u"this is unicode", "", u""]
-        typeErrorValues = [True, False, 0, 42, 3.14, (1, 2), [1, 2] ]
+        typeErrorValues = [True, False, 0, 42, 3.14, (1, 2), [1, 2]]
 
         for each in successValues:
             orgVal = each
@@ -185,14 +177,12 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         for each in typeErrorValues:
             self.assertRaises(TypeError, x.MethodReturningString, each)
 
-
     def testConstCharMethod(self):
         """
         string parameters should accept strings. Note that no conversion
         can take place from unicode - prefer std::string.
         Anything else should raise a type error.
         """
-        
         x = BlueExposureTest.TestMethods()
 
         successValues = ["this is a string", ""]
@@ -207,13 +197,11 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         for each in typeErrorValues:
             self.assertRaises(TypeError, x.MethodReturningConstChar, each)
 
-
     def testUnicodeMethod(self):
         """
         unicode parameters should accept strings and unicode
         Anything else should raise a type error.
         """
-        
         x = BlueExposureTest.TestMethods()
 
         successValues = ["this is a string", u"this is unicode", "", u""]
@@ -235,7 +223,6 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         can take place - prefer std::wstring.
         Anything else should raise a type error.
         """
-        
         x = BlueExposureTest.TestMethods()
 
         successValues = [u"this is unicode", u""]
@@ -250,7 +237,6 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         for each in typeErrorValues:
             self.assertRaises(TypeError, x.MethodReturningConstWChar, each)
 
-
     def testVoidArityMethods(self):
         x = BlueExposureTest.TestMethods()
 
@@ -259,12 +245,11 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         for i in range(10):
             method = getattr(x, "VoidArity%d" % i)
             args = tuple(argsList)
-            
+
             self.assertEqual(method(*args), None)
 
             argsList.append(42)
 
-    
     def testIntArityMethods(self):
         x = BlueExposureTest.TestMethods()
 
@@ -273,7 +258,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         for i in range(10):
             method = getattr(x, "IntArity%d" % i)
             args = tuple(argsList)
-            
+
             self.assertEqual(method(*args), i)
 
             argsList.append(42)
@@ -289,12 +274,12 @@ class TestStandAloneBlueExposure(unittest.TestCase):
 
             method = getattr(x, "BeResultArity%d" % i)
             args = tuple(argsList)
-            
+
             self.assertEqual(method(*args), None)
 
             x.returnError = True
             self.assertRaises(RuntimeError, method, *args)
-            
+
             argsList.append(42)
 
 
@@ -308,12 +293,12 @@ class TestStandAloneBlueExposure(unittest.TestCase):
 
             method = getattr(x, "BeResultArity%dWithRef" % (i+1))
             args = tuple(argsList)
-            
+
             self.assertEqual(method(*args), 42)
 
             x.returnError = True
             self.assertRaises(RuntimeError, method, *args)
-            
+
             argsList.append(42)
 
 
@@ -330,7 +315,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
 
             method = getattr(x, "SafeFactoryFunction%d" % i)
             args = tuple(argsList)
-            
+
             y = method(*args)
             self.assertEqual(type(y), BlueExposureTest.TestMultipleInterfaces)
 
@@ -338,7 +323,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
 
             x.returnError = True
             self.assertRaises(RuntimeError, method, *args)
-            
+
             argsList.append(42)
 
         lc = BlueExposureTest.classes.LiveCount()
@@ -404,7 +389,6 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         n = x.MethodWithListOfListOfIntParameter([[1, 2, 3], [1, 2], [1, 2, 3, 4]])
         self.assertEqual(n, 9)
 
- 
     def testMethodWithListOfVector3Parameter(self):
         x = BlueExposureTest.TestMethods()
 
@@ -414,7 +398,6 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         n = x.MethodWithListOfVector3Parameter([])
         self.assertEqual(n, 0)
 
-        #self.assertRaises(TypeError, x.MethodWithListOfVector3Parameter, [(1,1), (2, 2, 2)])
         self.assertRaises(TypeError, x.MethodWithListOfVector3Parameter, [1, 2, "3"])
         self.assertRaises(TypeError, x.MethodWithListOfVector3Parameter, [1, 2, 3.14])
 
@@ -430,7 +413,7 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         x = BlueExposureTest.TestMethods()
 
         l = x.MethodReturningListOfVector3(2)
-        self.assertEqual(l, [(0, 0, 0), (1, 1, 1)])        
+        self.assertEqual(l, [(0, 0, 0), (1, 1, 1)])
 
 
     def testMethodWithMapOfStringToIntParameter(self):
@@ -449,10 +432,10 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         x = BlueExposureTest.TestMethods()
 
         d = x.MethodReturningMapOfStringToInt(2)
-        self.assertEqual(d, {"one": 1, "two": 2})        
+        self.assertEqual(d, {"one": 1, "two": 2})
 
         d = x.MethodReturningMapOfStringToInt(0)
-        self.assertEqual(d, {})        
+        self.assertEqual(d, {})
 
 
     def testIsInstance(self):
@@ -465,5 +448,33 @@ class TestStandAloneBlueExposure(unittest.TestCase):
     def testSharedStringMethods(self):
         x = BlueExposureTest.TestMethods()
         self.assertEqual(x.ConvertStringToSharedString("abc"), "abc")
-        #raw_input()
         self.assertEqual(x.ConvertSharedStringToString("def"), "def")
+
+    def testPassArgumentsWithoutKeywords(self):
+        x = BlueExposureTest.TestMethods()
+        result = x.MethodAcceptingKeywordArguments(1, 2, 3)
+        self.assertEqual(6L, result)
+
+    def testPassAllArgumentsWithKeywords(self):
+        x = BlueExposureTest.TestMethods()
+        result = x.MethodAcceptingKeywordArguments(a=1, b=2, c=3)
+        self.assertEqual(6L, result)
+
+    def testPassKeywordArgumentsWithKeywords(self):
+        x = BlueExposureTest.TestMethods()
+        result = x.MethodAcceptingKeywordArguments(1, b=2, c=3)
+        self.assertEqual(6L, result)
+
+    def testPassOneKeywordArgument(self):
+        x = BlueExposureTest.TestMethods()
+        result = x.MethodAcceptingKeywordArguments(1, b=2)
+        self.assertEqual(3L, result)
+
+    def testPassNoKeywordArgument(self):
+        x = BlueExposureTest.TestMethods()
+        result = x.MethodAcceptingKeywordArguments(1)
+        self.assertEqual(1L, result)
+
+    def testMissingRequiredArgument(self):
+        x = BlueExposureTest.TestMethods()
+        self.assertRaises(TypeError, x.MethodAcceptingKeywordArguments, b=1, c=2)

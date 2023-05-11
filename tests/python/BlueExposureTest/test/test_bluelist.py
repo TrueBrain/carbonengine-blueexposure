@@ -1,6 +1,7 @@
 import unittest
 import BlueExposureTest
 
+
 class DummyObject(object):
 	"""
 	An object that is not a Blue object.
@@ -13,7 +14,6 @@ class TestBlueList(unittest.TestCase):
 	"""
 	A set of test case for Blue lists.
 	"""
-
 	def testAppend(self):
 		obj = BlueExposureTest.TestAttributes()
 
@@ -288,8 +288,7 @@ class TestBlueList(unittest.TestCase):
 		x = obj.myVector.pop()
 
 		self.assertEqual(x, childObj3)
-		self.assertEqual(2, len(obj.myVector))		
-
+		self.assertEqual(2, len(obj.myVector))
 
 	def testPop_Index(self):
 		# pop doesn't allow an index, in spite of what the doc-string states
@@ -309,8 +308,7 @@ class TestBlueList(unittest.TestCase):
 		x = obj.myVector.pop(0)
 
 		self.assertEqual(x, childObj1)
-		self.assertEqual(2, len(obj.myVector))		
-
+		self.assertEqual(2, len(obj.myVector))
 
 	def testPop_Empty(self):
 		# This test crashes :(
@@ -318,7 +316,6 @@ class TestBlueList(unittest.TestCase):
 
 		obj = BlueExposureTest.TestAttributes()
 		x = obj.myVector.pop()
-
 
 	def testIndex(self):
 		obj = BlueExposureTest.TestAttributes()
@@ -334,7 +331,6 @@ class TestBlueList(unittest.TestCase):
 
 		ix = obj.myVector.index(childObj2)
 		self.assertEqual(ix, 1)
-
 
 	def testIndex_ItemNotInList(self):
 		obj = BlueExposureTest.TestAttributes()
@@ -352,7 +348,6 @@ class TestBlueList(unittest.TestCase):
 
 		self.assertRaises(ValueError, obj.myVector.index, childObj4)
 
-
 	def testIndex_ItemNotIRoot(self):
 		obj = BlueExposureTest.TestAttributes()
 
@@ -369,14 +364,12 @@ class TestBlueList(unittest.TestCase):
 
 		self.assertRaises(TypeError, obj.myVector.index, childObj4)
 
-
 	def testIndex_Empty(self):
 		obj = BlueExposureTest.TestAttributes()
 
 		childObj = BlueExposureTest.TestAttributes()
 
 		self.assertRaises(ValueError, obj.myVector.index, childObj)
-
 
 	def testCount(self):
 		obj = BlueExposureTest.TestAttributes()
@@ -404,13 +397,11 @@ class TestBlueList(unittest.TestCase):
 		n4 = obj.myVector.count(childObj4)
 		self.assertEqual(0, n4)
 
-
 	def testCount_ItemNotIRoot(self):
 		obj = BlueExposureTest.TestAttributes()
 
 		childObj = DummyObject()
 		self.assertRaises(TypeError, obj.myVector.count, childObj)
-
 
 	def testReverse(self):
 		# The reverse method on blue lists is horribly broken
@@ -433,13 +424,11 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj2, otherObj.myVector[1])
 		self.assertEqual(childObj3, otherObj.myVector[0])
 
-
 	def testReverse_Empty(self):
 		obj = BlueExposureTest.TestAttributes()
 		obj.myVector.reverse()
 
 		# No assertions, just making sure this is exercised
-
 
 	def testSort(self):
 		# sort is not implemented
@@ -493,7 +482,7 @@ class TestBlueList(unittest.TestCase):
 
 		childObj5 = BlueExposureTest.TestAttributes()
 		obj.myVector.append(childObj5)
-		
+
 		sliceFromBlueList = obj.myVector[1:3]
 		self.assertEqual(2, len(sliceFromBlueList))
 		self.assertEqual(childObj2, sliceFromBlueList[0])
@@ -533,7 +522,6 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj2, obj.myVector[1])
 		self.assertEqual(childObj3, obj.myVector[2])
 
-
 	def testAssign_OutOfRange(self):
 		obj = BlueExposureTest.TestAttributes()
 
@@ -543,7 +531,6 @@ class TestBlueList(unittest.TestCase):
 			obj.myVector[3] = childObj
 
 		self.assertRaises(IndexError, AssignOutOfRange)
-		
 
 	def testRefCounting(self):
 		obj = BlueExposureTest.TestAttributes()

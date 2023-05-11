@@ -150,6 +150,19 @@ BLUEIMPORT PyObject* BlueCreateInstanceFromPython( const Be::Clsid& clsid, PyObj
 	s_methods.push_back( d );\
 }
 
+// MAP_METHOD_WITH_KEYWORD_ARGUMENTS maps a member function with the signature
+// PyObject* Class::pyFunc( PyObject* args, PyObject* kwargs )
+// as a method on the object in Python
+#define MAP_METHOD_WITH_KEYWORD_ARGUMENTS( nameString, pyFunc, docString )\
+{ \
+	PyMethodDef d = { \
+		nameString, \
+		reinterpret_cast<PyCFunction>( &BlueMethodWithKeywordArgumentsHelper<decltype( &_Class::pyFunc ), &_Class::pyFunc> ), \
+		METH_VARARGS | METH_KEYWORDS, \
+		docString }; \
+	s_methods.push_back( d ); \
+}
+
 ////////////////////////////////////////////////////////////////////////////////////
 // Use for Vector2, Vector3, Color, D3DXVECTOR4 etc. Give Blue*IID types to help
 // Jessica select the right tools for the vector type. MAP_ATTRIBUTE is capable of

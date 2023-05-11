@@ -1,6 +1,6 @@
 import unittest
 import BlueExposureTest
-import sys
+
 
 class TestFunctions(unittest.TestCase):
     """
@@ -101,7 +101,6 @@ class TestFunctions(unittest.TestCase):
         val = BlueExposureTest.FunctionReturningPyObject(orgVal)
         self.assertEqual(val, orgVal)
 
-
     def testBoolFunction(self):
         """
         bool parameters should accept True, False and ints.
@@ -121,13 +120,11 @@ class TestFunctions(unittest.TestCase):
         self.assertRaises(TypeError, BlueExposureTest.FunctionReturningBool, "True")
         self.assertRaises(TypeError, BlueExposureTest.FunctionReturningBool, (1, 2))
 
-
     def testIntFunction(self):
         """
         int parameters should accept ints, True and False
         Anything else should raise a type error.
         """
-        
         successValues = [0, 63, -1, 0x7fffffff, -0x7fffffff-1, True, False]
         typeErrorValues = [3.14, "this is not a number", "42", (1, 2), [1, 2] ]
 
@@ -139,7 +136,6 @@ class TestFunctions(unittest.TestCase):
 
         for each in typeErrorValues:
             self.assertRaises(TypeError, BlueExposureTest.FunctionReturningInt, each)
-
 
     def testFloatFunction(self):
         """
@@ -159,13 +155,11 @@ class TestFunctions(unittest.TestCase):
         for each in typeErrorValues:
             self.assertRaises(TypeError, BlueExposureTest.FunctionReturningFloat, each)
 
-
     def testDoubleFunction(self):
         """
         double parameters should accept floats and ints
         Anything else should raise a type error.
         """
-        
         successValues = [0.0, 3.14, -2.77, 0, 42, -3, 2.71828182845904523536]
         typeErrorValues = ["this is not a number", "42", (1, 2), [1, 2] ]
 
@@ -178,13 +172,11 @@ class TestFunctions(unittest.TestCase):
         for each in typeErrorValues:
             self.assertRaises(TypeError, BlueExposureTest.FunctionReturningDouble, each)
 
-
     def testStringFunction(self):
         """
         string parameters should accept strings and unicode
         Anything else should raise a type error.
         """
-        
         successValues = ["this is a string", u"this is unicode", "", u""]
         typeErrorValues = [True, False, 0, 42, 3.14, (1, 2), [1, 2] ]
 
@@ -197,14 +189,12 @@ class TestFunctions(unittest.TestCase):
         for each in typeErrorValues:
             self.assertRaises(TypeError, BlueExposureTest.FunctionReturningString, each)
 
-
     def testConstCharFunction(self):
         """
         string parameters should accept strings. Note that no conversion
         can take place from unicode - prefer std::string.
         Anything else should raise a type error.
         """
-        
         successValues = ["this is a string", ""]
         typeErrorValues = [True, False, 0, 42, 3.14, (1, 2), [1, 2] ]
 
@@ -217,13 +207,11 @@ class TestFunctions(unittest.TestCase):
         for each in typeErrorValues:
             self.assertRaises(TypeError, BlueExposureTest.FunctionReturningConstChar, each)
 
-
     def testUnicodeFunction(self):
         """
         unicode parameters should accept strings and unicode
         Anything else should raise a type error.
         """
-        
         successValues = ["this is a string", u"this is unicode", "", u""]
         typeErrorValues = [True, False, 0, 42, 3.14, (1, 2), [1, 2] ]
 
@@ -243,7 +231,6 @@ class TestFunctions(unittest.TestCase):
         can take place - prefer std::wstring.
         Anything else should raise a type error.
         """
-        
         successValues = [u"this is unicode", u""]
         typeErrorValues = [True, False, 0, 42, 3.14, (1, 2), [1, 2] ]
 
@@ -263,19 +250,19 @@ class TestFunctions(unittest.TestCase):
         for i in range(10):
             method = getattr(BlueExposureTest, "VoidArity%d" % i)
             args = tuple(argsList)
-            
+
             self.assertEqual(method(*args), None)
 
             argsList.append(42)
 
-    
+
     def testIntArityFunctions(self):
         argsList = []
 
         for i in range(10):
             method = getattr(BlueExposureTest, "IntArity%d" % i)
             args = tuple(argsList)
-            
+
             self.assertEqual(method(*args), i)
 
             argsList.append(42)
@@ -289,12 +276,12 @@ class TestFunctions(unittest.TestCase):
 
             method = getattr(BlueExposureTest, "BeResultArity%d" % i)
             args = tuple(argsList)
-            
+
             self.assertEqual(method(*args), None)
 
             BlueExposureTest.SetReturnError(True)
             self.assertRaises(RuntimeError, method, *args)
-            
+
             argsList.append(42)
 
 
@@ -306,10 +293,10 @@ class TestFunctions(unittest.TestCase):
 
             method = getattr(BlueExposureTest, "BeResultArity%dWithRef" % (i+1))
             args = tuple(argsList)
-            
+
             self.assertEqual(method(*args), 42)
 
             BlueExposureTest.SetReturnError(True)
             self.assertRaises(RuntimeError, method, *args)
-            
+
             argsList.append(42)

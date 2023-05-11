@@ -1,6 +1,6 @@
 import unittest
 import BlueExposureTest
-import sys
+
 
 class TestProperties(unittest.TestCase):
     """
@@ -21,14 +21,12 @@ class TestProperties(unittest.TestCase):
         x.myString = u"this is a test"
         self.assertEqual(x.myString, "this is a test")
 
-
     def _WStringAssignment(self, x):
         x.myUnicode = "this is a test"
         self.assertEqual(x.myUnicode, u"this is a test")
 
         x.myUnicode = u"this is a test"
         self.assertEqual(x.myUnicode, u"this is a test")
-
 
     def _BoolAssignment(self, x):
         x.myBool = True
@@ -45,12 +43,11 @@ class TestProperties(unittest.TestCase):
 
         def AssignFloat_ErrorExpected():
             x.myBool = 3.14
-        
         self.assertRaises(TypeError, AssignFloat_ErrorExpected)
 
         def AssignString_ErrorExpected():
             x.myBool = "True"
-        
+
         self.assertRaises(TypeError, AssignString_ErrorExpected)
 
 
@@ -66,22 +63,22 @@ class TestProperties(unittest.TestCase):
 
         def AssignLong_ErrorExpected():
             x.myInt = 2147483648
-        
+
         self.assertRaises(OverflowError, AssignLong_ErrorExpected)
 
         def AssignFloat_ErrorExpected():
             x.myInt = 3.14
-        
+
         self.assertRaises(TypeError, AssignFloat_ErrorExpected)
 
         def AssignString_ErrorExpected():
             x.myInt = "this is not a number"
-        
+
         self.assertRaises(TypeError, AssignString_ErrorExpected)
 
 
     def _Int64Assignment(self, x):
-        
+
         values = [0, 63, -1, 0x7fffffff, -0x7fffffff-1, 3, 0x7fffffff*2, -0x7fffffff*2]
 
         for each in values:
@@ -90,17 +87,17 @@ class TestProperties(unittest.TestCase):
 
         def AssignFloat_ErrorExpected():
             x.myInt64 = 3.14
-        
+
         self.assertRaises(TypeError, AssignFloat_ErrorExpected)
 
         def AssignString_ErrorExpected():
             x.myInt64 = "this is not a number"
-        
+
         self.assertRaises(TypeError, AssignString_ErrorExpected)
 
 
     def _FloatAssignment(self, x):
-        
+
         values = [0.0, 3.14, -2.77, 0, 42, -3]
 
         for each in values:
@@ -112,12 +109,12 @@ class TestProperties(unittest.TestCase):
 
         def AssignString_ErrorExpected():
             x.myFloat = "this is not a number"
-        
+
         self.assertRaises(TypeError, AssignString_ErrorExpected)
 
 
     def _DoubleAssignment(self, x):
-    
+
         values = [0.0, 3.14, -2.77, 0, 42, -3]
 
         for each in values:
@@ -126,12 +123,12 @@ class TestProperties(unittest.TestCase):
 
         def AssignString_ErrorExpected():
             x.myDouble = "this is not a number"
-        
+
         self.assertRaises(TypeError, AssignString_ErrorExpected)
 
 
     def _BoolAssignment(self, x):
-    
+
         x.myBool = True
         self.assertEqual(x.myBool, True)
 
@@ -146,12 +143,12 @@ class TestProperties(unittest.TestCase):
 
         def AssignFloat_ErrorExpected():
             x.myBool = 3.14
-        
+
         self.assertRaises(TypeError, AssignFloat_ErrorExpected)
 
         def AssignString_ErrorExpected():
             x.myBool = "true"
-        
+
         self.assertRaises(TypeError, AssignString_ErrorExpected)
 
 
@@ -172,82 +169,56 @@ class TestProperties(unittest.TestCase):
 
         self._StringAssignment(x)
 
-
     def testStringPropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
-
         self._StringAssignment(x)
-
 
     def testWStringAttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
-
         self._WStringAssignment(x)
-
 
     def testWStringPropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
-
         self._WStringAssignment(x)
-
 
     def testBoolAttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
-
         self._BoolAssignment(x)
-
 
     def testIntAttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
-
         self._IntAssignment(x)
-
 
     def testInt64AttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
-
         self._Int64Assignment(x)
-
 
     def testFloatAttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
-
         self._FloatAssignment(x)
-
 
     def testDoubleAttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
-
         self._DoubleAssignment(x)
-
 
     def testBoolPropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
-
         self._BoolAssignment(x)
-
 
     def testIntPropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
-
         self._IntAssignment(x)
-
 
     def testInt64PropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
-
         self._Int64Assignment(x)
-
 
     def testFloatPropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
-
         self._FloatAssignment(x)
-
 
     def testDoublePropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
-
         self._DoubleAssignment(x)
 
 
@@ -270,15 +241,12 @@ class TestProperties(unittest.TestCase):
 
     def testSharedStringAttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
-
         self._SharedStringAssignment(x)
-
 
     def testSharedStringPropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
 
         self._SharedStringAssignment(x)
-
 
     def _verifyDir(self, x):
         members = dir(x)
@@ -291,7 +259,7 @@ class TestProperties(unittest.TestCase):
         self.assertTrue( "myString" in members )
         self.assertTrue( "myUnicode" in members )
 
-    
+
     def testDirAttributes(self):
         x = BlueExposureTest.TestAttributes()
 

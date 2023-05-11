@@ -1,6 +1,6 @@
 import unittest
 import BlueExposureTest
-import sys
+
 
 class TestOptionalArgs(unittest.TestCase):
     """
@@ -94,7 +94,6 @@ class TestOptionalArgs(unittest.TestCase):
         val = x.MethodReturningBlueObject()
         self.assertEqual(val, None)
 
-
     def testOptionalArgs(self):
         x = BlueExposureTest.TestOptionalArgs()
 
@@ -129,7 +128,6 @@ class TestOptionalArgs(unittest.TestCase):
         self.assertEqual(result, 45)
 
         self.assertRaises(TypeError, x.CalcSum, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-
 
     def testBeOptionalArgs(self):
         x = BlueExposureTest.TestOptionalArgs()

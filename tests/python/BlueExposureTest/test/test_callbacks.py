@@ -1,9 +1,11 @@
 import unittest
 import BlueExposureTest
 
+
 def VoidCallback():
     pass
-    
+
+
 class TestCallbacks(unittest.TestCase):
     """
     A set of test cases focusing on Blue exposure's BlueScriptCallback.
@@ -29,7 +31,7 @@ class TestCallbacks(unittest.TestCase):
 
         def MyVoidCallback():
             called[0] = True
-            
+
         x.SetCallback(MyVoidCallback)
         self.assertTrue(x.CallCallbackVoid())
         self.assertTrue(called[0])
@@ -39,7 +41,7 @@ class TestCallbacks(unittest.TestCase):
 
         def MyVoidCallback():
             raise IndexError
-            
+
         x.SetCallback(MyVoidCallback)
         self.assertFalse(x.CallCallbackVoid())
 
@@ -48,7 +50,7 @@ class TestCallbacks(unittest.TestCase):
 
         def MyIntCallback():
             return 123
-            
+
         x.SetCallback(MyIntCallback)
         self.assertEqual(x.CallCallbackInt(), (True, 123))
 
@@ -57,7 +59,7 @@ class TestCallbacks(unittest.TestCase):
 
         def MyIntCallback():
             return "123"
-            
+
         x.SetCallback(MyIntCallback)
         self.assertFalse(x.CallCallbackInt()[0])
 
@@ -66,7 +68,7 @@ class TestCallbacks(unittest.TestCase):
 
         def MyStringIntCallback(x):
             return str(x)
-            
+
         x.SetCallback(MyStringIntCallback)
         self.assertEqual(x.CallCallbackStringInt(456), (True, "456"))
 
@@ -75,7 +77,7 @@ class TestCallbacks(unittest.TestCase):
 
         def MyIntStringFloatCallback(x, y):
             return int(x) + int(y)
-            
+
         x.SetCallback(MyIntStringFloatCallback)
         self.assertEqual(x.CallCallbackIntStringFloat("123", 456.4), (True, 579))
 
