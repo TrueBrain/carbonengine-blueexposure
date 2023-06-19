@@ -74,3 +74,5 @@ foreach(PYTHON_TEST ${PYTHON_TESTS})
     )
     set_tests_properties(${PYTHON_TEST} PROPERTIES ENVIRONMENT "PYTHONPATH=$<TARGET_FILE_DIR:BlueExposureTest>")
 endforeach()
+
+add_subdirectory(cpp)

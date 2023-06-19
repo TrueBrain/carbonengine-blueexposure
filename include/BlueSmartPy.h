@@ -383,13 +383,13 @@ public:
 class BluePyStr : public BluePy
 {
 public:
-	BluePyStr() {}
+	BluePyStr() = default;
 	BluePyStr(const BluePy &other) : BluePy(other) {}
 
 	// constructors, creating strings from char pointers.
-	explicit BluePyStr(const char *str) : BluePy(PyUnicode_FromString(const_cast<char*>(str)), false) {}
-	explicit BluePyStr(size_t len, const char *str = 0) :
-		BluePy(PyUnicode_FromStringAndSize(const_cast<char*>(str), (len)), false)
+	explicit BluePyStr(const char *str) : BluePy(PyUnicode_FromString(str), false) {}
+	explicit BluePyStr(size_t len, const char *str = nullptr) :
+		BluePy(PyUnicode_FromStringAndSize(str, len), false)
 	{}
 
 	// Two static functions to create formatted strings.  Don't fit with the overloading
@@ -443,7 +443,7 @@ public:
 	friend BluePyStr operator+(const char *left, const BluePyStr &right);
 	
 	//and to access the string
-	const char *Str() const {return PyUnicode_AS_DATA(o);}
+	const char *Str() const {return PyUnicode_AsUTF8AndSize(o, nullptr);}
 	const char *Str(Py_ssize_t &len) const {
 		const char *tmp = PyUnicode_AsUTF8AndSize(o, &len);
 		return tmp;
