@@ -29,7 +29,4 @@ if(WIN32)
     )
 endif()
 
-# By default test discovery happens as a post-build step. However, at that point
-# we may not have the required Python environment available yet. So we delay
-# test discovery to the pre-test phase.
 gtest_discover_tests(BlueExposureCppUnitTests)
