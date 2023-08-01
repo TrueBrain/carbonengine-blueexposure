@@ -1284,10 +1284,18 @@ PyObject* BlueWrapper::PyseqGetItem_(PyObject* self, Py_ssize_t index)
 {
 	GETLIST(NULL);
 
+    auto origIndex = index;
+
+    // negative indices are treated as relative to the end of the sequence
+    if ( index < 0 )
+    {
+        index = list->GetSize() + index;
+    }
+
 	if (index < 0 || index >= list->GetSize())
 	{
 		PyErr_Format(PyExc_IndexError, 
-			"list index %zi out of range, size is %zi", index, list->GetSize());
+			"list index %zi out of range, size is %zi", origIndex, list->GetSize());
 		return NULL;
 	}
 

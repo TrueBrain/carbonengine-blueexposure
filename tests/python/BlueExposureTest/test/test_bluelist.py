@@ -532,6 +532,15 @@ class TestBlueList(unittest.TestCase):
 
 		self.assertRaises(IndexError, AssignOutOfRange)
 
+	def testAccess_NegativeIndex(self):
+		obj = BlueExposureTest.TestAttributes()
+		childObj = BlueExposureTest.TestAttributes()
+		obj.myVector.append(childObj)
+		self.assertEqual(childObj, obj.myVector[-1])
+		with self.assertRaises(IndexError):
+			_ = obj.myVector[-2]
+
+
 	def testRefCounting(self):
 		obj = BlueExposureTest.TestAttributes()
 
