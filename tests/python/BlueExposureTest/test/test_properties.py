@@ -1,5 +1,6 @@
 import unittest
 import BlueExposureTest
+import sys
 
 
 class TestProperties(unittest.TestCase):
