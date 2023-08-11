@@ -68,7 +68,13 @@ foreach(PYTHON_TEST ${PYTHON_TESTS})
         COMMAND ${PYTHON_EXECUTABLE} -m unittest -v ${PYTHON_TEST}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python
     )
+if(WIN32)
+    set_tests_properties(${PYTHON_TEST} PROPERTIES ENVIRONMENT "PYTHONPATH=$<TARGET_FILE_DIR:BlueExposureTest>\;${CMAKE_CURRENT_SOURCE_DIR}/python\;${BRANCH_ROOT_DIR}/carbon/common/stdlib\;${BRANCH_ROOT_DIR}/vendor/python/3.8.1+ccp-stackless/${CCP_VENDOR_BIN_PATH};BUILDFLAVOR=$<LOWER_CASE:$<CONFIG>>")
+elseif(APPLE)
     set_tests_properties(${PYTHON_TEST} PROPERTIES ENVIRONMENT "PYTHONPATH=$<TARGET_FILE_DIR:BlueExposureTest>:${BRANCH_ROOT_DIR}/carbon/common/stdlib:${BRANCH_ROOT_DIR}/vendor/python/3.8.1+ccp-stackless/${CCP_VENDOR_BIN_PATH};BUILDFLAVOR=$<LOWER_CASE:$<CONFIG>>")
+else()
+    message(FATAL_ERROR "Unsupported platform")
+endif()
 endforeach()
 
 add_subdirectory(cpp)
