@@ -21,7 +21,7 @@ target_link_libraries(
 # to place it in the output folder.
 get_target_property(LIBPYTHON Python IMPORTED_LOCATION)
 add_custom_command(TARGET BlueExposureCppUnitTests POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:BlueExposureCppUnitTests> ${LIBPYTHON}
+    COMMAND ${CMAKE_COMMAND} -E copy ${LIBPYTHON} $<TARGET_FILE_DIR:BlueExposureCppUnitTests>
     COMMAND_EXPAND_LISTS
     VERBATIM
 )
