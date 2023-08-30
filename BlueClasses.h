@@ -15,7 +15,7 @@
 
 #ifndef NDEBUG
 // Keep track of all live instances of IRoot objects
-#define BLUE_LIVELIST_ENABLED 1
+#define BLUE_LIVELIST_ENABLED 0
 #endif
 
 BLUE_DECLARE( BlueClasses );
