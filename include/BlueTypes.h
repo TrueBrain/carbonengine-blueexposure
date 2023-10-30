@@ -249,7 +249,12 @@ namespace Be
 		SHAREDSTRING	= 34,
 		SHAREDSTRINGW   = 35,
 
-		VARTYPE_MAX		= 35,
+		ULONG = 36,				// 32 bit unsigned integer
+		UINT64 = 37,			// 64bit unsigned integer
+
+		VARTYPE_MAX		= 37,
+
+		
 
 		VARTYPE_FORCELONG = 0xFFFFFFFF
 	};	
@@ -258,6 +263,7 @@ namespace Be
 	{
 		double			mDouble;
 		int32_t			mLong;
+		uint32_t		mULong;
 		float			mFloat;
 		bool			mBool;
 		uint8_t			mByte;
@@ -266,6 +272,7 @@ namespace Be
 		char*			mCharPtr;
 		wchar_t*		mWCharPtr;
 		int64_t			mInt64;
+		uint64_t		mUInt64;
 #if BLUE_WITH_PYTHON
 		PyObject*		mPyObject;
 #endif

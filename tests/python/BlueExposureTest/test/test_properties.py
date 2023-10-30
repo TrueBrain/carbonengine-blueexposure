@@ -2,6 +2,10 @@ import unittest
 import BlueExposureTest
 import sys
 
+MAX_INT32   = 2147483647
+MAX_UINT32  = 4294967295
+MAX_INT64   = 9223372036854775807
+MAX_UINT64  = 18446744073709551615
 
 class TestProperties(unittest.TestCase):
     """
@@ -55,15 +59,14 @@ class TestProperties(unittest.TestCase):
     def _IntAssignment(self, x):
         # need to pass the expected exception type at the moment because it is a different
         # exception based upon whether we're assigning a property or an attribute
-
-        values = [0, 63, -1, 0x7fffffff, -0x7fffffff-1, True, False]
+        values = [0, 63, -1, MAX_INT32, -MAX_INT32-1, True, False]
 
         for each in values:
             x.myInt = each
             self.assertEqual(x.myInt, each, "Failed to assign %d" % each)
 
         def AssignLong_ErrorExpected():
-            x.myInt = (sys.maxsize + 1)
+            x.myInt = (MAX_INT32 + 1)
         
         self.assertRaises(OverflowError, AssignLong_ErrorExpected)
 
@@ -77,14 +80,43 @@ class TestProperties(unittest.TestCase):
 
         self.assertRaises(TypeError, AssignString_ErrorExpected)
 
+    def _UnsignedIntAssignment(self, x):
+        # need to pass the expected exception type at the moment because it is a different
+        # exception based upon whether we're assigning a property or an attribute
+        values = [0, 63, MAX_UINT32]
+
+        for each in values:
+            x.myUInt = each
+            self.assertEqual(x.myUInt, each, "Failed to assign %d" % each)
+
+        def AssignLong_ErrorExpected():
+            x.myUInt = (MAX_UINT32 + 1)
+
+        self.assertRaises(OverflowError, AssignLong_ErrorExpected)
+
+        def AssignFloat_ErrorExpected():
+            x.myUInt = 3.14
+
+        self.assertRaises(TypeError, AssignFloat_ErrorExpected)
+
+        def AssignString_ErrorExpected():
+            x.myUInt = "this is not a number"
+
+        self.assertRaises(TypeError, AssignString_ErrorExpected)
+
 
     def _Int64Assignment(self, x):
 
-        values = [0, 63, -1, 0x7fffffff, -0x7fffffff-1, 3, 0x7fffffff*2, -0x7fffffff*2]
+        values = [0, 63, -1, MAX_INT32, -MAX_INT32-1, 3, MAX_INT64, -MAX_INT64-1]
 
         for each in values:
             x.myInt64 = each
             self.assertEqual(x.myInt64, each)
+
+        def AssignLong_ErrorExpected():
+            x.myInt64 = (MAX_INT64 + 1)
+        
+        self.assertRaises(OverflowError, AssignLong_ErrorExpected)
 
         def AssignFloat_ErrorExpected():
             x.myInt64 = 3.14
@@ -93,6 +125,29 @@ class TestProperties(unittest.TestCase):
 
         def AssignString_ErrorExpected():
             x.myInt64 = "this is not a number"
+
+        self.assertRaises(TypeError, AssignString_ErrorExpected)
+
+    def _UnsignedInt64Assignment(self, x):
+
+        values = [0, 63, MAX_UINT64]
+
+        for each in values:
+            x.myUInt64 = each
+            self.assertEqual(x.myUInt64, each)
+
+        def AssignLong_ErrorExpected():
+            x.myUInt64 = (MAX_UINT64 + 1)
+        
+        self.assertRaises(OverflowError, AssignLong_ErrorExpected)
+
+        def AssignFloat_ErrorExpected():
+            x.myUInt64 = 3.14
+
+        self.assertRaises(TypeError, AssignFloat_ErrorExpected)
+
+        def AssignString_ErrorExpected():
+            x.myUInt64 = "this is not a number"
 
         self.assertRaises(TypeError, AssignString_ErrorExpected)
 
@@ -190,9 +245,17 @@ class TestProperties(unittest.TestCase):
         x = BlueExposureTest.TestAttributes()
         self._IntAssignment(x)
 
+    def testUnsignedIntAttributeAssignment(self):
+        x = BlueExposureTest.TestAttributes()
+        self._UnsignedIntAssignment(x)
+
     def testInt64AttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
         self._Int64Assignment(x)
+
+    def testUnsignedInt64AttributeAssignment(self):
+        x = BlueExposureTest.TestAttributes()
+        self._UnsignedInt64Assignment(x)
 
     def testFloatAttributeAssignment(self):
         x = BlueExposureTest.TestAttributes()
@@ -210,7 +273,15 @@ class TestProperties(unittest.TestCase):
         x = BlueExposureTest.TestProperties()
         self._IntAssignment(x)
 
+    def testUnsignedIntPropertyAssignment(self):
+        x = BlueExposureTest.TestProperties()
+        self._UnsignedIntAssignment(x)
+
     def testInt64PropertyAssignment(self):
+        x = BlueExposureTest.TestProperties()
+        self._Int64Assignment(x)
+
+    def testUInt64PropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
         self._Int64Assignment(x)
 
@@ -251,12 +322,13 @@ class TestProperties(unittest.TestCase):
 
     def _verifyDir(self, x):
         members = dir(x)
-
         self.assertTrue( "myInt" in members )
+        self.assertTrue( "myUInt" in members )
         self.assertTrue( "myFloat" in members )
         self.assertTrue( "myDouble" in members )
         self.assertTrue( "myBool" in members )
         self.assertTrue( "myInt64" in members )
+        self.assertTrue( "myUInt64" in members )
         self.assertTrue( "myString" in members )
         self.assertTrue( "myUnicode" in members )
 

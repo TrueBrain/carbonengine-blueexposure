@@ -27,9 +27,11 @@ private:
 	std::wstring m_myUnicode;
 	bool m_myBool;
 	int m_myInt;
+	unsigned int m_myUInt;
 	float m_myFloat;
 	double m_myDouble;
 	int64_t m_myInt64;
+	uint64_t m_myUInt64;
 	BlueSharedString m_sharedString;
 	BlueSharedStringW m_sharedStringW;
 

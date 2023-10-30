@@ -80,6 +80,25 @@ bool BlueExtractInt( PyObject* obj, int& value )
 	return true;
 }
 
+bool BlueExtractUInt( PyObject* obj, unsigned int& value )
+{
+	if( PyLong_Check( obj ) )
+	{
+		value = (int)PyLong_AsUnsignedLong( obj );
+
+		if( value == -1 && PyErr_Occurred() )
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+
+	return true;
+}
+
 bool BlueExtractDouble( PyObject* obj, double& value )
 {
 	if( PyFloat_Check( obj ) )
@@ -267,6 +286,10 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint32_t& result, u
 	if( PyLong_Check(argument) )
 	{
 		result = (unsigned int)PyLong_AsUnsignedLong( argument );
+		if( result == -1 && PyErr_Occurred() )
+		{
+			return false;
+		}
 	}
 	else
 	{
@@ -338,6 +361,10 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, int64_t& result, un
 	if( PyLong_Check(argument) )
 	{
 		result = PyLong_AsLongLong( argument );
+		if( result == -1 && PyErr_Occurred() )
+		{
+			return false;
+		}
 	}
 	else
 	{
@@ -356,6 +383,10 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint64_t& result, u
 	if( PyLong_Check(argument) )
 	{
 		result = PyLong_AsUnsignedLongLong( argument );
+		if( result == -1 && PyErr_Occurred() )
+		{
+			return false;
+		}
 	}
 	else
 	{

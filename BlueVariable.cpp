@@ -167,6 +167,33 @@ template<> bool Copy<Be::LONG>(const Be::VarEntry* entry, Be::Var* dst, Be::Var*
 	return true;
 }
 
+template <>
+bool AreEqual<Be::ULONG>( const Be::VarEntry* entry, const Be::Var* a, const Be::Var* b )
+{
+	return a->mULong == b->mULong;
+}
+
+#if BLUE_WITH_PYTHON
+template <>
+bool ConvertFromPython<Be::ULONG>( const Be::VarEntry* var, Be::Var* value, PyObject* v )
+{
+	return BlueExtractUInt( v, value->mULong );
+}
+
+template <>
+void ConvertToPython<Be::ULONG>( const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret )
+{
+	ret = PyLong_FromUnsignedLong( value->mULong );
+}
+#endif
+
+template <>
+bool Copy<Be::ULONG>( const Be::VarEntry* entry, Be::Var* dst, Be::Var* src, Copier* copier )
+{
+	dst->mULong = src->mULong;
+	return true;
+}
+
 
 template<> bool AreEqual<Be::FLOAT>(const Be::VarEntry* entry, const Be::Var* a, const Be::Var* b)
 {
@@ -244,7 +271,6 @@ template<> bool Copy<Be::BOOL>(const Be::VarEntry* entry, Be::Var* dst, Be::Var*
 
 template<> bool AreEqual<Be::IROOT>(const Be::VarEntry* entry, const Be::Var* a, const Be::Var* b)
 {
-	
 	// We're not really handling the generic case of embedded objects
 	// but we are checking the common case of empty lists.
 	{
@@ -507,6 +533,49 @@ template<> void ConvertToPython<Be::INT64>(const Be::VarEntry* entry, const Be::
 template<> bool Copy<Be::INT64>(const Be::VarEntry* entry, Be::Var* dst, Be::Var* src, Copier* copier)
 {
 	dst->mInt64 = src->mInt64;
+	return true;
+}
+
+//
+
+template <>
+bool AreEqual<Be::UINT64>( const Be::VarEntry* entry, const Be::Var* a, const Be::Var* b )
+{
+	return a->mUInt64 == b->mUInt64;
+}
+
+#if BLUE_WITH_PYTHON
+template <>
+bool ConvertFromPython<Be::UINT64>( const Be::VarEntry* var, Be::Var* value, PyObject* v )
+{
+	uint64_t t;
+	if( PyLong_Check( v ) )
+	{
+		t = PyLong_AsUnsignedLongLong( v );
+	}
+	else
+	{
+		return false;
+	}
+	if( t == -1 && PyErr_Occurred() )
+	{
+		return false;
+	}
+	value->mUInt64 = t;
+	return true;
+}
+
+template <>
+void ConvertToPython<Be::UINT64>( const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret )
+{
+	ret = PyLong_FromUnsignedLongLong( value->mUInt64 );
+}
+#endif
+
+template <>
+bool Copy<Be::UINT64>( const Be::VarEntry* entry, Be::Var* dst, Be::Var* src, Copier* copier )
+{
+	dst->mUInt64 = src->mUInt64;
 	return true;
 }
 
@@ -1030,6 +1099,7 @@ void InitializeBlueVariables()
 {
 	INIT_BLUE_VAR(Be::INVALID)
 	INIT_BLUE_VAR(Be::LONG)
+	INIT_BLUE_VAR(Be::ULONG)
 	INIT_BLUE_VAR(Be::FLOAT)
 	INIT_BLUE_VAR(Be::DOUBLE)
 	INIT_BLUE_VAR(Be::BOOL)
@@ -1038,6 +1108,7 @@ void InitializeBlueVariables()
 	INIT_BLUE_VAR(Be::CHARARRAY)
 	INIT_BLUE_VAR(Be::CSTRING)
 	INIT_BLUE_VAR(Be::INT64)
+	INIT_BLUE_VAR(Be::UINT64)
 	INIT_BLUE_VAR(Be::PYOBJECT)
 	INIT_BLUE_VAR(Be::PYOBJECTPTR)
 	INIT_BLUE_VAR(Be::REFERENCE)
