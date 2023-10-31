@@ -153,8 +153,8 @@ bool BlueExtractArgument( BlueScriptValue argument, T& resultRef, unsigned int a
 BLUEIMPORT bool BlueExtractString( BlueScriptValue obj, std::string& value );
 BLUEIMPORT bool BlueExtractWString( BlueScriptValue obj, std::wstring& value );
 BLUEIMPORT bool BlueExtractBool( BlueScriptValue obj, bool& value );
-BLUEIMPORT bool BlueExtractInt( BlueScriptValue obj, int& value );
-BLUEIMPORT bool BlueExtractUInt( BlueScriptValue obj, unsigned int& value );
+BLUEIMPORT bool BlueExtractInt( BlueScriptValue obj, int32_t& value );
+BLUEIMPORT bool BlueExtractUInt( BlueScriptValue obj, uint32_t& value );
 BLUEIMPORT bool BlueExtractFloat( BlueScriptValue obj, float& value );
 BLUEIMPORT bool BlueExtractDouble( BlueScriptValue obj, double& value );
 BLUEIMPORT bool BlueExtractVector( BlueScriptValue obj, float* elements, size_t elementsCount );

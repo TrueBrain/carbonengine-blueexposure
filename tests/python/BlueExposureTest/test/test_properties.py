@@ -65,10 +65,15 @@ class TestProperties(unittest.TestCase):
             x.myInt = each
             self.assertEqual(x.myInt, each, "Failed to assign %d" % each)
 
-        def AssignLong_ErrorExpected():
+        def AssignLongMaxOverflow_ErrorExpected():
             x.myInt = (MAX_INT32 + 1)
         
-        self.assertRaises(OverflowError, AssignLong_ErrorExpected)
+        self.assertRaises(OverflowError, AssignLongMaxOverflow_ErrorExpected)
+
+        def AssignLongMinOverflow_ErrorExpected():
+            x.myInt = (-MAX_INT32-2)
+        
+        self.assertRaises(OverflowError, AssignLongMinOverflow_ErrorExpected)
 
         def AssignFloat_ErrorExpected():
             x.myInt = 3.14
@@ -113,10 +118,15 @@ class TestProperties(unittest.TestCase):
             x.myInt64 = each
             self.assertEqual(x.myInt64, each)
 
-        def AssignLong_ErrorExpected():
+        def AssignLongMaxOverflow_ErrorExpected():
             x.myInt64 = (MAX_INT64 + 1)
         
-        self.assertRaises(OverflowError, AssignLong_ErrorExpected)
+        self.assertRaises(OverflowError, AssignLongMaxOverflow_ErrorExpected)
+
+        def AssignLongMinOverflow_ErrorExpected():
+            x.myInt = (-MAX_INT64-2)
+        
+        self.assertRaises(OverflowError, AssignLongMinOverflow_ErrorExpected)
 
         def AssignFloat_ErrorExpected():
             x.myInt64 = 3.14
