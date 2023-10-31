@@ -62,15 +62,29 @@ bool BlueExtractBool( PyObject* obj, bool& value )
 	return true;
 }
 
-bool BlueExtractInt( PyObject* obj, int& value )
+bool BlueExtractInt( PyObject* obj, int32_t& value )
 {
 	if( PyLong_Check( obj ) )
 	{
-		value = (int)PyLong_AsLong( obj );
-		if (value == -1 && PyErr_Occurred())
+		long longValue = PyLong_AsLong( obj );
+
+		if( longValue == -1 && PyErr_Occurred() )
 		{
 			return false;
 		}
+
+		if( longValue > std::numeric_limits<int32_t>::max() )
+		{
+			PyErr_SetString( PyExc_OverflowError, "int too big to convert" );
+			return false;
+		}
+		else if( longValue < std::numeric_limits<int32_t>::min() )
+		{
+			PyErr_SetString( PyExc_OverflowError, "int too small to convert" );
+			return false;
+		}
+
+		value = (int32_t)longValue;
 	}
 	else
 	{
@@ -80,16 +94,24 @@ bool BlueExtractInt( PyObject* obj, int& value )
 	return true;
 }
 
-bool BlueExtractUInt( PyObject* obj, unsigned int& value )
+bool BlueExtractUInt( PyObject* obj, uint32_t& value )
 {
 	if( PyLong_Check( obj ) )
 	{
-		value = (int)PyLong_AsUnsignedLong( obj );
+		unsigned long longValue = PyLong_AsUnsignedLong( obj );
 
-		if( value == -1 && PyErr_Occurred() )
+		if( longValue == -1 && PyErr_Occurred() )
 		{
 			return false;
 		}
+
+		if( longValue > std::numeric_limits<uint32_t>::max() )
+		{
+			PyErr_SetString( PyExc_OverflowError, "int too small to convert" );
+			return false;
+		}
+
+		value = (uint32_t)longValue;
 	}
 	else
 	{
@@ -281,6 +303,12 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, int32_t& result, un
 			return false;
 		}
 
+		if( longResult < std::numeric_limits<int32_t>::min() )
+		{
+			PyErr_SetString( PyExc_OverflowError, "int too small to convert" );
+			return false;
+		}
+
 		result = (int32_t)longResult;
 	}
 	else
@@ -307,6 +335,12 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint32_t& result, u
 		if( longResult > std::numeric_limits<uint32_t>::max() )
 		{
 			PyErr_SetString( PyExc_OverflowError, "int too big to convert" );
+			return false;
+		}
+
+		if( longResult < std::numeric_limits<uint32_t>::min() )
+		{
+			PyErr_SetString( PyExc_OverflowError, "int too small to convert" );
 			return false;
 		}
 
