@@ -267,21 +267,21 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, int32_t& result, un
 {
 	if( PyLong_Check( argument ) )
 	{
-		int intResult = PyLong_AsLong( argument );
+		long longResult = PyLong_AsLong( argument );
 
-		if( intResult == -1 && PyErr_Occurred() )
+		if( longResult == -1 && PyErr_Occurred() )
 		{
 			return false;
 		}
 
 		// Check for overflow
-		if( intResult > std::numeric_limits<int32_t>::max() )
+		if( longResult > std::numeric_limits<int32_t>::max() )
 		{
 			PyErr_SetString( PyExc_OverflowError, "int too big to convert" );
 			return false;
 		}
 
-		result = (int32_t)intResult;
+		result = (int32_t)longResult;
 	}
 	else
 	{
@@ -296,21 +296,21 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, uint32_t& result, u
 {
 	if( PyLong_Check( argument ) )
 	{
-		unsigned int intResult = PyLong_AsUnsignedLong( argument );
+		unsigned long longResult = PyLong_AsUnsignedLong( argument );
 
-		if( intResult == -1 && PyErr_Occurred() )
+		if( longResult == -1 && PyErr_Occurred() )
 		{
 			return false;
 		}
 
 		// Check for overflow
-		if( intResult > std::numeric_limits<uint32_t>::max() )
+		if( longResult > std::numeric_limits<uint32_t>::max() )
 		{
 			PyErr_SetString( PyExc_OverflowError, "int too big to convert" );
 			return false;
 		}
 
-		result = (uint32_t)intResult;
+		result = (uint32_t)longResult;
 	}
 	else
 	{
