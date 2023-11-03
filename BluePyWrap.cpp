@@ -651,7 +651,7 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 					return nullptr;
 				}
 			}
-			if( ld->mPythonKlass )
+			if( ld && ld->mPythonKlass )
 			{
 				// Get the dict contents from the Python object
 				bool handled;
