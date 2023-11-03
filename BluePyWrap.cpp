@@ -705,6 +705,7 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 						Py_XDECREF( dict );
 						return nullptr;
 					}
+					Py_INCREF( Py_None );
 				}
 			}
 			return dict;
