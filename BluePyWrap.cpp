@@ -573,14 +573,11 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 	
 	//In the general case we always try a deco first
 	BlueLockData *ld = LD();
-	bool isDictFunc = strcmp( name, "__dict__" ) == 0;
-	if ( !parent && ld && ld->mPythonKlass && !isDictFunc ) {
+	if (!parent && ld && ld->mPythonKlass) {
 		bool handled = false;
 		PyObject* retval = ld->mPythonKlass->GetAttr(name, &handled, this);
-		if ( handled )
-		{
+		if (handled)
 			return retval;
-		}
 	} 
 		
 	IPythonMethods *methods = GetPyMethods();
@@ -589,10 +586,8 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 		// Then Python methods
 		bool handled = false;
 		PyObject* retval = methods->GetAttr(name, &handled);
-		if ( handled )
-		{
+		if (handled)
 			return retval;
-		}
 	}
 
 	if (name[0] == '_')
@@ -651,21 +646,9 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 					return nullptr;
 				}
 			}
-			if( ld && ld->mPythonKlass )
-			{
-				// Get the dict contents from the Python object
-				bool handled;
-				PyObject* pythonKlassDict = ld->mPythonKlass->GetAttr( name, &handled, this );
-				if( handled )
-				{
-					PyDict_Update( dict, pythonKlassDict );
-				}
-			}
 
-			//now loop over all variables, methods and interfaces
-			std::unordered_set<unsigned int> interfaces;
+			//now loop over all variables
 			for(const Be::ClassInfo* type = Type(); type; type = type->mParentClassInfo)
-			{
 				for (const Be::VarEntry* entry = type->mMemberTable; entry->mName; entry++) {
 					if (entry->mEditFlags & Be::HIDDEN)
 						continue;
@@ -676,38 +659,6 @@ PyObject* BlueWrapper::PyGetAttr(const char* name)
 					}
 					Py_INCREF( Py_None );
 				}
-				for( const PyMethodDef* entry = type->mPyMethodTable; entry->ml_name; entry++ )
-				{
-					if( PyDict_SetItemString( dict, entry->ml_name, Py_None ) )
-					{
-						Py_XDECREF( dict );
-						return nullptr;
-					}
-					Py_INCREF( Py_None );
-				}
-				for( const Be::InterfaceEntry* entry = type->mInterfaceTable; entry->mIID; entry++ )
-				{
-					interfaces.insert( entry->mIID->GetHash() );
-				}
-			}
-			// Finally, loop over Thunker methods
-			for( auto it : BlueRegistration::GetGlobalThunkerRegs() )
-			{
-				if( interfaces.find( it.second.GetHash() ) == interfaces.end() )
-				{
-					continue; // This is for an interface which our class does not implement.
-				}
-				// Loop until we hit the endEntry (ml_name is 0), see definition of THUNKER_END
-				for( const BlueMethodDefinition* def = it.first; def->ml_name; def++ )
-				{
-					if( PyDict_SetItemString( dict, def->ml_name, Py_None ) )
-					{
-						Py_XDECREF( dict );
-						return nullptr;
-					}
-					Py_INCREF( Py_None );
-				}
-			}
 			return dict;
 		}
 		else if (strcmp(name, "__iroot__") == 0)
