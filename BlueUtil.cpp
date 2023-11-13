@@ -281,24 +281,33 @@ static PyObject* PyBlueObject_Dir( PyObject* self, PyObject* args )
 	return results;
 };
 
-BLUEIMPORT void BlueRegisterPyMethodDefs( PyTypeObject* pyType, const PyMethodDef* methods, const Be::InterfaceEntry* interfaces, std::vector<PyMethodDef>* methodDefs )
+BLUEIMPORT void BlueRegisterPyMethodDefs( PyTypeObject* pyType, std::vector<PyMethodDef>* methods, const Be::InterfaceEntry* interfaces )
 {
 	CCP_ASSERT( pyType );
 	CCP_ASSERT( methods );
 	CCP_ASSERT( interfaces );
-	CCP_ASSERT( methodDefs );
 
 	bool hasDirMethod = false;
 
-	for( int i = 0; methods[i].ml_name; ++i )
+	for( PyMethodDef def : *methods )
 	{
-		PyMethodDef def = methods[i];
-		methodDefs->push_back( def );
-
 		if( !strcmp( "__dir__", def.ml_name ) )
 		{
 			hasDirMethod = true;
+			break;
 		}
+	}
+
+	// Add a dir method if one hasn't already been registered.
+	if( !hasDirMethod )
+	{
+		PyMethodDef dirMethodDef = {
+			"__dir__",
+			(PyCFunction)PyBlueObject_Dir,
+			METH_NOARGS,
+			"Returns a list of methods and attributes."
+		};
+		methods->push_back( dirMethodDef );
 	}
 
 	// Create a set of relevant IID hashes for quick lookup.
@@ -319,24 +328,12 @@ BLUEIMPORT void BlueRegisterPyMethodDefs( PyTypeObject* pyType, const PyMethodDe
 		// Loop until we hit the endEntry (ml_name is 0), see definition of THUNKER_END
 		for( const BlueMethodDefinition* def = it.first; def->ml_name; def++ )
 		{
-			methodDefs->push_back( static_cast<PyMethodDef>( *def ) );
+			methods->push_back( static_cast<PyMethodDef>( *def ) );
 		}
 	}
 
-	// Add a dir method if one hasn't already been registered.
-	if( !hasDirMethod )
-	{
-		PyMethodDef dirMethodDef = {
-			"__dir__",
-			(PyCFunction)PyBlueObject_Dir,
-			METH_NOARGS,
-			"Returns a list of methods and attributes."
-		};
-		methodDefs->push_back( dirMethodDef );
-	}
-
-	methodDefs->push_back( PyMethodDef{ 0 } ); // Null terminator.
-	pyType->tp_methods = &( *methodDefs )[0];
+	methods->push_back( PyMethodDef{ 0 } ); // Null terminator.
+	pyType->tp_methods = &( *methods )[0];
 }
 
 

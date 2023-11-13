@@ -34,22 +34,19 @@
 	static std::vector<Be::InterfaceEntry> s_interfaces; \
 	static std::map<std::string, Be::BlueExposureFunctionSignature> s_signatures; \
 	static std::vector<PyMemberDef> s_memberDefs; \
-	static std::vector<PyMethodDef> s_methodDefs; \
 	Be::InterfaceEntry rootEntry = {&s_iroot, BLUE_INTERFACEOFFSET(_Class)}; \
 	s_interfaces.push_back( rootEntry ); \
 	Be::InterfaceEntry myEntry = {&s_iid, BLUE_INTERFACEOFFSET(_Class)}; \
 	s_interfaces.push_back( myEntry );
 
 #define EXPOSURE_END_IMPL(_parentclasstype, _parentoffs)\
-	PyMethodDef methodsEndItem = { 0 };\
-	s_methods.push_back( methodsEndItem ); \
 	Be::VarEntry attributesEndItem = { 0 }; \
 	s_attributes.push_back( attributesEndItem ); \
 	Be::InterfaceEntry interfacesEnd = { 0 }; \
 	s_interfaces.push_back( interfacesEnd ); \
 	\
 	BlueInitializePyType( &s_pyType, &_tmpclsid, _tmpdoc, &s_interfaces[0], PyNew ); \
-	BlueRegisterPyMethodDefs( &s_pyType, &s_methods[0], &s_interfaces[0], &s_methodDefs ); \
+	BlueRegisterPyMethodDefs( &s_pyType, &s_methods, &s_interfaces[0] ); \
 	BlueRegisterPyMemberDefs( &s_pyType, &s_attributes[0], &s_memberDefs ); \
 	\
 	static Be::ClassInfo _classinfo; \
