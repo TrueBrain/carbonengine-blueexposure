@@ -332,15 +332,15 @@ class TestProperties(unittest.TestCase):
 
     def _verifyDir(self, x):
         members = dir(x)
-        self.assertTrue( "myInt" in members )
-        self.assertTrue( "myUInt" in members )
-        self.assertTrue( "myFloat" in members )
-        self.assertTrue( "myDouble" in members )
-        self.assertTrue( "myBool" in members )
-        self.assertTrue( "myInt64" in members )
-        self.assertTrue( "myUInt64" in members )
-        self.assertTrue( "myString" in members )
-        self.assertTrue( "myUnicode" in members )
+        self.assertIn( "myInt", members )
+        self.assertIn( "myUInt", members )
+        self.assertIn( "myFloat", members )
+        self.assertIn( "myDouble", members )
+        self.assertIn( "myBool", members )
+        self.assertIn( "myInt64", members )
+        self.assertIn( "myUInt64", members )
+        self.assertIn( "myString", members )
+        self.assertIn( "myUnicode", members )
 
 
     def testDirAttributes(self):

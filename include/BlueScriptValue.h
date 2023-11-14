@@ -12,6 +12,7 @@
 #if BLUE_WITH_PYTHON
 
 #include <Python.h>
+#include <structmember.h>
 
 typedef PyObject* BlueScriptValue;
 typedef PyObject* BlueScriptArguments;
