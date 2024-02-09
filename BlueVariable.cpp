@@ -444,7 +444,7 @@ template<> bool AreEqual<Be::CHARARRAY>(const Be::VarEntry* entry, const Be::Var
 #if BLUE_WITH_PYTHON
 template<> bool ConvertFromPython<Be::CHARARRAY>(const Be::VarEntry* var, Be::Var* value, PyObject* v)
 {
-	if (PyBytes_Check(v) == true)
+	if (PyBytes_Check(v))
 	{
 		if (PyBytes_GET_SIZE(v) >= (Py_ssize_t)var->mSize)
 			PyErr_SetString(PyExc_OverflowError, "String is too large");
@@ -672,7 +672,8 @@ template<> bool ConvertFromPython<Be::WCSTRING>(const Be::VarEntry* var, Be::Var
 		return false;
 	}
 	CCP_FREE(value->mWCharPtr);
-	value->mWCharPtr = CCP_WSTRDUP( __FUNCTION__, (const wchar_t*)PyUnicode_AS_UNICODE(tmp) );
+	Py_ssize_t tmp_size;
+	value->mWCharPtr = CCP_WSTRDUP( __FUNCTION__, PyUnicode_AsWideCharString(tmp, &tmp_size) );
 	Py_DECREF(tmp);
 	return true;
 }
@@ -706,7 +707,8 @@ template<> bool ConvertFromPython<Be::WREFERENCE>(const Be::VarEntry* var, Be::V
 		return false;
 	}
 	CCP_FREE(value->mWCharPtr);
-	value->mWCharPtr = CCP_WSTRDUP( __FUNCTION__, (const wchar_t*)PyUnicode_AS_UNICODE(tmp) );
+	Py_ssize_t tmp_size;
+	value->mWCharPtr = CCP_WSTRDUP( __FUNCTION__, PyUnicode_AsWideCharString(tmp, &tmp_size) );
 	Py_DECREF(tmp);
 	return true;
 }
@@ -917,7 +919,7 @@ template<> bool ConvertFromPython<Be::STDWSTRING>(const Be::VarEntry* var, Be::V
 template<> void ConvertToPython<Be::STDWSTRING>(const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret)
 {
 	const std::wstring &s = *reinterpret_cast<const std::wstring*>(value);
-	ret = PyUnicode_FromUnicode( (Py_UNICODE*)s.c_str(), s.size() );
+	ret = PyUnicode_FromWideChar( (const wchar_t*)s.c_str(), -1 );
 }
 #endif
 
@@ -1060,7 +1062,7 @@ template <>
 void ConvertToPython<Be::SHAREDSTRINGW>( const Be::VarEntry* entry, const Be::Var* value, PyObject*& ret )
 {
 	const BlueSharedStringW& s = *reinterpret_cast<const BlueSharedStringW*>( value );
-	ret = PyUnicode_FromUnicode( (Py_UNICODE*)s.c_str(), wcslen( s.c_str() ) );
+	ret = PyUnicode_FromWideChar( (const wchar_t*)s.c_str(), -1 );
 }
 #endif
 

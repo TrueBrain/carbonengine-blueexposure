@@ -450,6 +450,11 @@ class TestStandAloneBlueExposure(unittest.TestCase):
         self.assertEqual(x.ConvertStringToSharedString("abc"), "abc")
         self.assertEqual(x.ConvertSharedStringToString("def"), "def")
 
+    def testSharedStringWMethods(self):
+        x = BlueExposureTest.TestMethods()
+        self.assertEqual(x.ConvertWStringToSharedStringW(u"abc wide"), u"abc wide")
+        self.assertEqual(x.ConvertSharedStringWToWString(u"def wide"), u"def wide")
+
     def testPassArgumentsWithoutKeywords(self):
         x = BlueExposureTest.TestMethods()
         result = x.MethodAcceptingKeywordArguments(1, 2, 3)

@@ -225,6 +225,12 @@ class TestProperties(unittest.TestCase):
         x.sharedString = u"this is a test"
         self.assertEqual(x.sharedString, "this is a test")
 
+    def _SharedStringWAssignment(self, x):
+        x.sharedStringW = u"Test wide SharedString nr1"
+        self.assertEqual(x.sharedStringW, "Test wide SharedString nr1")
+
+        x.sharedStringW = u"Test wide SharedString nr2"
+        self.assertEqual(x.sharedStringW, "Test wide SharedString nr2")
 
     """
     And here come the test functions themselves.
@@ -327,8 +333,15 @@ class TestProperties(unittest.TestCase):
 
     def testSharedStringPropertyAssignment(self):
         x = BlueExposureTest.TestProperties()
-
         self._SharedStringAssignment(x)
+
+    def testSharedStringWAttributeAssignment(self):
+        x = BlueExposureTest.TestAttributes()
+        self._SharedStringWAssignment(x)
+
+    def testSharedStringWPropertyAssignment(self):
+        x = BlueExposureTest.TestProperties()
+        self._SharedStringWAssignment(x)
 
     def _verifyDir(self, x):
         members = dir(x)
@@ -341,6 +354,8 @@ class TestProperties(unittest.TestCase):
         self.assertIn( "myUInt64", members )
         self.assertIn( "myString", members )
         self.assertIn( "myUnicode", members )
+        self.assertIn( "sharedString", members )
+        self.assertIn( "sharedStringW", members )
 
 
     def testDirAttributes(self):
