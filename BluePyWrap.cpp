@@ -1099,7 +1099,7 @@ PyTypeObject* BlueWrapper::InitPyType()
 	
 	static PyTypeObject sPyType = 
 		{
-			PyObject_HEAD_INIT(&PyType_Type)
+			PyVarObject_HEAD_INIT(&PyType_Type, 0)
 			0,					/*					tp_name*/
 			sizeof(BlueWrapper),/*					tp_basicsize*/
 			0,					/*					tp_itemsize*/

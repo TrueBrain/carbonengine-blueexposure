@@ -28,7 +28,7 @@
 	static Be::IID s_iid(#_classname); \
 	static Be::IID s_iroot("IRoot"); \
 	\
-	static PyTypeObject s_pyType = { PyObject_HEAD_INIT(&PyType_Type) }; \
+	static PyTypeObject s_pyType = { PyVarObject_HEAD_INIT(&PyType_Type, 0) }; \
 	static std::vector<PyMethodDef> s_methods;\
 	static std::vector<Be::VarEntry> s_attributes; \
 	static std::vector<Be::InterfaceEntry> s_interfaces; \
