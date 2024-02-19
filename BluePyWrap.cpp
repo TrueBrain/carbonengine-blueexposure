@@ -83,17 +83,17 @@ BlueWrapper::TypeLocks BlueWrapper::sTypeLocks("BlueWrapper/sTypeLocks");
 //--------------------------------------------------------------------
 void * BlueWrapper::operator new( size_t size, PyTypeObject* type )
 {
-	return PyObject_GC_New( BlueWrapper, type );
+	return PyObject_New( BlueWrapper, type );
 }
 
 void BlueWrapper::operator delete( void *ptr )
 {
-	PyObject_GC_Del(ptr);
+	PyObject_Del( ptr );
 }
 
 void BlueWrapper::operator delete(void *ptr, PyTypeObject* type)
 {
-	PyObject_GC_Del(ptr);
+	PyObject_Del( ptr );
 }
 
 BlueWrapper *BlueWrapper::GetWrapper( IRoot* obj, PyTypeObject* type )
@@ -980,7 +980,6 @@ int BlueWrapper::PySetAttr(const char* name, PyObject* v)
 	return 0;
 }
 
-
 PyObject* BlueWrapper::PyCompare(PyObject* other, int op)
 {
 	IRoot *ptr = GetIRoot(other);
@@ -1119,7 +1118,7 @@ PyTypeObject* BlueWrapper::InitPyType()
 			0,					/*getattrofunc		tp_getattro*/
 			0,					/*setattrofunc		tp_setattro*/
 			0,					/*PyBufferProcs		*tp_as_buffer*/
-			0 ,	/*long				tp_flags*/
+			0,	/*long				tp_flags*/
 			0,					/*char				*tp_doc*/
 			0,					/*tp_traverse*/ //for GC
 			0,					/*tp_clear*/	//for GC
