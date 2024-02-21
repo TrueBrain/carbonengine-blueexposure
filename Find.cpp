@@ -7,10 +7,6 @@
 
 #if BLUE_WITH_PYTHON
 
-#include "include/IList.h"
-#include "include/IBlueDict.h"
-#include "include/BlueUtil.h"
-
 #include "Find.h"
 
 #include <vector>

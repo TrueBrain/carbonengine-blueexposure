@@ -9,6 +9,9 @@
 #ifndef Find_h
 #define Find_h
 
+#include "IList.h"
+#include "IBlueDict.h"
+#include "BlueUtil.h"
 #include "BlueTypes.h"
 #include "BlueSmartPy.h"
 
