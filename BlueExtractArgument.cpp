@@ -21,7 +21,7 @@ bool BlueExtractString( PyObject* obj, std::string& val )
 
 	Py_ssize_t length = 0;
 
-	if ((ok = PyUnicode_Check(obj)) == true)
+	if ((ok = PyUnicode_Check(obj)))
 	{
 		const char* buffer = PyUnicode_AsUTF8AndSize( obj, &length );
 		val.assign( buffer, length );
@@ -35,14 +35,14 @@ bool BlueExtractWString( PyObject* obj, std::wstring& val )
 {
 	bool ok = false;
 
-	if ((ok = PyUnicode_Check(obj)) == true)
+	if ((ok = PyUnicode_Check(obj)))
 	{
-		Py_ssize_t val_length;
-		val = PyUnicode_AsWideCharString(obj, &val_length);
+		wchar_t *tmpWideChar = PyUnicode_AsWideCharString(obj, nullptr);
+		val = CCP_WSTRDUP( __FUNCTION__, tmpWideChar );
+		PyMem_Free(tmpWideChar);
 
 		// The earlier string check left the error flag enabled
 		PyErr_Clear();
-
 		ok = true;
 	}
 
@@ -556,8 +556,9 @@ bool BLUEIMPORT BlueExtractArgumentImpl( PyObject* argument, const wchar_t*& res
 		return false;
 	}
 
-	Py_ssize_t arg_length;
-	result = PyUnicode_AsWideCharString(argument, &arg_length);
+	wchar_t *tmpWideChar = PyUnicode_AsWideCharString(argument, nullptr);
+	result = CCP_WSTRDUP( __FUNCTION__, tmpWideChar );
+	PyMem_Free(tmpWideChar);
 	return true;
 }
 

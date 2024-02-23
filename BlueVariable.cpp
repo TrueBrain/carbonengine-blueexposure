@@ -672,8 +672,9 @@ template<> bool ConvertFromPython<Be::WCSTRING>(const Be::VarEntry* var, Be::Var
 		return false;
 	}
 	CCP_FREE(value->mWCharPtr);
-	Py_ssize_t tmp_size;
-	value->mWCharPtr = CCP_WSTRDUP( __FUNCTION__, PyUnicode_AsWideCharString(tmp, &tmp_size) );
+	wchar_t *tmpWideChar = PyUnicode_AsWideCharString(tmp, nullptr);
+	value->mWCharPtr = CCP_WSTRDUP( __FUNCTION__, tmpWideChar );
+	PyMem_Free(tmpWideChar);
 	Py_DECREF(tmp);
 	return true;
 }
@@ -707,8 +708,9 @@ template<> bool ConvertFromPython<Be::WREFERENCE>(const Be::VarEntry* var, Be::V
 		return false;
 	}
 	CCP_FREE(value->mWCharPtr);
-	Py_ssize_t tmp_size;
-	value->mWCharPtr = CCP_WSTRDUP( __FUNCTION__, PyUnicode_AsWideCharString(tmp, &tmp_size) );
+	wchar_t *tmpWideChar = PyUnicode_AsWideCharString(tmp, nullptr);
+	value->mWCharPtr = CCP_WSTRDUP( __FUNCTION__, tmpWideChar );
+	PyMem_Free(tmpWideChar);
 	Py_DECREF(tmp);
 	return true;
 }
