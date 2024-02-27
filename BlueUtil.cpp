@@ -278,6 +278,12 @@ static PyObject* PyBlueObject_Dir( PyObject* self, PyObject* args )
 		Py_DECREF( klass );
 	}
 
+	// These are special cases that are handled directly in PyGetAttr
+	// but are included here to match Python 2.7 behavior
+	PyList_Append( results, PyUnicode_FromString( "__bluetype__" ) );
+	PyList_Append( results, PyUnicode_FromString( "__typename__" ) );
+	PyList_Append( results, PyUnicode_FromString( "__iroot__" ) );
+
 	return results;
 };
 

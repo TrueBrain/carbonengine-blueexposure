@@ -2,6 +2,9 @@ import unittest
 import BlueExposureTest
 
 
+BLUE_SPECIAL_OBJECT_ATTRIBUTES = "__bluetype__", "__typename__", "__iroot__"
+
+
 class TestMetaclass(type):
     __persistvars__ = []
     __nonpersistvars__ = []
@@ -82,3 +85,14 @@ class TestDir(unittest.TestCase):
     def test_blue_superclass_method(self):
         tsm = BlueExposureTest.TestSuperclassMethods()
         self.assertIn("MethodReturningInt", dir(tsm))
+
+    def test_non_python_attributes_on_blue_object(self):
+        obj = BlueExposureTest.TestAttributes()
+        result = dir(obj)
+        for attr in BLUE_SPECIAL_OBJECT_ATTRIBUTES:
+            self.assertIn(attr, result)
+
+    def test_non_python_attributes_not_in_module_dir(self):
+        result = dir(BlueExposureTest)
+        for attr in BLUE_SPECIAL_OBJECT_ATTRIBUTES:
+            self.assertNotIn(attr, result)
