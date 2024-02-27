@@ -96,3 +96,10 @@ class TestDir(unittest.TestCase):
         result = dir(BlueExposureTest)
         for attr in BLUE_SPECIAL_OBJECT_ATTRIBUTES:
             self.assertNotIn(attr, result)
+
+    def test_type_attributes_not_on_instance_dont_show_up_in_dir(self):
+        obj = BlueExposureTest.TestAttributes()
+        dir_results = dir(obj)
+        for s in dir(type(obj)):
+            if not hasattr(obj, s):
+                self.assertNotIn(s, dir_results)

@@ -265,9 +265,23 @@ static PyObject* PyBlueObject_Dir( PyObject* self, PyObject* args )
 	// Call dir() on the type and add that to the list.
 	// This will add any members and methods registered
 	// on the PyTypeObject via tp_members and tp_methods.
+	PyObject* blueTypeResults = PyList_New( 0 );
 	PyObject* classType = PyObject_Type( self );
-	AddObjectDirToList( classType, results );
+	AddObjectDirToList( classType, blueTypeResults );
 	Py_DECREF( classType );
+
+	PyObject* iterator = PyObject_GetIter( blueTypeResults );
+	// Filter out attributes that exist on the type, but not on the instance.
+	for( PyObject* entry = PyIter_Next( iterator ); entry; entry = PyIter_Next( iterator ) )
+	{
+		if( PyObject_HasAttr( self, entry ) )
+		{
+			PyList_Append( results, entry );
+		}
+		Py_DecRef(entry);
+	}
+	Py_DECREF( iterator );
+	Py_DECREF( blueTypeResults );
 
 	// If the object has a Python deco, add the results of calling
 	// dir() on that.
