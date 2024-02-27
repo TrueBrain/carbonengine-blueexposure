@@ -252,6 +252,7 @@ bool AddObjectDirToList( PyObject* obj, PyObject* list )
 	while( entry = PyIter_Next( iterator ) )
 	{
 		PyList_Append( list, entry );
+		Py_DecRef(entry);
 	}
 	Py_DECREF( iterator );
 	Py_DECREF( dirResults );
