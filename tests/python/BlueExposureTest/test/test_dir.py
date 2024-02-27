@@ -74,3 +74,11 @@ class TestDir(unittest.TestCase):
             def DoStuff(self):
                 pass
         self.assertIn("DoStuff", dir(Foo()))
+
+    def test_blue_superclass_attribute(self):
+        tsa = BlueExposureTest.TestSuperclassAttributes()
+        self.assertIn("myInt", dir(tsa))
+
+    def test_blue_superclass_method(self):
+        tsm = BlueExposureTest.TestSuperclassMethods()
+        self.assertIn("MethodReturningInt", dir(tsm))
