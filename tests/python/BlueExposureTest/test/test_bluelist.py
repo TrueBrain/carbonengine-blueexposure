@@ -548,3 +548,21 @@ class TestBlueList(unittest.TestCase):
 
 		lc = BlueExposureTest.classes.LiveCount()
 		self.assertEqual(2, lc["_blueexposuretest.TestAttributes"])
+
+	def testAppendingPythonObjectRaisesTypeError(self):
+		obj = BlueExposureTest.TestAttributes()
+		pythonObject = object()
+		with self.assertRaises(TypeError):
+			obj.myVector.append(pythonObject)
+
+	def testCheckPythonObjectInList(self):
+		obj = BlueExposureTest.TestAttributes()
+		pythonObject = object()
+		self.assertNotIn(pythonObject, obj.myVector)
+
+	def testCheckBlueObjectInList(self):
+		obj = BlueExposureTest.TestAttributes()
+		blueObject = BlueExposureTest.TestAttributes()
+		self.assertNotIn(blueObject, obj.myVector)
+		obj.myVector.append(blueObject)
+		self.assertIn(blueObject, obj.myVector)
