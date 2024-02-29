@@ -1521,8 +1521,8 @@ int BlueWrapper::PyseqContains_(PyObject* self, PyObject* item)
 	
 	if (!obj)
 	{
-		PyErr_SetString(PyExc_TypeError, "value ain't IRoot guy");
-		return -1;
+		// It's not a BlueWrapper instance, so it can't be in the list.
+		return 0;
 	}
 
 	return list->FindKey(obj) >= 0 ? 1 : 0;
