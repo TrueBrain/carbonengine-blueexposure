@@ -2,6 +2,9 @@ import unittest
 import BlueExposureTest
 
 
+BLUE_SPECIAL_OBJECT_ATTRIBUTES = "__bluetype__", "__typename__", "__iroot__"
+
+
 class TestMetaclass(type):
     __persistvars__ = []
     __nonpersistvars__ = []
@@ -74,3 +77,29 @@ class TestDir(unittest.TestCase):
             def DoStuff(self):
                 pass
         self.assertIn("DoStuff", dir(Foo()))
+
+    def test_blue_superclass_attribute(self):
+        tsa = BlueExposureTest.TestSuperclassAttributes()
+        self.assertIn("myInt", dir(tsa))
+
+    def test_blue_superclass_method(self):
+        tsm = BlueExposureTest.TestSuperclassMethods()
+        self.assertIn("MethodReturningInt", dir(tsm))
+
+    def test_non_python_attributes_on_blue_object(self):
+        obj = BlueExposureTest.TestAttributes()
+        result = dir(obj)
+        for attr in BLUE_SPECIAL_OBJECT_ATTRIBUTES:
+            self.assertIn(attr, result)
+
+    def test_non_python_attributes_not_in_module_dir(self):
+        result = dir(BlueExposureTest)
+        for attr in BLUE_SPECIAL_OBJECT_ATTRIBUTES:
+            self.assertNotIn(attr, result)
+
+    def test_type_attributes_not_on_instance_dont_show_up_in_dir(self):
+        obj = BlueExposureTest.TestAttributes()
+        dir_results = dir(obj)
+        for s in dir(type(obj)):
+            if not hasattr(obj, s):
+                self.assertNotIn(s, dir_results)

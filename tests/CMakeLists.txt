@@ -15,6 +15,8 @@ ccp_add_library(BlueExposureTest SHARED
     TestProperties_Blue.cpp
     TestReferences.cpp
     TestReferences_Blue.cpp
+    TestSuperclassAttributes_Blue.cpp
+    TestSuperclassMethods_Blue.cpp
 )
 target_precompile_headers(BlueExposureTest
     PRIVATE
@@ -30,6 +32,8 @@ target_sources(BlueExposureTest PRIVATE
     TestOptionalArgs.h
     TestProperties.h
     TestReferences.h
+    TestSuperclassAttributes.h
+    TestSuperclassMethods.h
 )
 
 if(APPLE)

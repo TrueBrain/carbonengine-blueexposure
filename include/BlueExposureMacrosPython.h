@@ -46,8 +46,6 @@
 	s_interfaces.push_back( interfacesEnd ); \
 	\
 	BlueInitializePyType( &s_pyType, &_tmpclsid, _tmpdoc, &s_interfaces[0], PyNew ); \
-	BlueRegisterPyMethodDefs( &s_pyType, &s_methods, &s_interfaces[0] ); \
-	BlueRegisterPyMemberDefs( &s_pyType, &s_attributes[0], &s_memberDefs ); \
 	\
 	static Be::ClassInfo _classinfo; \
 	_classinfo.mClassId = &_tmpclsid;  \
@@ -55,7 +53,6 @@
 	_classinfo.mDescription = _tmpdoc; \
 	_classinfo.mInterfaceTable = &s_interfaces[0]; \
 	_classinfo.mMemberTable = &s_attributes[0]; \
-	_classinfo.mPyMethodTable = &s_methods[0]; \
 	_classinfo.mParentClassInfo = _parentclasstype; \
 	_classinfo.mOffsetToParent = _parentoffs; \
 	_classinfo.mRtti = nullptr; \
@@ -63,7 +60,10 @@
 	_classinfo.mLiveCount = 0; \
 	_classinfo.mLockCount = 0; \
 	_classinfo.mFunctionSignatures = &s_signatures; \
-	\
+	BlueRegisterPyMethodDefs( &_classinfo, &s_methods); \
+	_classinfo.mPyMethodTable = _classinfo.mTypeObject->tp_methods; \
+	BlueRegisterPyMemberDefs( &_classinfo, &s_memberDefs ); \
+    \
 	s_classInfo = &_classinfo; \
 	return &_classinfo;
 

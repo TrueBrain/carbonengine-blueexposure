@@ -252,6 +252,7 @@ bool AddObjectDirToList( PyObject* obj, PyObject* list )
 	while( entry = PyIter_Next( iterator ) )
 	{
 		PyList_Append( list, entry );
+		Py_DecRef(entry);
 	}
 	Py_DECREF( iterator );
 	Py_DECREF( dirResults );
@@ -265,9 +266,23 @@ static PyObject* PyBlueObject_Dir( PyObject* self, PyObject* args )
 	// Call dir() on the type and add that to the list.
 	// This will add any members and methods registered
 	// on the PyTypeObject via tp_members and tp_methods.
+	PyObject* blueTypeResults = PyList_New( 0 );
 	PyObject* classType = PyObject_Type( self );
-	AddObjectDirToList( classType, results );
+	AddObjectDirToList( classType, blueTypeResults );
 	Py_DECREF( classType );
+
+	PyObject* iterator = PyObject_GetIter( blueTypeResults );
+	// Filter out attributes that exist on the type, but not on the instance.
+	for( PyObject* entry = PyIter_Next( iterator ); entry; entry = PyIter_Next( iterator ) )
+	{
+		if( PyObject_HasAttr( self, entry ) )
+		{
+			PyList_Append( results, entry );
+		}
+		Py_DecRef(entry);
+	}
+	Py_DECREF( iterator );
+	Py_DECREF( blueTypeResults );
 
 	// If the object has a Python deco, add the results of calling
 	// dir() on that.
@@ -278,14 +293,19 @@ static PyObject* PyBlueObject_Dir( PyObject* self, PyObject* args )
 		Py_DECREF( klass );
 	}
 
+	// These are special cases that are handled directly in PyGetAttr
+	// but are included here to match Python 2.7 behavior
+	PyList_Append( results, PyUnicode_FromString( "__bluetype__" ) );
+	PyList_Append( results, PyUnicode_FromString( "__typename__" ) );
+	PyList_Append( results, PyUnicode_FromString( "__iroot__" ) );
+
 	return results;
 };
 
-BLUEIMPORT void BlueRegisterPyMethodDefs( PyTypeObject* pyType, std::vector<PyMethodDef>* methods, const Be::InterfaceEntry* interfaces )
+BLUEIMPORT void BlueRegisterPyMethodDefs( const Be::ClassInfo* info, std::vector<PyMethodDef>* methods )
 {
-	CCP_ASSERT( pyType );
+	CCP_ASSERT( info && info->mTypeObject && info->mInterfaceTable );
 	CCP_ASSERT( methods );
-	CCP_ASSERT( interfaces );
 
 	bool hasDirMethod = false;
 
@@ -295,6 +315,15 @@ BLUEIMPORT void BlueRegisterPyMethodDefs( PyTypeObject* pyType, std::vector<PyMe
 		{
 			hasDirMethod = true;
 			break;
+		}
+	}
+
+	// Grab method definitions from superclasses.
+	for(const Be::ClassInfo* type = info->mParentClassInfo; type; type = type->mParentClassInfo)
+	{
+		for( PyMethodDef* def = type->mTypeObject->tp_methods; def->ml_name; ++def )
+		{
+			methods->push_back(*def);
 		}
 	}
 
@@ -312,7 +341,7 @@ BLUEIMPORT void BlueRegisterPyMethodDefs( PyTypeObject* pyType, std::vector<PyMe
 
 	// Create a set of relevant IID hashes for quick lookup.
 	std::set<unsigned int> interfaceIIDHashes;
-	for( const Be::InterfaceEntry* entry = interfaces; entry->mIID; ++entry )
+	for( const Be::InterfaceEntry* entry = info->mInterfaceTable; entry->mIID; ++entry )
 	{
 		interfaceIIDHashes.insert( entry->mIID->GetHash() );
 	}
@@ -333,14 +362,13 @@ BLUEIMPORT void BlueRegisterPyMethodDefs( PyTypeObject* pyType, std::vector<PyMe
 	}
 
 	methods->push_back( PyMethodDef{ 0 } ); // Null terminator.
-	pyType->tp_methods = &( *methods )[0];
+	info->mTypeObject->tp_methods = &( *methods )[0];
 }
 
 
-BLUEIMPORT void BlueRegisterPyMemberDefs( PyTypeObject* pyType, const Be::VarEntry* attributes, std::vector<PyMemberDef>* memberDefs )
+BLUEIMPORT void BlueRegisterPyMemberDefs( const Be::ClassInfo* info, std::vector<PyMemberDef>* memberDefs )
 {
-	CCP_ASSERT( pyType );
-	CCP_ASSERT( attributes );
+	CCP_ASSERT( info && info->mTypeObject && info->mMemberTable );
 	CCP_ASSERT( memberDefs );
 
 	const static std::map<Be::VARTYPE, int> s_blueVarToPythonType = {
@@ -358,40 +386,41 @@ BLUEIMPORT void BlueRegisterPyMemberDefs( PyTypeObject* pyType, const Be::VarEnt
 		{ Be::VARTYPE::UINT64, T_UINT },
 	};
 
-	for( int i = 0; attributes[i].mName; ++i )
+	for(const Be::ClassInfo* type = info; type; type = type->mParentClassInfo)
 	{
-		Be::VarEntry entry = attributes[i];
-		PyMemberDef def;
-		def.name = entry.mName;
-		auto it = s_blueVarToPythonType.find(entry.mType);
-		if( it == s_blueVarToPythonType.end() )
-		{
-			// We don't have a mapping from this type into a Python type,
-			// so let's just call it an object. This should be harmless
-			// since variable conversion to/from Python seems to be done
-			// based on the VARTYPE.
-			def.type = T_OBJECT_EX;
-		}
-		else
-		{
-			def.type = it->second;
-		}
+		for (const Be::VarEntry* entry = type->mMemberTable; entry->mName; entry++) {
+			PyMemberDef def;
+			def.name = entry->mName;
+			auto it = s_blueVarToPythonType.find(entry->mType);
+			if( it == s_blueVarToPythonType.end() )
+			{
+				// We don't have a mapping from this type into a Python type,
+				// so let's just call it an object. This should be harmless
+				// since variable conversion to/from Python seems to be done
+				// based on the VARTYPE.
+				def.type = T_OBJECT_EX;
+			}
+			else
+			{
+				def.type = it->second;
+			}
 
-		def.offset = entry.mOffset; // Member offset on the BlueWrapper in bytes.
+			def.offset = entry->mOffset; // Member offset on the BlueWrapper in bytes.
 
-		if( entry.mEditFlags & Be::EDITFLAGS::WRITE )
-		{
-			def.flags = 0; // READWRITE
+			if( entry->mEditFlags & Be::EDITFLAGS::WRITE )
+			{
+				def.flags = 0; // READWRITE
+			}
+			else
+			{
+				def.flags = READONLY;
+			}
+			def.doc = entry->mDescription;
+			memberDefs->push_back( def );
 		}
-		else
-		{
-			def.flags = READONLY;
-		}
-		def.doc = entry.mDescription;
-		memberDefs->push_back( def );
 	}
 	memberDefs->push_back( PyMemberDef{0} );
-	pyType->tp_members = &( *memberDefs )[0];
+	info->mTypeObject->tp_members = &( *memberDefs )[0];
 }
 
 // Helper function for implementing the object instantiation function

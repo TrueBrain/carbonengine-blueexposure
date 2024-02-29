@@ -128,19 +128,18 @@ namespace
 			}
 
 			//Python methods
-			for (type = ci; type; type = type->mParentClassInfo)
+			// mPyMethodTable contains methods for class and superclasses
+			// so there's no need to traverse the class hierarchy.
+			for (
+				const BlueMethodDefinition* method = ci->mPyMethodTable;
+				method->ml_name;
+				method++
+				)
 			{
-				for (
-					const BlueMethodDefinition* method = type->mPyMethodTable; 
-					method->ml_name;
-					method++
-					)
-				{
-					BlueRttiValue val;
-					val.mType = BlueRttiValue::pymethod;
-					val.mPyMethod = method;
-					tmp.push_back(tmp_t::value_type(method->ml_name, val));
-				}
+				BlueRttiValue val;
+				val.mType = BlueRttiValue::pymethod;
+				val.mPyMethod = method;
+				tmp.push_back(tmp_t::value_type(method->ml_name, val));
 			}
 
 			//Thunkers:
