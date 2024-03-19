@@ -220,13 +220,13 @@ BLUEIMPORT void BlueInitializePyType( PyTypeObject* pyType, const Be::Clsid* cls
 // missing. Since method resolution happens in BlueWrapper::PyGetAttr, these
 // are mostly just there to make sure they show up in the types __dict__
 // attribute and therefore show up when you call dir() on the type.
-BLUEIMPORT void BlueRegisterPyMethodDefs( PyTypeObject* pyType, std::vector<PyMethodDef>* methods, const Be::InterfaceEntry* interfaces );
+BLUEIMPORT void BlueRegisterPyMethodDefs( const Be::ClassInfo* info, std::vector<PyMethodDef>* methods );
 
 // Register member definitions on the type. Since attribute resolution happens
 // in BlueWrapper::PyGetAttr, these are mostly just there to make sure they
 // show up in the types __dict__ attribute and therefore show up when you call
 // dir() on the type.
-BLUEIMPORT void BlueRegisterPyMemberDefs( PyTypeObject* pyType, const Be::VarEntry* attributes, std::vector<PyMemberDef>* memberDefs );
+BLUEIMPORT void BlueRegisterPyMemberDefs( const Be::ClassInfo* info, std::vector<PyMemberDef>* memberDefs );
 #endif
 
 // Helper function for looking at command line arguments
