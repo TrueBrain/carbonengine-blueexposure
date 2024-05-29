@@ -40,6 +40,14 @@ if(APPLE)
     target_link_libraries(BlueExposureTest PRIVATE "-framework Foundation")
 endif()
 
+if(CMAKE_IMPORT_LIBRARY_SUFFIX)
+    add_custom_command(TARGET BlueExposureTest POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:BlueExposureTest> $<TARGET_FILE_DIR:BlueExposureTest>
+            COMMAND_EXPAND_LISTS
+            VERBATIM
+    )
+endif()
+
 target_compile_definitions(BlueExposureTest PUBLIC BLUEBUILD BLUE_WITH_PYTHON)
 
 target_link_libraries(BlueExposureTest
