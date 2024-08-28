@@ -1318,18 +1318,8 @@ PyObject* BlueWrapper::PyseqSlice_(PyObject* self, Py_ssize_t low, Py_ssize_t hi
 	IListPtr other;
 	other.Attach(tmp);
 
-	Py_ssize_t size = list->GetSize();
+	PySlice_AdjustIndices( list->GetSize(), &low, &high, Py_ssize_t( 1 ) );
 
-	if (low < 0)
-		low = 0;
-	else if (low > size)
-		low = size;
-	
-	if (high < low)
-		high = low;
-	else if (high > size)
-		high = size;
-	
 	// start copying
 	for (Py_ssize_t i = low; i < high; i++)
 	{

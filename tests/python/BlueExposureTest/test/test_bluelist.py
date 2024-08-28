@@ -483,16 +483,30 @@ class TestBlueList(unittest.TestCase):
 		childObj5 = BlueExposureTest.TestAttributes()
 		obj.myVector.append(childObj5)
 
-		sliceFromBlueList = obj.myVector[1:3]
-		self.assertEqual(2, len(sliceFromBlueList))
-		self.assertEqual(childObj2, sliceFromBlueList[0])
-		self.assertEqual(childObj3, sliceFromBlueList[1])
+		sliceFromBlueList1 = obj.myVector[1:3]
+		self.assertEqual(2, len(sliceFromBlueList1))
+		self.assertEqual(childObj2, sliceFromBlueList1[0])
+		self.assertEqual(childObj3, sliceFromBlueList1[1])
 
 		obj.myVector[1:3] = [childObj3, childObj2, childObj1]
 		self.assertEqual(6, len(obj.myVector))
 		self.assertEqual(obj.myVector[1], childObj3)
 		self.assertEqual(obj.myVector[2], childObj2)
 		self.assertEqual(obj.myVector[3], childObj1)
+
+		sliceFromBlueList2 = obj.myVector[-1:]
+		self.assertEqual(1, len(sliceFromBlueList2))
+		self.assertEqual(sliceFromBlueList2[0], childObj5)
+
+		sliceFromBlueList3 = obj.myVector[-2:]
+		self.assertEqual(2, len(sliceFromBlueList3))
+		self.assertEqual(sliceFromBlueList3[0], childObj4)
+		self.assertEqual(sliceFromBlueList3[1], childObj5)
+
+		sliceFromBlueList4 = obj.myVector[-4:-2]
+		self.assertEqual(2, len(sliceFromBlueList4))
+		self.assertEqual(sliceFromBlueList4[0], childObj2)
+		self.assertEqual(sliceFromBlueList4[1], childObj1)
 
 		# slice assignment and slice access shall only support int and slice objects as keys
 		with self.assertRaises(TypeError):
