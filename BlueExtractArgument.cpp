@@ -33,6 +33,11 @@ bool BlueExtractString( PyObject* obj, std::string& val )
 
 bool BlueExtractWString( PyObject* obj, std::wstring& val )
 {
+	if (obj == nullptr)
+	{
+		return false;
+	}
+
 	bool ok = false;
 
 	if ((ok = PyUnicode_Check(obj)))
