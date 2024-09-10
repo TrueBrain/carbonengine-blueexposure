@@ -79,6 +79,7 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(t.ConvertSharedStringToString("Test9:ConvertSharedStringToString"), "Test9:ConvertSharedStringToString")
         self.assertEqual(t.ConvertWStringToSharedStringW(u"Test10:ConvertWStringToSharedStringW"), u"Test10:ConvertWStringToSharedStringW")
         self.assertEqual(t.ConvertSharedStringWToWString(u"Test11:ConvertSharedStringWToWString"), u"Test11:ConvertSharedStringWToWString")
+        self.assertEqual(t.ConvertSharedStringWToWString(u"Test12:ConvertShared\0StringWToWString"), u"Test12:ConvertShared")
 
     def testFunctionReturningVector2(self):
         orgVal = (1, 2)

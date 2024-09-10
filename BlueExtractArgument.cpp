@@ -33,25 +33,22 @@ bool BlueExtractString( PyObject* obj, std::string& val )
 
 bool BlueExtractWString( PyObject* obj, std::wstring& val )
 {
-	if (obj == nullptr)
+	if( !PyUnicode_Check( obj ) )
 	{
 		return false;
 	}
 
-	bool ok = false;
-
-	if ((ok = PyUnicode_Check(obj)))
+	Py_ssize_t length = 0;
+	wchar_t* buffer = PyUnicode_AsWideCharString( obj, &length );
+	if( !buffer )
 	{
-		wchar_t *tmpWideChar = PyUnicode_AsWideCharString(obj, nullptr);
-		val = CCP_WSTRDUP( __FUNCTION__, tmpWideChar );
-		PyMem_Free(tmpWideChar);
-
-		// The earlier string check left the error flag enabled
-		PyErr_Clear();
-		ok = true;
+		return false;
 	}
 
-	return ok;
+	val.assign( buffer, length );
+	PyMem_Free( buffer );
+
+	return true;
 }
 
 bool BlueExtractBool( PyObject* obj, bool& value )
