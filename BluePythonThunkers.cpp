@@ -122,7 +122,7 @@ static void PyValidate_Rec(ResList &res, RootSet &set, NameStack &names, IRoot *
 		if (ptr > tmpStr)
 			ptr[-1] = '\0';	//remove final dot
 		
-		PyObject *string = PyString_FromString(tmpStr);
+		PyObject *string = PyUnicode_FromString(tmpStr);
 		delete[] tmpStr;
 		res.push_back(string);
 		return;
@@ -536,7 +536,7 @@ PyObject* IList_Thunk::Pyindex(PyObject* args)
 		return NULL;
 	}
 
-	return PyInt_FromSsize_t(key);
+	return PyLong_FromSsize_t(key);
 }
 
 
@@ -548,21 +548,24 @@ PyObject* IList_Thunk::Pycount(PyObject* args)
 	PyObject* pyobj;
 
 	if (!PyArg_ParseTuple(args, "O", &pyobj))
-		return NULL;
+		return nullptr;
 	IRoot* value = BlueUnwrapObjectFromPython(pyobj);
 	if (!value)
 	{
 		PyErr_SetString( PyExc_TypeError, "Blue item required");
-		return NULL;
+		return nullptr;
 	}
 
 	int count = 0;
-	ssize_t key = -1;
-	
-	while ((key = FindKey(BlueUnwrapObjectFromPython(pyobj), key+1)) >= 0)
-		count++;
+	auto startAndSize = GetAllItems();
+	auto iter = startAndSize.first;
+	for( auto key = 0; key < startAndSize.second; ++key, ++iter )
+	{
+		if ( value == *iter )
+			count++;
+	}
 
-	return PyInt_FromLong(count);
+	return PyLong_FromLong(count);
 }
 
 

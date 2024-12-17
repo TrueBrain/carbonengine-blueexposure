@@ -28,19 +28,18 @@
 	static Be::IID s_iid(#_classname); \
 	static Be::IID s_iroot("IRoot"); \
 	\
-	static PyTypeObject s_pyType = { PyObject_HEAD_INIT(&PyType_Type) }; \
+	static PyTypeObject s_pyType = { PyVarObject_HEAD_INIT(&PyType_Type, 0) }; \
 	static std::vector<PyMethodDef> s_methods;\
 	static std::vector<Be::VarEntry> s_attributes; \
 	static std::vector<Be::InterfaceEntry> s_interfaces; \
 	static std::map<std::string, Be::BlueExposureFunctionSignature> s_signatures; \
+	static std::vector<PyMemberDef> s_memberDefs; \
 	Be::InterfaceEntry rootEntry = {&s_iroot, BLUE_INTERFACEOFFSET(_Class)}; \
 	s_interfaces.push_back( rootEntry ); \
 	Be::InterfaceEntry myEntry = {&s_iid, BLUE_INTERFACEOFFSET(_Class)}; \
 	s_interfaces.push_back( myEntry );
 
 #define EXPOSURE_END_IMPL(_parentclasstype, _parentoffs)\
-	PyMethodDef methodsEndItem = { 0 };\
-	s_methods.push_back( methodsEndItem ); \
 	Be::VarEntry attributesEndItem = { 0 }; \
 	s_attributes.push_back( attributesEndItem ); \
 	Be::InterfaceEntry interfacesEnd = { 0 }; \
@@ -54,7 +53,6 @@
 	_classinfo.mDescription = _tmpdoc; \
 	_classinfo.mInterfaceTable = &s_interfaces[0]; \
 	_classinfo.mMemberTable = &s_attributes[0]; \
-	_classinfo.mPyMethodTable = &s_methods[0]; \
 	_classinfo.mParentClassInfo = _parentclasstype; \
 	_classinfo.mOffsetToParent = _parentoffs; \
 	_classinfo.mRtti = nullptr; \
@@ -62,7 +60,10 @@
 	_classinfo.mLiveCount = 0; \
 	_classinfo.mLockCount = 0; \
 	_classinfo.mFunctionSignatures = &s_signatures; \
-	\
+	BlueRegisterPyMethodDefs( &_classinfo, &s_methods); \
+	_classinfo.mPyMethodTable = _classinfo.mTypeObject->tp_methods; \
+	BlueRegisterPyMemberDefs( &_classinfo, &s_memberDefs ); \
+    \
 	s_classInfo = &_classinfo; \
 	return &_classinfo;
 
@@ -235,10 +236,24 @@ BLUEIMPORT PyObject* BlueCreateInstanceFromPython( const Be::Clsid& clsid, PyObj
 // Use this macro to implement a standard module init function
 #define BLUE_STANDARD_MODULE_INIT( moduleName ) \
 	const char* g_moduleName = #moduleName; \
-	PyMODINIT_FUNC BLUE_EXPORTED_INIT CCP_CONCATENATE( init, CCP_CONCATENATE( moduleName, CCP_BUILD_FLAVOR ) )() \
+	PyMODINIT_FUNC BLUE_EXPORTED_INIT CCP_CONCATENATE( PyInit_, CCP_CONCATENATE( moduleName, CCP_BUILD_FLAVOR ) )() \
 	{ \
 		BeClasses->RegisterClasses( BlueRegistration::GetClassRegs() ); \
-		PyObject* module = Py_InitModule( CCP_STRINGIZE( CCP_CONCATENATE( moduleName, CCP_BUILD_FLAVOR ) ), NULL ); \
+		static struct PyModuleDef moduledef = { \
+			PyModuleDef_HEAD_INIT,                       \
+			CCP_STRINGIZE( CCP_CONCATENATE( moduleName, CCP_BUILD_FLAVOR ) ),                                             \
+			"", \
+			-1, \
+			nullptr, \
+			nullptr, \
+			nullptr, \
+			nullptr, \
+			nullptr, \
+		}; \
+		PyObject* module = PyModule_Create( &moduledef ); \
+		if ( !module ) { \
+			return nullptr; \
+		} \
 		BlueRegisterToModule( module, \
 			BlueRegistration::GetClassRegs(), \
 			BlueRegistration::GetFuncRegs(), \
@@ -249,6 +264,7 @@ BLUEIMPORT PyObject* BlueCreateInstanceFromPython( const Be::Clsid& clsid, PyObj
 		BlueRegisterObjectsToModule( module, BlueRegistration::GetObjectRegs() ); \
 		BlueRegisterExceptionsToModule( module, BlueRegistration::GetExceptionRegs() ); \
 		PyModule_AddObject( module, "BlueWrapper", (PyObject*)BePyTypePtr ); \
+		return module; \
 	}
 
 #define BLUE_DECLARE_EXCEPTION_EX( name, ... ) __VA_ARGS__ PyObject* CCP_CONCATENATE( BlueGetException, name )();

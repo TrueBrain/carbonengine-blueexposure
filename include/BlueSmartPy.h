@@ -3,7 +3,7 @@
 
 	BlueSmartVar.h
 
-	Author:    Kristján Valur Jónsson
+	Author:    Kristjï¿½n Valur Jï¿½nsson
 	Created:   Sep. 2003
 	OS:        Win32
 	Project:   Blue
@@ -383,13 +383,13 @@ public:
 class BluePyStr : public BluePy
 {
 public:
-	BluePyStr() {}
+	BluePyStr() = default;
 	BluePyStr(const BluePy &other) : BluePy(other) {}
 
 	// constructors, creating strings from char pointers.
-	BluePyStr(const char *str) : BluePy(PyString_FromString(const_cast<char*>(str)), false) {}
-	BluePyStr(size_t len, const char *str = 0) :
-		BluePy(PyString_FromStringAndSize(const_cast<char*>(str), (len)), false)
+	explicit BluePyStr(const char *str) : BluePy(PyUnicode_FromString(str), false) {}
+	explicit BluePyStr(size_t len, const char *str = nullptr) :
+		BluePy(PyUnicode_FromStringAndSize(str, len), false)
 	{}
 
 	// Two static functions to create formatted strings.  Don't fit with the overloading
@@ -403,27 +403,13 @@ public:
 		return r;
 	}
 	static BluePyStr FormatV(const char *format, va_list args) {
-        va_list args1;
-#ifdef _MSC_VER
-		args1 = args;
-#else
-        va_copy(args1, args);
-#endif
-		size_t s = _vscprintf(format, args1);
-#ifndef _MSC_VER
-		va_end( args1 );
-#endif
-		BluePy str(PyString_FromStringAndSize(0, s));
-		if (!str)
-			return str;
-		vsprintf_s(PyString_AS_STRING(str.o), s+1, format, args);
+		BluePy str(PyUnicode_FromFormatV(format, args));
 		return str;
 	}
 
-	
 	bool Check() const {
 		if (o)
-			return PyString_Check(o) != 0;
+			return PyUnicode_Check(o) != 0;
 		return false;
 	}
 
@@ -434,19 +420,19 @@ public:
 	}
 
 	Py_ssize_t Size() const {
-		return PyString_Size(o);
+		return PyUnicode_GetLength(o);
 	}
 	
 	//cool.  Now for some fun operators!
 	BluePyStr operator+ (const BluePyStr &other) const {
 		BluePyStr newStr(*this);
-		PyString_Concat(&newStr.o, other.o);
+		newStr.o = PyUnicode_Concat(newStr.o, other.o);
 		return newStr;
 	}
 	
 	//concatenation operators
 	BluePyStr &operator+= (const BluePyStr &other) {
-		PyString_Concat(&o, other.o);
+		o = PyUnicode_Concat(o, other.o);
 		return *this;
 	}
 	
@@ -457,58 +443,38 @@ public:
 	friend BluePyStr operator+(const char *left, const BluePyStr &right);
 	
 	//and to access the string
-	const char *Str() const {return PyString_AsString(o);}
+	const char *Str() const {return PyUnicode_AsUTF8AndSize(o, nullptr);}
 	const char *Str(Py_ssize_t &len) const {
-		char *tmp;
-		if (PyString_AsStringAndSize(o, &tmp, &len)) return 0;
+		const char *tmp = PyUnicode_AsUTF8AndSize(o, &len);
 		return tmp;
 	}
 	//to access no-null string (only a zero last.  raises exception otherwise)
 	const char *CStr() const {
-		char *tmp;
-		if (PyString_AsStringAndSize(o, &tmp, 0)) return 0;
+		const char *tmp = PyUnicode_AsUTF8AndSize(o, nullptr);
 		return tmp;
 	}
 	
 	//To format
 	BluePyStr Format(PyObject *argtuple){
-		return BluePy(PyString_Format(o, argtuple), false);
+		return BluePy(PyUnicode_Format(o, argtuple), false);
 	}
-
-	//Intern the string.  This puts it into some internal string table cache.  wired.
-	void Intern() {
-		PyString_InternInPlace(&o);
-	}
+//
+//	//Intern the string.  This puts it into some internal string table cache.  wired.
+//	void Intern() {
+//		PyString_InternInPlace(&o);
+//	}
 
 	//Get a substring
 	BluePyStr Slice(Py_ssize_t e) const {
-		Py_ssize_t sz = Size();
-		if (e < 0)
-			e = sz + e;
-		if (e < 0)
-			e = 0;
-		else if (e >= sz)
-			e = sz-1;
-		return BluePyStr(1, Str()+e);
+		BluePyStr tmp;
+		tmp.o = PyUnicode_Substring(o, 0, e);
+		return tmp;
 	}
 
 	BluePyStr Slice(Py_ssize_t start, Py_ssize_t end=0) const {
-		Py_ssize_t sz = Size();
-		if (start<0)
-			start = sz+start;
-		if (start < 0)
-			start = 0;
-		else if (start >= sz)
-			start = sz-1;
-
-		if (end <= 0)
-			end = sz + end;
-		if (end < start)
-			end = start;
-		else if (end > sz)
-			end = sz;
-
-		return BluePyStr(end-start, Str()+start);
+		BluePyStr tmp;
+		tmp.o = PyUnicode_Substring(o, start, end);
+		return tmp;
 	}
 };
 
@@ -528,12 +494,12 @@ inline BluePyStr BluePy::Repr() const {
 class BluePyInt : public BluePy
 {
 public:
-	BluePyInt(int i) : BluePy(PyInt_FromLong(i)) {}
+	BluePyInt(int i) : BluePy(PyLong_FromLong(i)) {}
 	BluePyInt(const BluePy &other) : BluePy(other) {}
 
 	bool Check() const {
 		if (o)
-			return PyInt_Check(o) != 0;
+			return PyLong_Check(o) != 0;
 		return false;
 	}
 
@@ -544,7 +510,7 @@ public:
 	}
 
 	int Int() const {
-		return int(PyInt_AsLong(o));
+		return int(PyLong_AsLong(o));
 	}
 
 };

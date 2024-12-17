@@ -111,7 +111,7 @@ BlueScriptValue BlueWrapReturnValueImpl(
 		const BlueSharedString& val )
 {
 #if BLUE_WITH_PYTHON
-	return PyString_FromString( val.c_str() );
+	return PyUnicode_FromString( val.c_str() );
 #elif BLUE_NO_EXPOSURE
 	return nullptr;
 #endif
@@ -156,7 +156,7 @@ BlueScriptValue BlueWrapReturnValueImpl(
 	const BlueSharedStringW& val )
 {
 #if BLUE_WITH_PYTHON
-	return PyUnicode_FromUnicode( (const Py_UNICODE*)val.c_str(), wcslen( val.c_str() ) );
+	return PyUnicode_FromWideChar( (const wchar_t*)val.c_str(), -1 );
 #elif BLUE_NO_EXPOSURE
 	return nullptr;
 #endif

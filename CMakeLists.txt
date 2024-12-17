@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.21)
 
 project(BlueExposure VERSION 1.0.0)
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake)
@@ -19,8 +19,9 @@ list(INSERT CMAKE_MODULE_PATH 0 ${BRANCH_ROOT_DIR}/cmake)
 include(CcpGlobalSettings)
 include(CcpPackageConfigHelpers)
 
-find_package(CcpCore REQUIRED NO_CMAKE_PATH)
-find_package(Python REQUIRED NO_CMAKE_PATH)
+find_package(CcpCore CONFIG REQUIRED NO_CMAKE_PATH)
+find_package(CcpLog CONFIG REQUIRED NO_CMAKE_PATH)
+find_package(Python CONFIG REQUIRED NO_CMAKE_PATH)
 
 ccp_add_library(BlueExposure STATIC
     BlueClasses.cpp
@@ -116,7 +117,7 @@ target_compile_definitions(BlueExposure
         BLUEBUILD
 )
 
-target_link_libraries(BlueExposure PUBLIC CcpCore Python)
+target_link_libraries(BlueExposure PUBLIC CcpCore ccp::log Python)
 
 target_include_directories(BlueExposure
     PUBLIC

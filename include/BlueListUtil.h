@@ -593,7 +593,7 @@ ssize_t BlueList_Impl<T, ops>::FindKey( ::IRoot* value, ssize_t keyFrom)
     }
 
     T* tmp;
-    if( !value->QueryInterface( BlueInterfaceIID<T>(), (void**)&tmp ) )
+    if( !value->QueryInterface( BlueInterfaceIID<T>(), (void**)&tmp, BEQI_SILENT ) )
     {
         return -1;
     }

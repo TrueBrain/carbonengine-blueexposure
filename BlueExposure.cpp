@@ -1,9 +1,4 @@
 #include "include/BlueExposureMacros.h"
-#include "include/BlueVectorTypes.h"
-
-#if CCP_STACKLESS
-#include "stackless_api.h"
-#endif
 
 BLUEIMPORT void DummyFunction()
 {

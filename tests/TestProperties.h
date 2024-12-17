@@ -33,8 +33,8 @@ public:
 	int GetInt() const;
 	void SetInt( int val );
 
-	uint32_t GetUnsignedInt() const;
-	void SetUnsignedInt( uint32_t val );
+	unsigned int GetUInt() const;
+	void SetUInt( unsigned int val );
 
 	float GetFloat() const;
 	void SetFloat( float val );
@@ -44,6 +44,9 @@ public:
 
 	int64_t GetInt64() const;
 	void SetInt64( int64_t val );
+
+	uint64_t GetUInt64() const;
+	void SetUInt64( uint64_t val );
 
 	Be::Result<bool> GetIntWithError( int& val ) const;
 	Be::Result<bool> SetIntWithError( int val );
@@ -62,11 +65,12 @@ private:
 	std::string m_myString;
 	std::wstring m_myUnicode;
 	bool m_myBool;
-	uint32_t m_myUnsignedInt;
 	int m_myInt;
+	unsigned int m_myUInt;
 	float m_myFloat;
 	double m_myDouble;
 	int64_t m_myInt64;
+	uint64_t m_myUInt64;
 	BlueSharedString m_sharedString;
 	BlueSharedStringW m_sharedStringW;
 };

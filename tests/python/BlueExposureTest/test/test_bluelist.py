@@ -32,9 +32,11 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj1, obj.myVector[0])
 		self.assertEqual(childObj2, obj.myVector[1])
 
+
 	def testAppend_None(self):
 		obj = BlueExposureTest.TestAttributes()
 		self.assertRaises(TypeError, obj.myVector.append, None)
+
 
 	def testAppend_WrongType(self):
 		obj = BlueExposureTest.TestAttributes()
@@ -45,6 +47,7 @@ class TestBlueList(unittest.TestCase):
 		childObj = BlueExposureTest.TestProperties()
 		# TODO: BlueList doesn't raise if the object is an IRoot but not the right type
 		self.assertRaises(TypeError, obj.myVector.append, childObj)
+
 
 	def testInsert(self):
 		obj = BlueExposureTest.TestAttributes()
@@ -68,6 +71,7 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj4, obj.myVector[2])
 		self.assertEqual(childObj3, obj.myVector[3])
 
+
 	def testInsert_InvalidIndex(self):
 		obj = BlueExposureTest.TestAttributes()
 
@@ -89,6 +93,7 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj2, obj.myVector[1])
 		self.assertEqual(childObj3, obj.myVector[2])
 
+
 	def testRemove(self):
 		obj = BlueExposureTest.TestAttributes()
 
@@ -107,6 +112,7 @@ class TestBlueList(unittest.TestCase):
 
 		self.assertEqual(childObj1, obj.myVector[0])
 		self.assertEqual(childObj3, obj.myVector[1])
+
 
 	def testRemove_ItemNotInList(self):
 		obj = BlueExposureTest.TestAttributes()
@@ -129,6 +135,7 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj2, obj.myVector[1])
 		self.assertEqual(childObj3, obj.myVector[2])
 
+
 	def testRemove_ItemNotTheRightType(self):
 		obj = BlueExposureTest.TestAttributes()
 
@@ -149,6 +156,7 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj2, obj.myVector[1])
 		self.assertEqual(childObj3, obj.myVector[2])
 
+
 	def testRemoveAt(self):
 		obj = BlueExposureTest.TestAttributes()
 
@@ -168,6 +176,7 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj1, obj.myVector[0])
 		self.assertEqual(childObj3, obj.myVector[1])
 
+
 	def testRemoveAt_InvalidIndex(self):
 		obj = BlueExposureTest.TestAttributes()
 
@@ -185,6 +194,7 @@ class TestBlueList(unittest.TestCase):
 
 		self.assertEqual(3, len(obj.myVector))
 
+
 	def testRemoveAt_RemoveAll(self):
 		obj = BlueExposureTest.TestAttributes()
 
@@ -200,6 +210,7 @@ class TestBlueList(unittest.TestCase):
 		obj.myVector.removeAt(-1)
 
 		self.assertEqual(0, len(obj.myVector))
+
 
 	def testExtend_BlueList(self):
 		obj = BlueExposureTest.TestAttributes()
@@ -230,6 +241,7 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj2, otherObj.myVector[3])
 		self.assertEqual(childObj3, otherObj.myVector[4])
 
+
 	def testExtend_PythonList(self):
 		childObj1 = BlueExposureTest.TestAttributes()
 		childObj2 = BlueExposureTest.TestAttributes()
@@ -253,11 +265,13 @@ class TestBlueList(unittest.TestCase):
 		self.assertEqual(childObj2, otherObj.myVector[3])
 		self.assertEqual(childObj3, otherObj.myVector[4])
 
+
 	def testExtend_EmptyList(self):
 		obj = BlueExposureTest.TestAttributes()
 		obj.myVector.extend([])
 
 		self.assertEqual(0, len(obj.myVector))
+
 
 	def testPop(self):
 		obj = BlueExposureTest.TestAttributes()
@@ -469,10 +483,38 @@ class TestBlueList(unittest.TestCase):
 		childObj5 = BlueExposureTest.TestAttributes()
 		obj.myVector.append(childObj5)
 
-		sliceFromBlueList = obj.myVector[1:3]
-		self.assertEqual(2, len(sliceFromBlueList))
-		self.assertEqual(childObj2, sliceFromBlueList[0])
-		self.assertEqual(childObj3, sliceFromBlueList[1])
+		sliceFromBlueList1 = obj.myVector[1:3]
+		self.assertEqual(2, len(sliceFromBlueList1))
+		self.assertEqual(childObj2, sliceFromBlueList1[0])
+		self.assertEqual(childObj3, sliceFromBlueList1[1])
+
+		obj.myVector[1:3] = [childObj3, childObj2, childObj1]
+		self.assertEqual(6, len(obj.myVector))
+		self.assertEqual(obj.myVector[1], childObj3)
+		self.assertEqual(obj.myVector[2], childObj2)
+		self.assertEqual(obj.myVector[3], childObj1)
+
+		sliceFromBlueList2 = obj.myVector[-1:]
+		self.assertEqual(1, len(sliceFromBlueList2))
+		self.assertEqual(sliceFromBlueList2[0], childObj5)
+
+		sliceFromBlueList3 = obj.myVector[-2:]
+		self.assertEqual(2, len(sliceFromBlueList3))
+		self.assertEqual(sliceFromBlueList3[0], childObj4)
+		self.assertEqual(sliceFromBlueList3[1], childObj5)
+
+		sliceFromBlueList4 = obj.myVector[-4:-2]
+		self.assertEqual(2, len(sliceFromBlueList4))
+		self.assertEqual(sliceFromBlueList4[0], childObj2)
+		self.assertEqual(sliceFromBlueList4[1], childObj1)
+
+		# slice assignment and slice access shall only support int and slice objects as keys
+		with self.assertRaises(TypeError):
+			obj.myVector["1:3"] = [1, 2]
+
+		with self.assertRaises(TypeError):
+			_ = obj.myVector[None]
+
 
 	def testAssign(self):
 		obj = BlueExposureTest.TestAttributes()
@@ -504,6 +546,15 @@ class TestBlueList(unittest.TestCase):
 
 		self.assertRaises(IndexError, AssignOutOfRange)
 
+	def testAccess_NegativeIndex(self):
+		obj = BlueExposureTest.TestAttributes()
+		childObj = BlueExposureTest.TestAttributes()
+		obj.myVector.append(childObj)
+		self.assertEqual(childObj, obj.myVector[-1])
+		with self.assertRaises(IndexError):
+			_ = obj.myVector[-2]
+
+
 	def testRefCounting(self):
 		obj = BlueExposureTest.TestAttributes()
 
@@ -511,3 +562,21 @@ class TestBlueList(unittest.TestCase):
 
 		lc = BlueExposureTest.classes.LiveCount()
 		self.assertEqual(2, lc["_blueexposuretest.TestAttributes"])
+
+	def testAppendingPythonObjectRaisesTypeError(self):
+		obj = BlueExposureTest.TestAttributes()
+		pythonObject = object()
+		with self.assertRaises(TypeError):
+			obj.myVector.append(pythonObject)
+
+	def testCheckPythonObjectInList(self):
+		obj = BlueExposureTest.TestAttributes()
+		pythonObject = object()
+		self.assertNotIn(pythonObject, obj.myVector)
+
+	def testCheckBlueObjectInList(self):
+		obj = BlueExposureTest.TestAttributes()
+		blueObject = BlueExposureTest.TestAttributes()
+		self.assertNotIn(blueObject, obj.myVector)
+		obj.myVector.append(blueObject)
+		self.assertIn(blueObject, obj.myVector)

@@ -1,19 +1,13 @@
-try:
-    from _blueexposuretest_debug import *
-except ImportError:
-    pass
+import os
+flavor = os.environ.get("BUILDFLAVOR", "release")
 
-try:
-    from _blueexposuretest_internal import *
-except ImportError:
-    pass
-
-try:
-    from _blueexposuretest_trinitydev import *
-except ImportError:
-    pass
-
-try:
+if flavor == 'release':
     from _blueexposuretest import *
-except ImportError:
-    pass
+elif flavor == 'debug':
+    from _blueexposuretest_debug import *
+elif flavor == 'trinitydev':
+    from _blueexposuretest_trinitydev import *
+elif flavor == 'internal':
+    from _blueexposuretest_internal import *
+else:
+    raise RuntimeError("Unknown build flavor: {}".format(flavor))

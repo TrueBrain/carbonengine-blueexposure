@@ -5,16 +5,17 @@
 // Copyright:	CCP 2013
 //
 
-#include "StdAfx.h"
 #include "TestProperties.h"
 
 TestProperties::TestProperties( IRoot* lockobj ) :
 	m_returnError( false ),
 	m_myBool( false ),
 	m_myInt( 0 ),
+	m_myUInt( 0 ),
 	m_myFloat( 0 ),
 	m_myDouble( 0 ),
-	m_myInt64( 0 )
+	m_myInt64( 0 ),
+	m_myUInt64( 0 )
 {
 }
 
@@ -38,14 +39,14 @@ void TestProperties::SetInt( int val )
 	m_myInt = val;
 }
 
-uint32_t TestProperties::GetUnsignedInt() const
+unsigned int TestProperties::GetUInt() const
 {
-	return m_myUnsignedInt;
+	return m_myUInt;
 }
 
-void TestProperties::SetUnsignedInt( uint32_t val )
+void TestProperties::SetUInt( unsigned int val )
 {
-	m_myUnsignedInt = val;
+	m_myUInt = val;
 }
 
 float TestProperties::GetFloat() const
@@ -76,6 +77,16 @@ int64_t TestProperties::GetInt64() const
 void TestProperties::SetInt64( int64_t val )
 {
 	m_myInt64 = val;
+}
+
+uint64_t TestProperties::GetUInt64() const
+{
+	return m_myUInt64;
+}
+
+void TestProperties::SetUInt64( uint64_t val )
+{
+	m_myUInt64 = val;
 }
 
 std::string TestProperties::GetString() const

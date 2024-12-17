@@ -215,6 +215,18 @@ inline IRoot *BlueFinalIRoot(IRoot *a)
 
 #if BLUE_WITH_PYTHON
 BLUEIMPORT void BlueInitializePyType( PyTypeObject* pyType, const Be::Clsid* clsid, const char* doc, const Be::InterfaceEntry* interfaces, newfunc pyNew );
+
+// Register method definitions on the type and add a __dir__ method if one is
+// missing. Since method resolution happens in BlueWrapper::PyGetAttr, these
+// are mostly just there to make sure they show up in the types __dict__
+// attribute and therefore show up when you call dir() on the type.
+BLUEIMPORT void BlueRegisterPyMethodDefs( const Be::ClassInfo* info, std::vector<PyMethodDef>* methods );
+
+// Register member definitions on the type. Since attribute resolution happens
+// in BlueWrapper::PyGetAttr, these are mostly just there to make sure they
+// show up in the types __dict__ attribute and therefore show up when you call
+// dir() on the type.
+BLUEIMPORT void BlueRegisterPyMemberDefs( const Be::ClassInfo* info, std::vector<PyMemberDef>* memberDefs );
 #endif
 
 // Helper function for looking at command line arguments

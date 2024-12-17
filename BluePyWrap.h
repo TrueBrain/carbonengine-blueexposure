@@ -181,12 +181,12 @@ private:
 	PyObject* PyGetAttr(const char* name);
 	static int PySetAttr_(PyObject* self, char *name, PyObject* v);
 	int PySetAttr(const char* name, PyObject* v);
-	static int PyCompare_(PyObject* self, PyObject* other);
-	int PyCompare(PyObject* other);
+	static PyObject* PyCompare_(PyObject* self, PyObject* other, int op);
+	PyObject* PyCompare(PyObject* other, int op);
 	static PyObject* PyRepr_(PyObject* self);
 	PyObject* PyRepr();
-	static long PyHash_(PyObject* self);
-	long PyHash();
+	static Py_hash_t PyHash_(PyObject* self);
+	Py_hash_t PyHash();
 	static PyObject* PyStr_(PyObject* self);
 	PyObject* PyStr();
 
@@ -199,6 +199,8 @@ private:
 	PyObject* PyseqRepeat(int n);
 	static PyObject* PyseqGetItem_(PyObject* self, Py_ssize_t index);
 	PyObject* PyseqGetItem(int index);
+	static PyObject* PySeqSubscript_( PyObject* self, PyObject* key );
+	static int PySeqAssignSubscript_( PyObject* self, PyObject* key, PyObject* value );
 	static PyObject* PyseqSlice_(PyObject* self, Py_ssize_t low, Py_ssize_t high);
 	PyObject* PyseqSlice(Py_ssize_t low, Py_ssize_t high);
 	static int PyseqAssignItem_(PyObject* self, Py_ssize_t index, PyObject* object);

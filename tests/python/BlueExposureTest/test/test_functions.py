@@ -61,6 +61,26 @@ class TestFunctions(unittest.TestCase):
         val = BlueExposureTest.FunctionReturningConstWChar(orgVal)
         self.assertEqual(val, orgVal)
 
+    def testPython38to312UnicodeChanges(self):
+        testVal1 = u"Calling FunctionReturningConstWChar"
+        retVal1 = BlueExposureTest.FunctionReturningConstWChar(testVal1)
+        self.assertEqual(retVal1, testVal1)
+
+        testVal2= u"Calling FunctionReturningWString"
+        retVal2 = BlueExposureTest.FunctionReturningWString(testVal2)
+        self.assertEqual(retVal2, testVal2)
+
+        t = BlueExposureTest.TestMethods()
+        self.assertEqual(t.MethodReturningConstChar("Test4:MethodReturningConstChar"), "Test4:MethodReturningConstChar")
+        self.assertEqual(t.MethodReturningString("Test5:MethodReturningString"), "Test5:MethodReturningString")
+        self.assertEqual(t.MethodReturningConstWChar(u"Test6:MethodReturningConstWChar"), u"Test6:MethodReturningConstWChar")
+        self.assertEqual(t.MethodReturningWString(u"Test7:MethodReturningWString"), u"Test7:MethodReturningWString")
+        self.assertEqual(t.ConvertStringToSharedString("Test8:ConvertStringToSharedString"), "Test8:ConvertStringToSharedString")
+        self.assertEqual(t.ConvertSharedStringToString("Test9:ConvertSharedStringToString"), "Test9:ConvertSharedStringToString")
+        self.assertEqual(t.ConvertWStringToSharedStringW(u"Test10:ConvertWStringToSharedStringW"), u"Test10:ConvertWStringToSharedStringW")
+        self.assertEqual(t.ConvertSharedStringWToWString(u"Test11:ConvertSharedStringWToWString"), u"Test11:ConvertSharedStringWToWString")
+        self.assertEqual(t.ConvertSharedStringWToWString(u"Test12:ConvertShared\0StringWToWString"), u"Test12:ConvertShared")
+
     def testFunctionReturningVector2(self):
         orgVal = (1, 2)
         val = BlueExposureTest.FunctionReturningVector2(orgVal)
@@ -218,7 +238,7 @@ class TestFunctions(unittest.TestCase):
         for each in successValues:
             orgVal = each
             val = BlueExposureTest.FunctionReturningWString(orgVal)
-            self.assertEqual(type(val), unicode)
+            self.assertEqual(type(val), str)
             self.assertEqual(val, orgVal, msg="Failed with parameter %s" % each)
 
         for each in typeErrorValues:
@@ -237,7 +257,7 @@ class TestFunctions(unittest.TestCase):
         for each in successValues:
             orgVal = each
             val = BlueExposureTest.FunctionReturningConstWChar(orgVal)
-            self.assertEqual(type(val), unicode)
+            self.assertEqual(type(val), str)
             self.assertEqual(val, orgVal, msg="Failed with parameter %s" % each)
 
         for each in typeErrorValues:
@@ -247,7 +267,7 @@ class TestFunctions(unittest.TestCase):
     def testVoidArityFunctions(self):
         argsList = []
 
-        for i in xrange(10):
+        for i in range(10):
             method = getattr(BlueExposureTest, "VoidArity%d" % i)
             args = tuple(argsList)
 
@@ -259,7 +279,7 @@ class TestFunctions(unittest.TestCase):
     def testIntArityFunctions(self):
         argsList = []
 
-        for i in xrange(10):
+        for i in range(10):
             method = getattr(BlueExposureTest, "IntArity%d" % i)
             args = tuple(argsList)
 
@@ -271,7 +291,7 @@ class TestFunctions(unittest.TestCase):
     def testBeResultArityFunctions(self):
         argsList = []
 
-        for i in xrange(10):
+        for i in range(10):
             BlueExposureTest.SetReturnError(False)
 
             method = getattr(BlueExposureTest, "BeResultArity%d" % i)
@@ -284,10 +304,11 @@ class TestFunctions(unittest.TestCase):
 
             argsList.append(42)
 
+
     def testBeResultArityWithRefFunctions(self):
         argsList = []
 
-        for i in xrange(9):
+        for i in range(9):
             BlueExposureTest.SetReturnError(False)
 
             method = getattr(BlueExposureTest, "BeResultArity%dWithRef" % (i+1))

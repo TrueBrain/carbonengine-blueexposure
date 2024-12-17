@@ -5,7 +5,6 @@
 // Copyright:	CCP 2013
 //
 
-#include "StdAfx.h"
 #include "TestAttributes.h"
 
 BLUE_DEFINE( TestAttributes );
@@ -48,6 +47,14 @@ const Be::ClassInfo* TestAttributes::ExposeToBlue()
 		)
 
 		MAP_ATTRIBUTE
+		(
+			"myUInt",
+			m_myUInt,
+			"unsigned int test",
+			Be::READWRITE | Be::PERSIST
+		)
+
+		MAP_ATTRIBUTE
 		( 
 			"myFloat", 
 			m_myFloat, 
@@ -68,6 +75,14 @@ const Be::ClassInfo* TestAttributes::ExposeToBlue()
 			"myInt64", 
 			m_myInt64, 
 			"int64_t test", 
+			Be::READWRITE | Be::PERSIST
+		)
+
+		MAP_ATTRIBUTE
+		( 
+			"myUInt64", 
+			m_myUInt64, 
+			"uint64_t test", 
 			Be::READWRITE | Be::PERSIST
 		)
 
@@ -105,4 +120,3 @@ const Be::ClassInfo* TestAttributes::ExposeToBlue()
 		)
 	EXPOSURE_END()
 }
-

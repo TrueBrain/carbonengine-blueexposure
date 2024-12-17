@@ -5,7 +5,6 @@
 // Copyright:	CCP 2013
 //
 
-#include "StdAfx.h"
 #include "TestMethods.h"
 #include "TestMultipleInterfaces.h"
 
@@ -566,4 +565,3 @@ std::map<std::string, int> TestMethods::MethodReturningMapOfStringToInt( int val
 
 	return returnValue;
 }
-

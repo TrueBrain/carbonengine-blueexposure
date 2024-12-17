@@ -206,9 +206,9 @@ PyObject* PythonKlass::GetAttr(
 			PyObject *r;
 			if (PyMethod_Check(attr))
 				// It's a method, bound to a class.  Return it bound to the instance.
-				r = PyMethod_New(PyMethod_Function(attr), self, mKlass);
+				r = PyInstanceMethod_New(attr);
 			else
-				r = PyMethod_New(attr, self, mKlass);
+				r = PyMethod_New(attr, self);
 			Py_DECREF(attr);
 			return r;
 		} 
@@ -315,17 +315,17 @@ PyObject *PythonKlass::Repr()
 	if (!GetGuid(&guidObj))
 		guidstr = "none";
 	else
-		guidstr = PyString_AsString(guidObj);
+		guidstr = PyUnicode_AsUTF8(guidObj);
 
 	BluePyStr vars = mVars.Repr();
-	if (!vars) return 0;
+	if (!vars) return nullptr;
 
 	if (vars.Size() > 160) {
 		vars = vars.Slice(0, 160);
-		if (!vars) return 0;
-		vars += "... truncated}";
+		if (!vars) return nullptr;
+		vars += BluePyStr("... truncated}");
 	}
-	return PyString_FromFormat("<deco, guid:%s vars:%s>", 
+	return PyUnicode_FromFormat("<deco, guid:%s vars:%s>",
 		guidstr, vars.Str());
 }
 
@@ -457,7 +457,7 @@ bool PythonKlass::LookupMethod(PyObject **m, PyObject *self, const char *n)
 	else if (PyMethod_Check(method.o)) {
 		//we must use the method test, or we could get something from mKlass's class, the metaclass.
 		// It's a method, bound to a class.  Return it bound to the instance.
-		*m = PyMethod_New(PyMethod_Function(method), self, mKlass);
+		*m = PyMethod_New(PyMethod_Function(method), self);
 		return true;
 	}
 	return false;

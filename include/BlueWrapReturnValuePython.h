@@ -35,12 +35,12 @@ inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, bool v
 
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, int val )
 {
-	return PyInt_FromLong( val );
+	return PyLong_FromLong( val );
 }
 
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, uint32_t val )
 {
-	return PyInt_FromLong( val );
+	return PyLong_FromUnsignedLong( val );
 }
 
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, uint64_t val )
@@ -138,12 +138,12 @@ inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const 
 
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const std::string& val )
 {
-	return PyString_FromStringAndSize( val.c_str(), val.size() );
+	return PyUnicode_FromStringAndSize( val.c_str(), val.size() );
 }
 
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const char* val )
 {
-	return PyString_FromString( val );
+	return PyUnicode_FromString( val );
 }
 
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, const std::wstring& val )
@@ -238,4 +238,3 @@ BlueScriptValue BlueWrapReturnValueHelper( BlueScriptArguments args, valueType v
 		Py_RETURN_NONE;
 	}
 }
-

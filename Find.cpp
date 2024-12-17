@@ -320,9 +320,9 @@ PyObject* PyFindImpl( IRoot* pThis, PyObject* args )
 
 	// parse first argument.  Either a string, or a sequence of strings.
 	idvector_t clsids;
-	if (PyString_Check(clsidobj)) {
+	if (PyUnicode_Check(clsidobj)) {
 		Be::Clsid clsid;
-		if (!clsid.InitFromString(PyString_AsString(clsidobj)))
+		if (!clsid.InitFromString(PyUnicode_AsUTF8(clsidobj)))
 			return 0;
 		clsids.push_back(clsid);
 	} else {

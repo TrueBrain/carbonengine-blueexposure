@@ -5,7 +5,6 @@
 // Copyright:	CCP 2013
 //
 
-#include "StdAfx.h"
 #include "TestProperties.h"
 
 BLUE_DEFINE( TestProperties );
@@ -52,9 +51,9 @@ const Be::ClassInfo* TestProperties::ExposeToBlue()
 		)
 
 		MAP_PROPERTY
-		( 
-			"myUnsignedInt", 
-			GetUnsignedInt, SetUnsignedInt, 
+		(
+			"myUInt",
+			GetUInt, SetUInt,
 			"unsigned int test"
 		)
 
@@ -77,6 +76,13 @@ const Be::ClassInfo* TestProperties::ExposeToBlue()
 			"myInt64", 
 			GetInt64, SetInt64, 
 			"int64_t test"
+		)
+
+		MAP_PROPERTY
+		( 
+			"myUInt64", 
+			GetUInt64, SetUInt64, 
+			"uint64_t test"
 		)
 
 		MAP_PROPERTY

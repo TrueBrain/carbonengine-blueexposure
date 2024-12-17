@@ -48,13 +48,13 @@ public:
 }
 
 BLUE_DEFINE_TYPE_TRAIT( int64_t, Be::INT64 );
-BLUE_DEFINE_TYPE_TRAIT( uint64_t, Be::INT64 );
+BLUE_DEFINE_TYPE_TRAIT( uint64_t, Be::UINT64 );
 #if defined(_MSC_VER) || defined(__ANDROID__)
 BLUE_DEFINE_TYPE_TRAIT( long, Be::LONG );
-BLUE_DEFINE_TYPE_TRAIT( unsigned long, Be::LONG );
+BLUE_DEFINE_TYPE_TRAIT( unsigned long, Be::ULONG );
 #endif
 BLUE_DEFINE_TYPE_TRAIT( int32_t, Be::LONG );
-BLUE_DEFINE_TYPE_TRAIT( uint32_t, Be::LONG );
+BLUE_DEFINE_TYPE_TRAIT( uint32_t, Be::ULONG );
 BLUE_DEFINE_TYPE_TRAIT( short, Be::SHORT );
 BLUE_DEFINE_TYPE_TRAIT( unsigned short, Be::SHORT );
 BLUE_DEFINE_TYPE_TRAIT( float, Be::FLOAT );
