@@ -20,7 +20,6 @@ include(CcpGlobalSettings)
 include(CcpPackageConfigHelpers)
 
 find_package(CcpCore CONFIG REQUIRED NO_CMAKE_PATH)
-find_package(CcpLog CONFIG REQUIRED NO_CMAKE_PATH)
 find_package(Python CONFIG REQUIRED NO_CMAKE_PATH)
 
 ccp_add_library(BlueExposure STATIC
@@ -117,7 +116,7 @@ target_compile_definitions(BlueExposure
         BLUEBUILD
 )
 
-target_link_libraries(BlueExposure PUBLIC CcpCore ccp::log Python)
+target_link_libraries(BlueExposure PUBLIC CcpCore Python)
 
 target_include_directories(BlueExposure
     PUBLIC
