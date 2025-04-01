@@ -66,14 +66,13 @@ message("-- Python Path for tests: " ${TESTRUN_PYTHONPATH})
 
 # discover python tests ... this may be a little bit brittle since we're working around the missing `_blueexposuretest`
 # binary. As in, test discovery happens during the configure stage at which the binary does not exist yet.
-set(ENV{PYTHONPATH} ${BRANCH_ROOT_DIR}/carbon/common/stdlib:${TESTRUN_PYTHONPATH})
-execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import sys;sys.modules['_blueexposuretest']=sys;import unittest; print_suite = lambda x: (print(x._exception), sys.exit(1)) if hasattr(x, '_exception') else print(x.id()) if not hasattr(x, '__iter__') else [print_suite(x) for x in x];print_suite(unittest.defaultTestLoader.discover('.'))"
+execute_process(COMMAND ${PYTHON_EXECUTABLE} discover.py
     OUTPUT_VARIABLE PYTHON_TESTS_STR
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_STRIP_TRAILING_WHITESPACE
     RESULT_VARIABLE PYTHON_TEST_DISCOVERY_RETVAL
     ERROR_VARIABLE PYTHON_TEST_DISCOVERY_ERRORS
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python/BlueExposureTest
     )
 if(${PYTHON_TEST_DISCOVERY_RETVAL})
     message(FATAL_ERROR "Error encountered during test discovery:\n=== stderr: ===\n${PYTHON_TEST_DISCOVERY_ERRORS}\n=== stdout: ===\n${PYTHON_TESTS_STR}")
