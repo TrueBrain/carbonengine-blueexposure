@@ -1,26 +1,12 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(BlueExposure VERSION 1.0.0)
-list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake)
-if(NOT DEFINED ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
-    message(FATAL_ERROR "Missing required environment variable CCP_EVE_PERFORCE_BRANCH_PATH")
-elseif(NOT IS_ABSOLUTE $ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
-    message(FATAL_ERROR "CCP_EVE_PERFORCE_BRANCH_PATH needs to be an absolute path")
-elseif(NOT EXISTS $ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
-    message(FATAL_ERROR "CCP_EVE_PERFORCE_BRANCH_PATH is pointing at a non-existing location $ENV{CCP_EVE_PERFORCE_BRANCH_PATH}")
-elseif(NOT IS_DIRECTORY $ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
-    message(FATAL_ERROR "CCP_EVE_PERFORCE_BRANCH_PATH needs to be a directory")
-else()
-    message(STATUS "Using CCP_EVE_PERFORCE_BRANCH_PATH located at $ENV{CCP_EVE_PERFORCE_BRANCH_PATH}")
-endif()
 
-file(TO_CMAKE_PATH "$ENV{CCP_EVE_PERFORCE_BRANCH_PATH}" BRANCH_ROOT_DIR)
-list(INSERT CMAKE_MODULE_PATH 0 ${BRANCH_ROOT_DIR}/cmake)
-include(CcpGlobalSettings)
-include(CcpPackageConfigHelpers)
+include(cmake/CcpGlobalSettings.cmake)
+include(cmake/CcpTargetConfigurations.cmake)
 
-find_package(CcpCore CONFIG REQUIRED NO_CMAKE_PATH)
-find_package(Python CONFIG REQUIRED NO_CMAKE_PATH)
+find_package(carbon-core CONFIG REQUIRED)
+find_package(Python3 COMPONENTS Development REQUIRED)
 
 ccp_add_library(BlueExposure STATIC
     BlueClasses.cpp
@@ -116,7 +102,7 @@ target_compile_definitions(BlueExposure
         BLUEBUILD
 )
 
-target_link_libraries(BlueExposure PUBLIC CcpCore Python)
+target_link_libraries(BlueExposure PUBLIC CcpCore Python3::Python)
 
 target_include_directories(BlueExposure
     PUBLIC
@@ -124,6 +110,14 @@ target_include_directories(BlueExposure
 )
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    if (WIN32)
+        find_program(BUILT_PYTHON_EXECUTABLE python REQUIRED NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
+    elseif(APPLE)
+        find_program(BUILT_PYTHON_EXECUTABLE python3 REQUIRED NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
+    endif()
+
+    get_filename_component(PYTHON_TOOL_ROOT_DIR ${BUILT_PYTHON_EXECUTABLE} DIRECTORY)
+
     option(BUILD_TESTING "Build tests. Enabled by default." ON)
     include(CTest)
     if(BUILD_TESTING)
@@ -144,10 +138,14 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     # Install rule for available public headers
     install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include)
 
-    configure_ccp_vendor_config_file(
-        TARGET BlueExposure
-        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake"
-        DEPENDENCIES "CcpCore;Python"
-    )
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake DESTINATION .)
+        install(
+                EXPORT BlueExposureTargets
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
+                FILE carbon-blueexposure.cmake
+        )
+        install(
+                FILES carbon-blueexposureConfig.cmake
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
+        )
+    ENDIF()
 endif()
