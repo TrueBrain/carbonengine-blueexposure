@@ -123,29 +123,26 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     if(BUILD_TESTING)
 	    add_subdirectory(tests)
     endif()
-endif()
 
-# Provide an install target iff this is the top level project only
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    # Install rule to ensure that our runtime and linker files are in the expected, platform-specific folders
+    # Install static library archive
     install(
-        TARGETS BlueExposure
-        EXPORT BlueExposureTargets
-        CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
-        ARCHIVE DESTINATION lib/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
-        RUNTIME DESTINATION bin/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
+            TARGETS BlueExposure
+            EXPORT BlueExposureTargets
+            CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
+            ARCHIVE DESTINATION lib/
     )
-    # Install rule for available public headers
+
+    # Install public header files
     install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include)
 
-        install(
-                EXPORT BlueExposureTargets
-                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
-                FILE carbon-blueexposure.cmake
-        )
-        install(
-                FILES carbon-blueexposureConfig.cmake
-                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
-        )
-    ENDIF()
+    # Install target export configuration
+    install(
+            EXPORT BlueExposureTargets
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
+            FILE carbon-blueexposure.cmake
+    )
+    install(
+            FILES carbon-blueexposureConfig.cmake
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
+    )
 endif()
