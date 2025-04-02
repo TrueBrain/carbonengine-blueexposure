@@ -106,7 +106,8 @@ target_link_libraries(BlueExposure PUBLIC CcpCore Python3::Python)
 
 target_include_directories(BlueExposure
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
 )
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
