@@ -4,7 +4,7 @@ int main(int argc, char** argv, char** envp)
 {
 	// Initialize a standard python interpreter
     PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    PyConfig_InitIsolatedConfig(&config);
     if(const auto status = PyConfig_Read( &config ); PyStatus_Exception( status ))
     {
 	    PyErr_Print();

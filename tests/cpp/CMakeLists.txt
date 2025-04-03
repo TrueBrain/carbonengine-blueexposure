@@ -16,4 +16,7 @@ target_link_libraries(
     Python3::Python
 )
 
-gtest_discover_tests(BlueExposureCppUnitTests WORKING_DIRECTORY $<TARGET_FILE_DIR:Python3::Python>)
+gtest_discover_tests(
+    BlueExposureCppUnitTests
+    WORKING_DIRECTORY ${PYTHON_TOOL_ROOT_DIR}
+)
