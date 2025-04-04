@@ -30,6 +30,7 @@
 #include "ICopier.h"
 #include "BlueExposureMacros.h"
 #include "BlueUtil.h"
+
 #include <CcpCore.h>
 
 #include <vector>
@@ -179,6 +180,7 @@ class BlueList_Impl :
     //no assignment or copying
     BlueList_Impl(const Class &other);
     Class &operator= (const Class &other);
+    PyObject* mDebugItems;
 public:
 
     IListNotify* mNotify;
@@ -186,8 +188,10 @@ public:
     BlueList_Impl() :
             TrackableStdVector<T*>( "BlueList" ),
             mNotify(NULL),
-            mOffset( 0 )
+            mOffset( 0 ),
+            mDebugItems(Py_None)
     {
+        Py_INCREF(Py_None);
     }
 
     ~BlueList_Impl()
@@ -234,6 +238,16 @@ public:
 
         MAP_INTERFACE( IList )
         MAP_INTERFACE( ICopierCustomAssignment )
+        MAP_METHOD_AS_METHOD( "__repr__", PyRepr, "Convert to string for printing" )
+        MAP_METHOD_AS_METHOD( "DebugExpand", PyDebugExpand, "Create Python Wrappers for all items currently in the list and expose it in the 'debugItems' attribute." )
+        MAP_METHOD_AS_METHOD( "DebugCollapse", PyDebugCollapse, "Clean up debugItems after calling DebugExpand." )
+        MAP_ATTRIBUTE
+        (
+            "debugItems",
+            mDebugItems,
+            "When expanding the entire list by calling DebugExpand, this is where the list will show up.",
+            Be::READ
+        )
 
         EXPOSURE_END()
     }
@@ -328,6 +342,88 @@ public:
             push_back(other.at(i));
             back()->Lock();
         }
+    }
+
+    PyObject* PyRepr( PyObject* args )
+    {
+        const uint8_t MAX_STRING_SIZE = 100; // The maximum size for the returned string.
+        Py_ssize_t length = GetSize();
+        PyObject* result = PyUnicode_FromFormat("<BlueList (%zd items) [", length);
+        if( !result )
+        {
+            return nullptr;
+        }
+        PyObject* ellipsis = PyUnicode_FromString("...");
+        PyObject* closingBrace = PyUnicode_FromString("]>");
+        PyObject* separator = PyUnicode_FromString(", ");
+        ON_BLOCK_EXIT(
+            [ellipsis, closingBrace, separator] {
+                Py_XDECREF(ellipsis);
+                Py_XDECREF(closingBrace);
+                Py_XDECREF(separator);
+            });
+        if( !ellipsis || !closingBrace || !separator )
+        {
+            Py_XDECREF(result);
+            return nullptr;
+        }
+        for( Py_ssize_t i = 0; i < length; i++ )
+        {
+            IRoot* next = GetAt(i);
+            PyObject* nextObj = BlueWrapObjectForPython( next );
+            PyObject* nextRepr = PyObject_Str( nextObj );
+            Py_ssize_t nextLen = PyObject_Size( nextRepr ) + i > 0 ? 2 : 0; // 2 to account for ', ' separator
+            ON_BLOCK_EXIT(
+                [nextObj, nextRepr] {
+                    Py_XDECREF(nextObj);
+                    Py_XDECREF(nextRepr);
+                });
+            if(!nextObj || !nextRepr)
+            {
+                Py_XDECREF(result);
+                return nullptr;
+            }
+            if( nextLen + PyObject_Size( result ) + 5 > MAX_STRING_SIZE ) // Leave minimal space for next entry (+4 to account for '...]>').
+            {
+                PyUnicode_Append(&result, ellipsis);
+                break;
+            }
+            if( i > 0 )
+            {
+                PyUnicode_Append( &result, separator );
+            }
+            PyUnicode_Append(&result, nextRepr);
+        }
+        PyUnicode_Append(&result, closingBrace);
+        return result;
+    }
+
+    PyObject* PyDebugExpand(PyObject* args)
+    {
+        Py_DECREF(mDebugItems);
+        mDebugItems = PyList_New(0);
+        if(!mDebugItems)
+        {
+            mDebugItems = Py_None;
+            Py_INCREF(Py_None);
+            return nullptr;
+        }
+        Py_ssize_t length = GetSize();
+        for( Py_ssize_t i = 0; i < length; i++ )
+        {
+            IRoot* item = GetAt(i);
+            PyObject* itemObj = BlueWrapObjectForPython( item );
+            PyList_Append( mDebugItems, itemObj );
+        }
+        Py_RETURN_NONE;
+    }
+
+    PyObject* PyDebugCollapse(PyObject* args)
+    {
+        Py_DECREF(mDebugItems);
+        mDebugItems = Py_None;
+        Py_INCREF(Py_None);
+        Py_RETURN_NONE;
     }
 };
 
