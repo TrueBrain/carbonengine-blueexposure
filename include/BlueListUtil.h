@@ -197,6 +197,7 @@ public:
     ~BlueList_Impl()
     {
         //At deletion, no one needs to know we're going away
+        Py_XDECREF(mDebugItems);
         mNotify = 0;
         Remove(-1);
     }
