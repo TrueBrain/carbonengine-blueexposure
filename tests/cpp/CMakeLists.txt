@@ -16,7 +16,19 @@ target_link_libraries(
     Python3::Python
 )
 
+if (CMAKE_IMPORT_LIBRARY_SUFFIX)
+    add_custom_command(TARGET BlueExposureCppUnitTests POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:BlueExposureCppUnitTests> $<TARGET_FILE_DIR:BlueExposureCppUnitTests>
+            COMMAND_EXPAND_LISTS
+            VERBATIM
+    )
+endif ()
+
+# Test discovery needs to be delayed until we are about to run tests as otherwise the above post-build step won't have
+# run. Additionally, we set the working directory for the tests to be the folder in which all built-in Python C
+# extensions are located. That way we can avoid copying them around.
 gtest_discover_tests(
     BlueExposureCppUnitTests
+    DISCOVERY_MODE PRE_TEST
     WORKING_DIRECTORY ${PYTHON_TOOL_ROOT_DIR}
 )
