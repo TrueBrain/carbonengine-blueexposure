@@ -72,7 +72,7 @@ message("-- Python Path for tests: " ${PYTHONPATH_ENV})
 
 # discover python tests ... this may be a little bit brittle since we're working around the missing `_blueexposuretest`
 # binary. As in, test discovery happens during the configure stage at which the binary does not exist yet.
-execute_process(COMMAND ${BUILT_PYTHON_EXECUTABLE} discover.py
+execute_process(COMMAND ${Python3_EXECUTABLE} discover.py
     OUTPUT_VARIABLE PYTHON_TESTS_STR
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_STRIP_TRAILING_WHITESPACE
@@ -88,7 +88,7 @@ endif()
 separate_arguments(PYTHON_TESTS UNIX_COMMAND ${PYTHON_TESTS_STR})
 foreach(PYTHON_TEST ${PYTHON_TESTS})
     add_test(NAME ${PYTHON_TEST}
-        COMMAND ${BUILT_PYTHON_EXECUTABLE} -m unittest -v ${PYTHON_TEST}
+        COMMAND ${Python3_EXECUTABLE} -m unittest -v ${PYTHON_TEST}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python/BlueExposureTest/test
     )
     if(WIN32)

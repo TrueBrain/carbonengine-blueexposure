@@ -25,10 +25,10 @@ if (CMAKE_IMPORT_LIBRARY_SUFFIX)
 endif ()
 
 # Test discovery needs to be delayed until we are about to run tests as otherwise the above post-build step won't have
-# run. Additionally, we set the working directory for the tests to be the folder in which all built-in Python C
-# extensions are located. That way we can avoid copying them around.
+# run. Additionally, we set the working directory for the tests to match the interpreter.
+# That way we can avoid copying them around.
 gtest_discover_tests(
     BlueExposureCppUnitTests
     DISCOVERY_MODE PRE_TEST
-    WORKING_DIRECTORY ${PYTHON_TOOL_ROOT_DIR}
+    WORKING_DIRECTORY $<TARGET_FILE_DIR:Python3::Interpreter>
 )
