@@ -3,6 +3,7 @@ add_executable(BlueExposureCppUnitTests
     blns.cpp
     main.cpp
     TestBlueSmartPy.cpp
+    TestBlueSmartPy.h
 )
 target_precompile_headers(BlueExposureCppUnitTests
     PRIVATE
@@ -22,13 +23,17 @@ if (CMAKE_IMPORT_LIBRARY_SUFFIX)
             COMMAND_EXPAND_LISTS
             VERBATIM
     )
-endif ()
 
-# Test discovery needs to be delayed until we are about to run tests as otherwise the above post-build step won't have
-# run. Additionally, we set the working directory for the tests to match the interpreter.
-# That way we can avoid copying them around.
-gtest_discover_tests(
-    BlueExposureCppUnitTests
-    DISCOVERY_MODE PRE_TEST
-    WORKING_DIRECTORY $<TARGET_FILE_DIR:Python3::Interpreter>
-)
+    gtest_discover_tests(
+        BlueExposureCppUnitTests
+        PROPERTIES
+            ENVIRONMENT "PYTHON_PREFIX=$<TARGET_FILE_DIR:Python3::Interpreter>"
+    )
+elseif(APPLE)
+   # Python distributions on macOS have a different layout than on Windows, so the prefix passed to the test suite is different
+    gtest_discover_tests(
+            BlueExposureCppUnitTests
+            PROPERTIES
+            ENVIRONMENT "PYTHON_PREFIX=${VCPKG_IMPORT_PREFIX}"
+    )
+endif ()
