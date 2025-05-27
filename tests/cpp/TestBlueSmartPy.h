@@ -1,3 +1,7 @@
+#pragma once
+#ifndef TestBlueSmartPy_h
+#define TestBlueSmartPy_h
+
 class BluePyStrTest : public testing::TestWithParam<std::string_view>
 {
 protected:
@@ -5,3 +9,5 @@ protected:
 
 	void TearDown() override;
 };
+
+#endif // TestBlueSmartPy_h
