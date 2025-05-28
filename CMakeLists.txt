@@ -6,7 +6,7 @@ include(cmake/CcpGlobalSettings.cmake)
 include(cmake/CcpTargetConfigurations.cmake)
 
 find_package(carbon-core CONFIG REQUIRED)
-find_package(Python3 COMPONENTS Development REQUIRED)
+find_package(Python3 COMPONENTS Development Interpreter REQUIRED)
 
 ccp_add_library(BlueExposure STATIC
     BlueClasses.cpp
@@ -111,14 +111,6 @@ target_include_directories(BlueExposure
 )
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    if (WIN32)
-        find_program(BUILT_PYTHON_EXECUTABLE python REQUIRED NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
-    elseif(APPLE)
-        find_program(BUILT_PYTHON_EXECUTABLE python3 REQUIRED NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
-    endif()
-
-    get_filename_component(PYTHON_TOOL_ROOT_DIR ${BUILT_PYTHON_EXECUTABLE} DIRECTORY)
-
     option(BUILD_TESTING "Build tests. Enabled by default." ON)
     include(CTest)
     if(BUILD_TESTING)
