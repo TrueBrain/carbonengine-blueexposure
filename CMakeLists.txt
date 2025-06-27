@@ -118,9 +118,9 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	    add_subdirectory(tests)
     endif()
 
-    set (INSTALL_MODE "PERFORCE" CACHE STRING "Install this package to a perforce branch vendor folder - provided for backwards compatability")
+    option (INSTALL_TO_MONOLITH "Install this package to a perforce branch vendor folder - provided for backwards compatability" ON)
 
-    if (INSTALL_MODE MATCHES "PERFORCE")
+    if (INSTALL_TO_MONOLITH)
         install(
                 TARGETS BlueExposure
                 EXPORT BlueExposureTargets
@@ -137,7 +137,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
                 DEPENDENCIES "CcpCore;Python"
         )
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake DESTINATION .)
-    else()
+    else() # VCPKG install mode
         # Install static library archive
         install(
                 TARGETS BlueExposure
