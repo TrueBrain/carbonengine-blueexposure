@@ -4,6 +4,7 @@ project(BlueExposure VERSION 1.0.0)
 
 include(cmake/CcpGlobalSettings.cmake)
 include(cmake/CcpTargetConfigurations.cmake)
+include(cmake/CcpPackageConfigHelpers.cmake)
 
 find_package(carbon-core CONFIG REQUIRED)
 find_package(Python3 COMPONENTS Development Interpreter REQUIRED)
@@ -117,25 +118,46 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	    add_subdirectory(tests)
     endif()
 
-    # Install static library archive
-    install(
-            TARGETS BlueExposure
-            EXPORT BlueExposureTargets
-            CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
-            ARCHIVE DESTINATION lib/
-    )
+    option (INSTALL_TO_MONOLITH "Install this package to a perforce branch vendor folder - provided for backwards compatability" ON)
 
-    # Install public header files
-    install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include)
+    if (INSTALL_TO_MONOLITH)
+        install(
+                TARGETS BlueExposure
+                EXPORT BlueExposureTargets
+                CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
+                ARCHIVE DESTINATION lib/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
+                RUNTIME DESTINATION bin/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
+        )
+        # Install rule for available public headers
+        install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include)
 
-    # Install target export configuration
-    install(
-            EXPORT BlueExposureTargets
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
-            FILE carbon-blueexposure.cmake
-    )
-    install(
-            FILES carbon-blueexposureConfig.cmake
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
-    )
+        configure_ccp_vendor_config_file(
+                TARGET BlueExposure
+                DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake"
+                DEPENDENCIES "CcpCore;Python"
+        )
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake DESTINATION .)
+    else() # VCPKG install mode
+        # Install static library archive
+        install(
+                TARGETS BlueExposure
+                EXPORT BlueExposureTargets
+                CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
+                ARCHIVE DESTINATION lib/
+        )
+
+        # Install public header files
+        install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include)
+
+        # Install target export configuration
+        install(
+                EXPORT BlueExposureTargets
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
+                FILE carbon-blueexposure.cmake
+        )
+        install(
+                FILES carbon-blueexposureConfig.cmake
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
+        )
+    endif()
 endif()
