@@ -63,7 +63,7 @@ class CarbonBuildWindows(buildName: String, configType: String, preset: String) 
     }
 
     vcs {
-        root(AbsoluteId("Carbon_Core_2_CoreFeatureKotlin"),"+:. => %github_checkout_folder%")
+        root(AbsoluteId("Carbon_BlueExposure_BlueexposureFeatureKotlin"),"+:. => %github_checkout_folder%")
         root(AbsoluteId("CarbonPipelineTools"), "+:. => carbon_pipeline_tools")
     }
 
@@ -184,7 +184,7 @@ class CarbonBuildWindows(buildName: String, configType: String, preset: String) 
 
     triggers {
         vcs {
-            triggerRules = "+:root=${AbsoluteId("Carbon_Core_2_CoreFeatureKotlin").id}:."
+            triggerRules = "+:root=${AbsoluteId("Carbon_BlueExposure_BlueexposureFeatureKotlin").id}:."
 
             param("disabled", "true")
         }
@@ -192,7 +192,7 @@ class CarbonBuildWindows(buildName: String, configType: String, preset: String) 
 
     features {
         pullRequests {
-            vcsRootExtId = "${AbsoluteId("Carbon_Core_2_CoreFeatureKotlin")}"
+            vcsRootExtId = "${AbsoluteId("Carbon_BlueExposure_BlueexposureFeatureKotlin")}"
             provider = github {
                 authType = token {
                     token = "credentialsJSON:06ae89f1-d5f2-4c8d-a91a-9712c233ce06"
