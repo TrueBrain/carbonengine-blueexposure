@@ -65,6 +65,7 @@ class CarbonBuildWindows(buildName: String, configType: String, preset: String) 
     vcs {
         root(AbsoluteId("Carbon_BlueExposure_BlueexposureFeatureKotlin"),"+:. => %github_checkout_folder%")
         root(AbsoluteId("CarbonPipelineTools"), "+:. => carbon_pipeline_tools")
+        cleanCheckout = true
     }
 
     steps {
