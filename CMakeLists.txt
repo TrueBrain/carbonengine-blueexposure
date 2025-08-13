@@ -1,26 +1,13 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(BlueExposure VERSION 1.0.0)
-list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake)
-if(NOT DEFINED ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
-    message(FATAL_ERROR "Missing required environment variable CCP_EVE_PERFORCE_BRANCH_PATH")
-elseif(NOT IS_ABSOLUTE $ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
-    message(FATAL_ERROR "CCP_EVE_PERFORCE_BRANCH_PATH needs to be an absolute path")
-elseif(NOT EXISTS $ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
-    message(FATAL_ERROR "CCP_EVE_PERFORCE_BRANCH_PATH is pointing at a non-existing location $ENV{CCP_EVE_PERFORCE_BRANCH_PATH}")
-elseif(NOT IS_DIRECTORY $ENV{CCP_EVE_PERFORCE_BRANCH_PATH})
-    message(FATAL_ERROR "CCP_EVE_PERFORCE_BRANCH_PATH needs to be a directory")
-else()
-    message(STATUS "Using CCP_EVE_PERFORCE_BRANCH_PATH located at $ENV{CCP_EVE_PERFORCE_BRANCH_PATH}")
-endif()
 
-file(TO_CMAKE_PATH "$ENV{CCP_EVE_PERFORCE_BRANCH_PATH}" BRANCH_ROOT_DIR)
-list(INSERT CMAKE_MODULE_PATH 0 ${BRANCH_ROOT_DIR}/cmake)
-include(CcpGlobalSettings)
-include(CcpPackageConfigHelpers)
+include(cmake/CcpGlobalSettings.cmake)
+include(cmake/CcpTargetConfigurations.cmake)
+include(cmake/CcpPackageConfigHelpers.cmake)
 
-find_package(CcpCore CONFIG REQUIRED NO_CMAKE_PATH)
-find_package(Python CONFIG REQUIRED NO_CMAKE_PATH)
+find_package(carbon-core CONFIG REQUIRED)
+find_package(Python3 COMPONENTS Development Interpreter REQUIRED)
 
 ccp_add_library(BlueExposure STATIC
     BlueClasses.cpp
@@ -116,11 +103,12 @@ target_compile_definitions(BlueExposure
         BLUEBUILD
 )
 
-target_link_libraries(BlueExposure PUBLIC CcpCore Python)
+target_link_libraries(BlueExposure PUBLIC CcpCore Python3::Python)
 
 target_include_directories(BlueExposure
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
 )
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
@@ -129,25 +117,47 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     if(BUILD_TESTING)
 	    add_subdirectory(tests)
     endif()
-endif()
 
-# Provide an install target iff this is the top level project only
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    # Install rule to ensure that our runtime and linker files are in the expected, platform-specific folders
-    install(
-        TARGETS BlueExposure
-        EXPORT BlueExposureTargets
-        CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
-        ARCHIVE DESTINATION lib/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
-        RUNTIME DESTINATION bin/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
-    )
-    # Install rule for available public headers
-    install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include)
+    option (INSTALL_TO_MONOLITH "Install this package to a perforce branch vendor folder - provided for backwards compatability" ON)
 
-    configure_ccp_vendor_config_file(
-        TARGET BlueExposure
-        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake"
-        DEPENDENCIES "CcpCore;Python"
-    )
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake DESTINATION .)
+    if (INSTALL_TO_MONOLITH)
+        install(
+                TARGETS BlueExposure
+                EXPORT BlueExposureTargets
+                CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
+                ARCHIVE DESTINATION lib/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
+                RUNTIME DESTINATION bin/${CCP_PLATFORM}/${CCP_ARCHITECTURE}/${CCP_TOOLSET}/
+        )
+        # Install rule for available public headers
+        install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include)
+
+        configure_ccp_vendor_config_file(
+                TARGET BlueExposure
+                DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake"
+                DEPENDENCIES "CcpCore;Python"
+        )
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/BlueExposureConfig.cmake DESTINATION .)
+    else() # VCPKG install mode
+        # Install static library archive
+        install(
+                TARGETS BlueExposure
+                EXPORT BlueExposureTargets
+                CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
+                ARCHIVE DESTINATION lib/
+        )
+
+        # Install public header files
+        install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include)
+
+        # Install target export configuration
+        install(
+                EXPORT BlueExposureTargets
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
+                FILE carbon-blueexposure.cmake
+        )
+        install(
+                FILES carbon-blueexposureConfig.cmake
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/carbon-blueexposure
+        )
+    endif()
 endif()

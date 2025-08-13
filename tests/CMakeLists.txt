@@ -52,7 +52,7 @@ target_compile_definitions(BlueExposureTest PUBLIC BLUEBUILD BLUE_WITH_PYTHON)
 
 target_link_libraries(BlueExposureTest
     PRIVATE BlueExposure
-    PUBLIC Python
+    PUBLIC Python3::Python
 )
 
 set_target_properties(BlueExposureTest PROPERTIES
@@ -60,37 +60,44 @@ set_target_properties(BlueExposureTest PROPERTIES
     OUTPUT_NAME "_blueexposuretest"
 )
 
-# Get the path to the vendor python executable.
-cmake_path(REMOVE_FILENAME PYTHON_EXECUTABLE OUTPUT_VARIABLE TESTRUN_PYTHONPATH)
-message("-- Python Path for tests: " ${TESTRUN_PYTHONPATH})
+# Construct python path for tests
+if(WIN32)
+    set(PYTHONPATH_ENV "$<TARGET_FILE_DIR:BlueExposureTest>\;${CMAKE_CURRENT_SOURCE_DIR}/python")
+elseif(APPLE)
+    set(PYTHONPATH_ENV "$<TARGET_FILE_DIR:BlueExposureTest>:${CMAKE_CURRENT_SOURCE_DIR}/python")
+endif()
+
+set(ENV{PYTHONPATH} ${PYTHONPATH_ENV})
+message("-- Python Path for tests: " ${PYTHONPATH_ENV})
 
 # discover python tests ... this may be a little bit brittle since we're working around the missing `_blueexposuretest`
 # binary. As in, test discovery happens during the configure stage at which the binary does not exist yet.
-set(ENV{PYTHONPATH} ${BRANCH_ROOT_DIR}/carbon/common/stdlib:${TESTRUN_PYTHONPATH})
-execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import sys;sys.modules['_blueexposuretest']=sys;import unittest; print_suite = lambda x: (print(x._exception), sys.exit(1)) if hasattr(x, '_exception') else print(x.id()) if not hasattr(x, '__iter__') else [print_suite(x) for x in x];print_suite(unittest.defaultTestLoader.discover('.'))"
+execute_process(COMMAND ${Python3_EXECUTABLE} discover.py
     OUTPUT_VARIABLE PYTHON_TESTS_STR
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_STRIP_TRAILING_WHITESPACE
     RESULT_VARIABLE PYTHON_TEST_DISCOVERY_RETVAL
     ERROR_VARIABLE PYTHON_TEST_DISCOVERY_ERRORS
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python/BlueExposureTest
     )
+
 if(${PYTHON_TEST_DISCOVERY_RETVAL})
     message(FATAL_ERROR "Error encountered during test discovery:\n=== stderr: ===\n${PYTHON_TEST_DISCOVERY_ERRORS}\n=== stdout: ===\n${PYTHON_TESTS_STR}")
 endif()
+
 separate_arguments(PYTHON_TESTS UNIX_COMMAND ${PYTHON_TESTS_STR})
 foreach(PYTHON_TEST ${PYTHON_TESTS})
     add_test(NAME ${PYTHON_TEST}
-        COMMAND ${PYTHON_EXECUTABLE} -m unittest -v ${PYTHON_TEST}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python
+        COMMAND ${Python3_EXECUTABLE} -m unittest -v ${PYTHON_TEST}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/python/BlueExposureTest/test
     )
-if(WIN32)
-    set_tests_properties(${PYTHON_TEST} PROPERTIES ENVIRONMENT "PYTHONPATH=$<TARGET_FILE_DIR:BlueExposureTest>\;${CMAKE_CURRENT_SOURCE_DIR}/python\;${BRANCH_ROOT_DIR}/carbon/common/stdlib\;${TESTRUN_PYTHONPATH};BUILDFLAVOR=$<LOWER_CASE:$<CONFIG>>")
-elseif(APPLE)
-    set_tests_properties(${PYTHON_TEST} PROPERTIES ENVIRONMENT "PYTHONPATH=$<TARGET_FILE_DIR:BlueExposureTest>:${BRANCH_ROOT_DIR}/carbon/common/stdlib:${TESTRUN_PYTHONPATH};BUILDFLAVOR=$<LOWER_CASE:$<CONFIG>>")
-else()
-    message(FATAL_ERROR "Unsupported platform")
-endif()
+    if(WIN32)
+        set_tests_properties(${PYTHON_TEST} PROPERTIES ENVIRONMENT "PYTHONPATH=${PYTHONPATH_ENV};BUILDFLAVOR=$<LOWER_CASE:$<CONFIG>>")
+    elseif(APPLE)
+        set_tests_properties(${PYTHON_TEST} PROPERTIES ENVIRONMENT "PYTHONPATH=${PYTHONPATH_ENV};BUILDFLAVOR=$<LOWER_CASE:$<CONFIG>>")
+    else()
+        message(FATAL_ERROR "Unsupported platform")
+    endif()
 endforeach()
 
 add_subdirectory(cpp)

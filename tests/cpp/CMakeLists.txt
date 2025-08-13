@@ -3,6 +3,7 @@ add_executable(BlueExposureCppUnitTests
     blns.cpp
     main.cpp
     TestBlueSmartPy.cpp
+    TestBlueSmartPy.h
 )
 target_precompile_headers(BlueExposureCppUnitTests
     PRIVATE
@@ -13,24 +14,26 @@ target_link_libraries(
     BlueExposureCppUnitTests
     BlueExposure
     GTest::GTest
-    Python
+    Python3::Python
 )
 
-# Unfortunately the Python runtime is required for test discovery to work. It's not possible to override the working
-# directory for discovery itself - the `WORKING_DIRECTORY` attribute there is for discovered tests. Therefore, we need
-# to place it in the output folder.
-get_target_property(LIBPYTHON Python IMPORTED_LOCATION)
-add_custom_command(TARGET BlueExposureCppUnitTests POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${LIBPYTHON} $<TARGET_FILE_DIR:BlueExposureCppUnitTests>
-    COMMAND_EXPAND_LISTS
-    VERBATIM
-)
+if (CMAKE_IMPORT_LIBRARY_SUFFIX)
+    add_custom_command(TARGET BlueExposureCppUnitTests POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:BlueExposureCppUnitTests> $<TARGET_FILE_DIR:BlueExposureCppUnitTests>
+            COMMAND_EXPAND_LISTS
+            VERBATIM
+    )
 
-# Test discovery needs to be delayed until we are about to run tests as otherwise the above post-build step won't have
-# run. Additionally, we set the working directory for the tests to be the folder in which all built-in Python C
-# extensions are located. That way we can avoid copying them around.
-cmake_path(GET LIBPYTHON ROOT_PATH PYTHON_BIN_FOLDER)
-gtest_discover_tests(BlueExposureCppUnitTests
-    DISCOVERY_MODE PRE_TEST
-    WORKING_DIRECTORY ${PYTHON_BIN_FOLDER}
-)
+    gtest_discover_tests(
+        BlueExposureCppUnitTests
+        PROPERTIES
+            ENVIRONMENT "PYTHON_PREFIX=$<TARGET_FILE_DIR:Python3::Interpreter>"
+    )
+elseif(APPLE)
+   # Python distributions on macOS have a different layout than on Windows, so the prefix passed to the test suite is different
+    gtest_discover_tests(
+            BlueExposureCppUnitTests
+            PROPERTIES
+            ENVIRONMENT "PYTHON_PREFIX=${VCPKG_IMPORT_PREFIX}"
+    )
+endif ()

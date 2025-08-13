@@ -1,0 +1,16 @@
+{
+  "dependencies": [
+    {
+      "name": "gtest",
+      "version>=": "1.16.0"
+    },
+    {
+      "name": "python3-prebuilt",
+      "version>=": "3.12.3#2"
+    },
+    {
+      "name": "carbon-core",
+      "version>=": "2.3.0#1"
+    }
+  ]
+}
