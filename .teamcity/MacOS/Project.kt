@@ -84,7 +84,7 @@ class CarbonBuildMacOS(buildName: String, configType: String, preset: String) : 
         exec {
             name = "Configure"
             path = "cmake"
-            arguments = "--preset %env.CMAKE_PRESET% -S %teamcity.build.checkoutDir%/%github_checkout_folder% -B %env.CMAKE_BUILD_FOLDER% -D CMAKE_INSTALL_PREFIX=%env.CMAKE_INSTALL_PREFIX%"
+            arguments = "--preset %env.CMAKE_PRESET% -S %teamcity.build.checkoutDir%/%github_checkout_folder% -B %env.CMAKE_BUILD_FOLDER% -D CMAKE_INSTALL_PREFIX=%env.CMAKE_INSTALL_PREFIX% -DINSTALL_TO_MONOLITH=ON"
         }
         exec {
             name = "Build"
