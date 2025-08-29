@@ -59,6 +59,8 @@ class CarbonBuildMacOS(buildName: String, configType: String, preset: String) : 
         param("env.EXECUTABLE_FILENAMES_MATCH", "")
         param("env.CMAKE_PRESET", preset)
         param("env.VCPKG_BINARY_SOURCES", "clear;x-aws,s3://vcpkg-binary-cache-static/cache/,readwrite")
+        param("env.CMAKE_BUILD_PARALLEL_LEVEL", "8")
+        param("env.CTEST_PARALLEL_LEVEL", "8")
     }
 
 
@@ -88,7 +90,7 @@ class CarbonBuildMacOS(buildName: String, configType: String, preset: String) : 
         exec {
             name = "Build"
             path = "cmake"
-            arguments = "--build %env.CMAKE_BUILD_FOLDER% --config %env.CMAKE_CONFIG_TYPE% --target %env.CMAKE_BUILD_TARGETS% --parallel 8"
+            arguments = "--build %env.CMAKE_BUILD_FOLDER% --config %env.CMAKE_CONFIG_TYPE% --target %env.CMAKE_BUILD_TARGETS%"
         }
         exec {
             name = "Run Tests"
