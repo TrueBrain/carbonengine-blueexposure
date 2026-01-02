@@ -31,7 +31,7 @@ function(create_carbon_docs_sphinx_target)
             "${options}" "${single_value_keywords}" "${multi_value_keywords}"
     )
 
-    find_package(Doxygen)
+    find_package(Doxygen REQUIRED)
 
     set(PIP_PACKAGES sphinx breathe myst_parser sphinx_rtd_theme)
 
