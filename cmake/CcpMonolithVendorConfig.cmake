@@ -1,4 +1,4 @@
-# Copyright © 2025 CCP ehf.
+# Copyright (c) 2026 CCP Games
 #[[
  Provides variables to help with installing into the monolith. This should eventually be removed
 ]]

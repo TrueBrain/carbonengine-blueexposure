@@ -2,7 +2,7 @@
 //
 // Creator:		Snorri Sturluson
 // Created:		January 2013
-// Copyright:	CCP 2013
+// Copyright (c) 2026 CCP Games
 //
 // include this file to pull in the full public interface of BlueExposure. This is
 // ideal for putting in your StdAfx.h file.

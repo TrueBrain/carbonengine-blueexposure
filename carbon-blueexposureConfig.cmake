@@ -1,3 +1,5 @@
+# Copyright (c) 2026 CCP Games
+
 include(CMakeFindDependencyMacro)
 
 # This file is generated automatically by cmake as part of the install step

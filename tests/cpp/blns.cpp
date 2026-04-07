@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 // The famous "big list of naughty strings" from https://github.com/minimaxir/big-list-of-naughty-strings
 // Following are byte representations of the UTF-8 encoded strings which avoids issues with source file encodings.
 // Additionally, it's been carefully adapted to data that Python handles without a problem; not all strings in the

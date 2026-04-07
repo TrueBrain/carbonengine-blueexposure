@@ -2,7 +2,7 @@
 //
 // Creator:		Snorri Sturluson
 // Created:		Aug 2012
-// Copyright:	CCP 2012
+// Copyright (c) 2026 CCP Games
 //
 //
 // BlueStructureList is used for persisting and exposing to Python lists of

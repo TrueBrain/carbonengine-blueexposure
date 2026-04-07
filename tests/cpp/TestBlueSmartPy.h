@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 #pragma once
 #ifndef TestBlueSmartPy_h
 #define TestBlueSmartPy_h

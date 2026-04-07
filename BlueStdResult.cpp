@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 #include "BlueExposureMacros.h"
 #include "BlueStdResult.h"
 

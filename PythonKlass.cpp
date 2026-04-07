@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 #if BLUE_WITH_PYTHON
 #include "include/PythonKlass.h"
 #include "include/BluePythonObject.h"

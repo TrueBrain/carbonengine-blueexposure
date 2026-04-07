@@ -2,7 +2,7 @@
 //
 // Creator:		Snorri Sturluson
 // Created:		April 2013
-// Copyright:	CCP 2013
+// Copyright (c) 2026 CCP Games
 //
 // Originally developed by Matthias Gudmundsson.
 // Maintained by Snorri Sturluson

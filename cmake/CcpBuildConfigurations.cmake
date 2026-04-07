@@ -1,4 +1,4 @@
-# Copyright © 2025 CCP ehf.
+# Copyright (c) 2026 CCP Games
 #[[
 Defines our supported build configurations, also known as build flavors.
 

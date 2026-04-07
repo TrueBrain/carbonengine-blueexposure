@@ -2,7 +2,7 @@
 //
 // Creator: Snorri Sturluson
 // Created: July 2010
-// Copyright CCP 2010
+// Copyright (c) 2026 CCP Games
 //
 // This file contains the implementation of the Clsid and related
 // classes.

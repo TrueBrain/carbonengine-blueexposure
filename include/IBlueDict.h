@@ -2,7 +2,7 @@
 //
 // Creator:		Snorri Sturluson
 // Created:		August 2010
-// Copyright:	CCP 2010
+// Copyright (c) 2026 CCP Games
 //
 
 #pragma once

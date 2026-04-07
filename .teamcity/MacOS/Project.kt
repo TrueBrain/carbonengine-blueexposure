@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 package MacOS
 
 import jetbrains.buildServer.configs.kotlin.DslContext

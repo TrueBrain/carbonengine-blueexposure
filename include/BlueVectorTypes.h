@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 /* 
 	*************************************************************************************
 
@@ -10,7 +12,6 @@
 	Note: This is a sneaky file - it is used to allow Blue to handle vectors and matrices
 	gracefully wihtout really knowing anything about your vector and matrix classes!  
 
-	(c) CCP 2008
 
 	*************************************************************************************
 */

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 #include "include/BlueUtil.h"
 #include "include/IBlueDict.h"
 #include "include/IBlueStructureList.h"

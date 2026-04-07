@@ -1,3 +1,5 @@
+# Copyright (c) 2026 CCP Games
+
 import unittest
 import BlueExposureTest
 

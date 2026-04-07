@@ -1,3 +1,5 @@
+# Copyright (c) 2026 CCP Games
+
 import os
 flavor = os.environ.get("BUILDFLAVOR", "release")
 

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 #include "TestSuperclassMethods.h"
 
 BLUE_DEFINE( TestSuperclassMethods );

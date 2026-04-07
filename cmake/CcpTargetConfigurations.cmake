@@ -1,4 +1,4 @@
-# Copyright © 2025 CCP ehf.
+# Copyright (c) 2026 CCP Games
 macro(ensure_correct_target_type target)
     get_target_property(target_type ${target} TYPE)
     if(${target_type} STREQUAL "INTERFACE_LIBRARY")

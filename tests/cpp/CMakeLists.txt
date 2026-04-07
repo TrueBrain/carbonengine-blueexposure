@@ -1,3 +1,5 @@
+# Copyright (c) 2026 CCP Games
+
 find_package(GTest REQUIRED)
 add_executable(BlueExposureCppUnitTests
     blns.cpp

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 #include <BlueSmartPy.h>
 #include "blns.cpp"
 #include "TestBlueSmartPy.h"

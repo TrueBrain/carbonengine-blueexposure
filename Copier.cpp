@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 #include "Copier.h"
 #include "BluePyWrap.h"
 #include "include/INotify.h"

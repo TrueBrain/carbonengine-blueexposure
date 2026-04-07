@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 
 #ifndef _BLUEVARIABLE_H_
 #define _BLUEVARIABLE_H_

@@ -2,7 +2,7 @@
 //
 // Creator:		Vilhelm Pall Saevarsson
 // Created:		4	2013
-// Copyright:	CCP 2013
+// Copyright (c) 2026 CCP Games
 //
 #pragma once
 #ifndef ICustomPersist_h

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 CCP Games
+
 cmake_minimum_required(VERSION 3.21)
 
 project(BlueExposure VERSION 1.0.0)

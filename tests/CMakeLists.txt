@@ -1,3 +1,5 @@
+# Copyright (c) 2026 CCP Games
+
 ccp_add_library(BlueExposureTest SHARED
     BlueExposureTest.cpp
     TestAttributes.cpp

@@ -2,7 +2,7 @@
 //
 // Creator:		Snorri Sturluson
 // Created:		October 2012
-// Copyright:	CCP 2012
+// Copyright (c) 2026 CCP Games
 //
 
 #include "Copier.h"

@@ -2,7 +2,7 @@
 //
 // Creator:		Snorri Sturluson
 // Created:		November 2011
-// Copyright:	CCP 2011
+// Copyright (c) 2026 CCP Games
 //
 
 #include "include/BlueTypes.h"

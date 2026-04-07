@@ -1,3 +1,5 @@
+<!-- Copyright (c) 2026 CCP Games -->
+
 # platform-cmake
 
 This folder contains a collection of useful CMake modules for working with EVE's C++ codebase outside the

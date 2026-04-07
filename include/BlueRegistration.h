@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 #pragma once
 #ifndef BLUE_REGISTRATION_H
 #define BLUE_REGISTRATION_H

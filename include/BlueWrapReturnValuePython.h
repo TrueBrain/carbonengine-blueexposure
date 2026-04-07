@@ -1,3 +1,5 @@
+// Copyright (c) 2026 CCP Games
+
 #include "BluePythonObject.h"
 
 inline BlueScriptValue BlueWrapReturnValueImpl( BlueScriptArguments args, BlueScriptValue val )
