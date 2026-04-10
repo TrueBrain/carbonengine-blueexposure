@@ -1,5 +1,3 @@
-// Copyright (c) 2026 CCP Games
-
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.Project
 

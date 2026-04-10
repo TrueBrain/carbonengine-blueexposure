@@ -1,5 +1,3 @@
-<!-- Copyright (c) 2026 CCP Games -->
-
 ## BlueExposure
 > A library for generating Python wrappers for C++ code. 
 

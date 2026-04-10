@@ -1,5 +1,3 @@
-// Copyright (c) 2026 CCP Games
-
 package _Self
 
 import _Self.buildTypes.*

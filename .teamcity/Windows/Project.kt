@@ -1,5 +1,3 @@
-// Copyright (c) 2026 CCP Games
-
 package Windows
 
 import jetbrains.buildServer.configs.kotlin.DslContext
